@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_001",
-  "timestamp": "2026-05-15T01:39:50.076929",
+  "timestamp": "2026-05-15T02:11:50.366464",
   "mode": "evaluation_ui",
   "question": "What degree is awarded for the Digital and Data-Driven Business program at WFI Ingolstadt?",
   "selected_pipeline": "FullQAPipeline",
@@ -211,7 +211,7 @@
   "prompt_contains_6_semester": true,
   "prompt_contains_standard_length": true,
   "prompt_contains_180_ects": false,
-  "final_answer": "The provided documents do not contain this information.",
+  "final_answer": "The program is associated with a Bachelor of Science (bsc) degree.",
   "answer_says_not_explicitly_stated": false,
   "information_panel_contexts": [
     {
@@ -335,6 +335,9 @@
       "contains_180_ects": true
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1222,
@@ -379,9 +382,9 @@
   "retry_contexts_sent": [],
   "retry_prompt": "",
   "retry_answer": "",
-  "final_selected_answer": "The provided documents do not contain this information.",
+  "final_selected_answer": "The program is associated with a Bachelor of Science (bsc) degree.",
   "warnings": [],
-  "latency_ms": 80311.13,
+  "latency_ms": 29630.44,
   "reference": "The Digital and Data-Driven Business program awards a Bachelor of Science degree.",
   "reference_contexts": [
     "Digital and Data-Driven Business Degree Bachelor of Science Semester fee 78 Euro Start of the program Winter semester Standard length of the program 6 Semester Place of study Ingolstadt Part-time studies possible No"

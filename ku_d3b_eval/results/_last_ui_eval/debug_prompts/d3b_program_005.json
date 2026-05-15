@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_005",
-  "timestamp": "2026-05-15T01:44:19.230942",
+  "timestamp": "2026-05-15T02:13:01.459153",
   "mode": "evaluation_ui",
   "question": "What business administration study profiles can D3B students choose from?",
   "selected_pipeline": "FullQAPipeline",
@@ -335,6 +335,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1218,
@@ -381,7 +384,7 @@
   "retry_answer": "",
   "final_selected_answer": "Students can choose from the following study profiles: Accounting, Controlling & Taxation, Finance & Economics, Marketing, Organization, Innovation, and Supply Chain Management & Logistics.",
   "warnings": [],
-  "latency_ms": 73382.35,
+  "latency_ms": 21580.9,
   "reference": "Students can choose from Accounting, Taxation & Controlling; Finance & Economics; Marketing, Organization, Innovation; and Supply Chain Management & Logistics.",
   "reference_contexts": [
     "Students can choose between the following study profiles: Accounting, Taxation & Controlling; Finance & Economics; Marketing, Organization, Innovation; Supply Chain Management & Logistics."

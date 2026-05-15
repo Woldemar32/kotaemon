@@ -32,6 +32,9 @@ from kotaemon.indices.qa.citation_qa import (
 from kotaemon.indices.qa.citation_qa_inline import AnswerWithInlineCitation
 from kotaemon.indices.qa.format_context import PrepareEvidencePipeline
 from kotaemon.indices.qa.utils import replace_think_tag_with_details
+from kotaemon.indices.rankings.llm_trulens import (
+    get_llm_relevance_scorer_errors_count,
+)
 from kotaemon.llms import ChatLLM
 
 from ..utils import SUPPORTED_LANGUAGE_MAP
@@ -451,12 +454,27 @@ class FullQAPipeline(BaseReasoning):
         print(f"Got {len(docs)} retrieved documents")
         yield from infos
 
+        self._llm_relevance_scorer_enabled = bool(
+            self.retrievers
+            and getattr(self.retrievers[0], "llm_scorer", None)
+            and not config(
+                "KOTAEMON_DISABLE_LLM_RELEVANCE_SCORER",
+                default=False,
+                cast=bool,
+            )
+        )
+        self._llm_relevance_scorer_failed = False
+        self._llm_relevance_scorer_errors_count = 0
+
         generation_docs = docs
         generation_debug = {
             "model_context_window": self.model_context_window,
             "answer_max_tokens": self.answer_max_tokens,
             "num_retrieved_contexts": len(docs),
             "num_contexts_sent_to_llm": len(docs),
+            "llm_relevance_scorer_enabled": self._llm_relevance_scorer_enabled,
+            "llm_relevance_scorer_failed": self._llm_relevance_scorer_failed,
+            "llm_relevance_scorer_errors_count": self._llm_relevance_scorer_errors_count,
         }
         if self.enable_dynamic_context_budget:
             generation_docs, generation_debug = build_context_for_generation(
@@ -467,6 +485,13 @@ class FullQAPipeline(BaseReasoning):
                 self.generation_top_k,
                 clean_context=self.enable_context_cleaning,
             )
+        generation_debug.update(
+            {
+                "llm_relevance_scorer_enabled": self._llm_relevance_scorer_enabled,
+                "llm_relevance_scorer_failed": self._llm_relevance_scorer_failed,
+                "llm_relevance_scorer_errors_count": self._llm_relevance_scorer_errors_count,
+            }
+        )
         self._generation_debug = generation_debug
 
         evidence_mode, evidence, images = self.evidence_pipeline(generation_docs).content
@@ -477,7 +502,44 @@ class FullQAPipeline(BaseReasoning):
 
         def generate_relevant_scores():
             nonlocal docs
-            docs = self.retrievers[0].generate_relevant_scores(message, docs)
+            before_errors = get_llm_relevance_scorer_errors_count()
+            try:
+                docs = self.retrievers[0].generate_relevant_scores(message, docs)
+            except Exception as exc:
+                self._llm_relevance_scorer_failed = True
+                logger.warning(
+                    "generate_relevant_scores failed; keeping original retrieved docs: %s",
+                    exc,
+                )
+            finally:
+                retriever = self.retrievers[0] if self.retrievers else None
+                self._llm_relevance_scorer_enabled = bool(
+                    getattr(
+                        retriever,
+                        "llm_relevance_scorer_enabled",
+                        self._llm_relevance_scorer_enabled,
+                    )
+                )
+                self._llm_relevance_scorer_failed = bool(
+                    self._llm_relevance_scorer_failed
+                    or getattr(retriever, "llm_relevance_scorer_failed", False)
+                )
+                retriever_errors = getattr(
+                    retriever, "llm_relevance_scorer_errors_count", None
+                )
+                if retriever_errors is None:
+                    retriever_errors = max(
+                        0,
+                        get_llm_relevance_scorer_errors_count() - before_errors,
+                    )
+                self._llm_relevance_scorer_errors_count = int(retriever_errors or 0)
+                self._generation_debug.update(
+                    {
+                        "llm_relevance_scorer_enabled": self._llm_relevance_scorer_enabled,
+                        "llm_relevance_scorer_failed": self._llm_relevance_scorer_failed,
+                        "llm_relevance_scorer_errors_count": self._llm_relevance_scorer_errors_count,
+                    }
+                )
 
         # generate relevant score using
         if evidence and self.retrievers:

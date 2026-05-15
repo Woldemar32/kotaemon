@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_008",
-  "timestamp": "2026-05-15T01:48:00.172883",
+  "timestamp": "2026-05-15T02:13:58.517012",
   "mode": "evaluation_ui",
   "question": "Is part-time study possible for the D3B program?",
   "selected_pipeline": "FullQAPipeline",
@@ -335,6 +335,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1212,
@@ -381,7 +384,7 @@
   "retry_answer": "",
   "final_selected_answer": "The provided documents do not contain this information.",
   "warnings": [],
-  "latency_ms": 72692.95,
+  "latency_ms": 19281.21,
   "reference": "No. The program page states that part-time studies are not possible.",
   "reference_contexts": [
     "Digital and Data-Driven Business Degree Bachelor of Science Semester fee 78 Euro Start of the program Winter semester Standard length of the program 6 Semester Place of study Ingolstadt Part-time studies possible No"

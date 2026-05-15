@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_004",
-  "timestamp": "2026-05-15T01:43:05.843285",
+  "timestamp": "2026-05-15T02:12:39.875482",
   "mode": "evaluation_ui",
   "question": "Which four fundamental areas of study does the D3B program combine?",
   "selected_pipeline": "FullQAPipeline",
@@ -335,6 +335,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1216,
@@ -381,7 +384,7 @@
   "retry_answer": "",
   "final_selected_answer": "The program combines Information processing systems, programs and methods, Economics with a focus on the digital economy, Quantitative methods, mathematics and statistics, and Language, social, communication and decision-making skills (soft skills) and ethics.",
   "warnings": [],
-  "latency_ms": 71242.87,
+  "latency_ms": 16603.65,
   "reference": "The program combines information processing systems, programs and methods; economics with a focus on the digital economy; quantitative methods, mathematics and statistics; and language, social, communication and decision-making skills, soft skills and ethics.",
   "reference_contexts": [
     "The program therefore combines the following four fundamental areas of study: Information processing systems, programs and methods; Economics with a focus on the digital economy; Quantitative methods, mathematics and statistics; Language, social, communication and decision-making skills (soft skills) and ethics."

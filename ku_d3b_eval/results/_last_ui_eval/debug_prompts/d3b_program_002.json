@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_002",
-  "timestamp": "2026-05-15T01:40:49.339995",
+  "timestamp": "2026-05-15T02:12:05.295600",
   "mode": "evaluation_ui",
   "question": "How many semesters is the standard length of the D3B bachelor program?",
   "selected_pipeline": "FullQAPipeline",
@@ -335,6 +335,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1217,
@@ -381,7 +384,7 @@
   "retry_answer": "",
   "final_selected_answer": "The standard length of the program is six semesters.",
   "warnings": [],
-  "latency_ms": 59260.28,
+  "latency_ms": 14924.46,
   "reference": "The standard length of the D3B bachelor program is six semesters.",
   "reference_contexts": [
     "The standard length of the program is six semesters. Students acquire a total of 180 ECTS credits."

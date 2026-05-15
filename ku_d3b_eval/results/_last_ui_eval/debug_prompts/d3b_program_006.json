@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_006",
-  "timestamp": "2026-05-15T01:45:27.864750",
+  "timestamp": "2026-05-15T02:13:19.617628",
   "mode": "evaluation_ui",
   "question": "How are the 75 ECTS credits in the required area distributed?",
   "selected_pipeline": "FullQAPipeline",
@@ -335,6 +335,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1215,
@@ -381,7 +384,7 @@
   "retry_answer": "",
   "final_selected_answer": "The 75 ECTS credits are distributed as 25 ECTS credits in Business Administration and Digital Business, 20 ECTS credits in Information Management, 20 ECTS credits in Quantitative Methods, and 10 ECTS credits in Economics.",
   "warnings": [],
-  "latency_ms": 68626.54,
+  "latency_ms": 18154.06,
   "reference": "The required area has 25 ECTS in Business Administration and Digital Business, 20 ECTS in Information Management, 20 ECTS in Quantitative Methods, and 10 ECTS in Economics.",
   "reference_contexts": [
     "75 ECTS credits – required area: 25 ECTS credits in Business Administration and Digital Business; 20 ECTS credits in Information Management; 20 ECTS credits in Quantitative Methods; 10 ECTS credits in Economics."

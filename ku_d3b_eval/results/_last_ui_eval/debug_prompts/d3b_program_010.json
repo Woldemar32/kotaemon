@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_010",
-  "timestamp": "2026-05-15T01:50:22.204364",
+  "timestamp": "2026-05-15T02:14:33.078733",
   "mode": "evaluation_ui",
   "question": "What are the application period and language requirement for D3B according to the program page?",
   "selected_pipeline": "FullQAPipeline",
@@ -334,6 +334,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1223,
@@ -380,7 +383,7 @@
   "retry_answer": "",
   "final_selected_answer": "The provided documents do not contain this information.",
   "warnings": [],
-  "latency_ms": 70116.46,
+  "latency_ms": 16320.72,
   "reference": "The application period for the winter semester is May 01 to July 15. The listed language requirement is DSH 2.",
   "reference_contexts": [
     "Application Requirements General university entrance qualification or subject-specific university entrance qualification/economics or technical branch Language requirements DSH 2 Application period winter May 01 - Jul 15 Admission restriction No Selection procedure No."

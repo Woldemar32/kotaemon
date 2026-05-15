@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_003",
-  "timestamp": "2026-05-15T01:41:54.593184",
+  "timestamp": "2026-05-15T02:12:23.269874",
   "mode": "evaluation_ui",
   "question": "How many ECTS credits do students acquire in the D3B program?",
   "selected_pipeline": "FullQAPipeline",
@@ -335,6 +335,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1215,
@@ -381,7 +384,7 @@
   "retry_answer": "",
   "final_selected_answer": "Students acquire a total of 180 ECTS credits that are distributed between a required area, a required elective area and an elective area as well as a “Digital Project” module and the Bachelor’s thesis.",
   "warnings": [],
-  "latency_ms": 65242.68,
+  "latency_ms": 17971.41,
   "reference": "Students acquire a total of 180 ECTS credits in the D3B program.",
   "reference_contexts": [
     "Students acquire a total of 180 ECTS credits that are distributed between a required area, a required elective area and an elective area as well as a “Digital Project” module and the Bachelor’s thesis."

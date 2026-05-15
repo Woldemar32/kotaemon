@@ -27,6 +27,7 @@ from theflow.utils.modules import import_dotted_string
 from kotaemon.base import Document
 from kotaemon.indices.ingests.files import KH_DEFAULT_FILE_EXTRACTORS
 from kotaemon.indices.qa.utils import strip_think_tag
+from sqlalchemy import select as sa_select
 
 from ...utils import SUPPORTED_LANGUAGE_MAP, get_file_names_regex, get_urls
 from ...utils.commands import WEB_SEARCH_COMMAND
@@ -1244,6 +1245,8 @@ class ChatPage(BasePage):
         """Describe the exact index selector values passed to the live pipeline."""
         selected_indices = []
         selected_file_ids: list[str] = []
+        selected_filenames: list[str] = []
+        selected_file_id_to_filename: dict[str, str] = {}
         selected_state = {}
 
         for index in self._app.index_manager.indices:
@@ -1268,15 +1271,24 @@ class ChatPage(BasePage):
             except Exception:
                 resolved_ids = []
 
+            id_to_filename = self._live_source_filename_map(index, resolved_ids)
+            resolved_filenames = [
+                id_to_filename.get(file_id, "") for file_id in resolved_ids
+            ]
+            selected_file_id_to_filename.update(id_to_filename)
+
             selected_indices.append(
                 {
                     "id": str(index.id),
                     "name": getattr(index, "name", str(index.id)),
                     "selector": selector_value,
                     "resolved_file_ids": resolved_ids,
+                    "resolved_filenames": resolved_filenames,
+                    "resolved_file_id_to_filename": id_to_filename,
                 }
             )
             selected_file_ids.extend(resolved_ids)
+            selected_filenames.extend([name for name in resolved_filenames if name])
 
         return {
             "selected_index": ", ".join(
@@ -1284,8 +1296,259 @@ class ChatPage(BasePage):
             ),
             "selected_indices": selected_indices,
             "selected_file_ids": selected_file_ids,
+            "selected_filenames": selected_filenames,
+            "selected_file_id_to_filename": selected_file_id_to_filename,
             "selected_state": selected_state,
         }
+
+    def _live_source_filename_map(self, index: Any, file_ids: list[str]) -> dict[str, str]:
+        if not file_ids:
+            return {}
+        try:
+            Source = index._resources["Source"]
+            with Session(engine) as session:
+                rows = session.execute(sa_select(Source).where(Source.id.in_(file_ids))).all()
+            mapping = {}
+            for row in rows:
+                source = row[0]
+                filename = getattr(source, "name", None) or getattr(source, "path", "")
+                mapping[str(source.id)] = str(filename or "")
+            return mapping
+        except Exception:
+            return {}
+
+    @staticmethod
+    def _fold_debug_text(text: str) -> str:
+        return (
+            str(text or "")
+            .lower()
+            .replace("ä", "ae")
+            .replace("ö", "oe")
+            .replace("ü", "ue")
+            .replace("ß", "ss")
+        )
+
+    def _count_vectors_for_chunks(self, vector_store: Any, chunk_ids: list[str]) -> int | None:
+        if not chunk_ids:
+            return 0
+        try:
+            collection = getattr(vector_store, "_collection", None)
+            if collection is not None and hasattr(collection, "get"):
+                got = collection.get(ids=chunk_ids, include=[])
+                return len(got.get("ids", []) if isinstance(got, dict) else [])
+        except Exception:
+            pass
+        try:
+            client = getattr(getattr(vector_store, "_client", None), "client", None)
+            if client is not None and hasattr(client, "get"):
+                got = client.get(ids=chunk_ids, include=[])
+                return len(got.get("ids", []) if isinstance(got, dict) else [])
+        except Exception:
+            pass
+        return None
+
+    def _build_index_state_debug(
+        self,
+        selected_info: dict | None,
+        question: str,
+        pipeline: Any,
+    ) -> dict:
+        selected_info = selected_info or {}
+        debug: dict = {
+            "timestamp": datetime.now().isoformat(),
+            "question": question,
+            "selected_file_ids": selected_info.get("selected_file_ids", []),
+            "selected_filenames": selected_info.get("selected_filenames", []),
+            "selected_file_id_to_filename": selected_info.get(
+                "selected_file_id_to_filename", {}
+            ),
+            "files": [],
+            "exact_indexed_text_search": {},
+            "retrieval_comparison": [],
+        }
+
+        exact_terms = [
+            "Ostenstraße 26",
+            "Ostenstrasse 26",
+            "Prüfungsamt",
+            "Pruefungsamt",
+            "Marktplatz 7",
+            "85072 Eichstätt",
+            "85072 Eichstaett",
+        ]
+        selected_ids = set(debug["selected_file_ids"])
+        all_selected_chunk_ids: set[str] = set()
+        exact_hits = {
+            term: {"files": [], "chunk_ids": [], "chunks": []} for term in exact_terms
+        }
+
+        for index in self._app.index_manager.indices:
+            index_selected_ids: list[str] = []
+            for item in selected_info.get("selected_indices", []) or []:
+                if str(item.get("id")) == str(index.id):
+                    index_selected_ids = [str(each) for each in item.get("resolved_file_ids", [])]
+                    break
+            if not index_selected_ids:
+                continue
+
+            try:
+                Source = index._resources["Source"]
+                Index = index._resources["Index"]
+                docstore = index._resources["DocStore"]
+                vectorstore = index._resources["VectorStore"]
+                with Session(engine) as session:
+                    sources = {
+                        str(row[0].id): row[0]
+                        for row in session.execute(
+                            sa_select(Source).where(Source.id.in_(index_selected_ids))
+                        ).all()
+                    }
+                    index_rows = session.execute(
+                        sa_select(Index).where(
+                            Index.relation_type == "document",
+                            Index.source_id.in_(index_selected_ids),
+                        )
+                    ).all()
+            except Exception as exc:
+                debug.setdefault("errors", []).append(
+                    f"Could not inspect index {getattr(index, 'id', '')}: {exc}"
+                )
+                continue
+
+            file_to_chunk_ids: dict[str, list[str]] = {file_id: [] for file_id in index_selected_ids}
+            chunk_to_file_id: dict[str, str] = {}
+            for row in index_rows:
+                idx_row = row[0]
+                file_id = str(idx_row.source_id)
+                chunk_id = str(idx_row.target_id)
+                file_to_chunk_ids.setdefault(file_id, []).append(chunk_id)
+                chunk_to_file_id[chunk_id] = file_id
+                all_selected_chunk_ids.add(chunk_id)
+
+            all_chunk_ids = [chunk_id for ids in file_to_chunk_ids.values() for chunk_id in ids]
+            try:
+                docs = docstore.get(all_chunk_ids) if all_chunk_ids else []
+            except Exception as exc:
+                docs = []
+                debug.setdefault("errors", []).append(
+                    f"Could not read selected chunks for index {getattr(index, 'id', '')}: {exc}"
+                )
+
+            docs_by_file: dict[str, list[Any]] = {file_id: [] for file_id in index_selected_ids}
+            for doc in docs:
+                metadata = getattr(doc, "metadata", None) or {}
+                file_id = str(metadata.get("file_id") or chunk_to_file_id.get(str(getattr(doc, "doc_id", "")), ""))
+                docs_by_file.setdefault(file_id, []).append(doc)
+
+                raw_text = self._live_doc_text(doc)
+                raw_lower = raw_text.lower()
+                folded = self._fold_debug_text(raw_text)
+                for term in exact_terms:
+                    term_lower = term.lower()
+                    term_folded = self._fold_debug_text(term)
+                    if term_lower in raw_lower or term_folded in folded:
+                        hit = exact_hits[term]
+                        filename = (
+                            selected_info.get("selected_file_id_to_filename", {}).get(file_id)
+                            or getattr(sources.get(file_id), "name", "")
+                        )
+                        if filename and filename not in hit["files"]:
+                            hit["files"].append(filename)
+                        chunk_id = str(getattr(doc, "doc_id", ""))
+                        if chunk_id not in hit["chunk_ids"]:
+                            hit["chunk_ids"].append(chunk_id)
+                            hit["chunks"].append(
+                                {
+                                    "chunk_id": chunk_id,
+                                    "file_id": file_id,
+                                    "filename": filename,
+                                    "belongs_to_selected_file_ids": file_id in selected_ids,
+                                    "text_preview": raw_text[:500],
+                                }
+                            )
+
+            for file_id in index_selected_ids:
+                source = sources.get(file_id)
+                filename = (
+                    selected_info.get("selected_file_id_to_filename", {}).get(file_id)
+                    or getattr(source, "name", "")
+                    or getattr(source, "path", "")
+                )
+                file_docs = docs_by_file.get(file_id, [])
+                combined_text = "\n".join(self._live_doc_text(doc) for doc in file_docs)
+                combined_folded = self._fold_debug_text(combined_text)
+                chunk_ids = file_to_chunk_ids.get(file_id, [])
+                debug["files"].append(
+                    {
+                        "file_id": file_id,
+                        "filename": str(filename or ""),
+                        "num_chunks_in_docstore": len(file_docs),
+                        "num_vectors_in_vectorstore": self._count_vectors_for_chunks(
+                            vectorstore, chunk_ids
+                        ),
+                        "sample_chunk_previews": [
+                            self._live_doc_text(doc)[:500] for doc in file_docs[:3]
+                        ],
+                        "contains_ostenstrasse": "ostenstrasse" in combined_folded,
+                        "contains_ostenstraße": "ostenstraße" in combined_text.lower(),
+                        "contains_pruefungsamt": "pruefungsamt" in combined_folded,
+                        "contains_marktplatz_7": "marktplatz 7" in combined_folded,
+                        "contains_85072_eichstaett": "85072 eichstaett" in combined_folded,
+                    }
+                )
+
+        debug["exact_indexed_text_search"] = {
+            term: {
+                **payload,
+                "found": bool(payload["chunk_ids"]),
+                "all_hits_belong_to_selected_file_ids": all(
+                    chunk.get("belongs_to_selected_file_ids") for chunk in payload["chunks"]
+                )
+                if payload["chunks"]
+                else False,
+            }
+            for term, payload in exact_hits.items()
+        }
+
+        if self._should_build_retrieval_comparison(question):
+            for retriever in getattr(pipeline, "retrievers", []) or []:
+                compare = getattr(retriever, "debug_retrieval_comparison", None)
+                if callable(compare):
+                    try:
+                        debug["retrieval_comparison"].append(compare(question, top_k=10))
+                    except Exception as exc:
+                        debug["retrieval_comparison"].append(
+                            {"error": f"{exc.__class__.__name__}: {exc}"}
+                        )
+
+        return debug
+
+    @staticmethod
+    def _should_build_retrieval_comparison(question: str) -> bool:
+        folded = ChatPage._fold_debug_text(question)
+        return any(
+            term in folded
+            for term in (
+                "postal address",
+                "address",
+                "examination office",
+                "pruefungsamt",
+                "ostenstrasse",
+                "eichstaett",
+                "ingolstadt",
+                "schanz",
+            )
+        )
+
+    def _write_index_state_debug(self, payload: dict) -> Path:
+        debug_dir = self._ku_d3b_eval_root / "debug"
+        debug_dir.mkdir(parents=True, exist_ok=True)
+        path = debug_dir / "index_state_latest.json"
+        path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2, default=str),
+            encoding="utf-8",
+        )
+        return path
 
     def _write_live_chat_debug(self, payload: dict) -> None:
         debug_dir = self._ku_d3b_eval_root / "debug"
@@ -1430,6 +1693,18 @@ class ChatPage(BasePage):
         prompt_flags = self._live_contains_flags(final_prompt_or_messages)
         generation_debug = getattr(pipeline, "_generation_debug", {}) or {}
         answer_generation_debug = getattr(pipeline, "_answer_generation_debug", {}) or {}
+        llm_relevance_scorer_enabled = generation_debug.get(
+            "llm_relevance_scorer_enabled",
+            getattr(pipeline, "_llm_relevance_scorer_enabled", False),
+        )
+        llm_relevance_scorer_failed = generation_debug.get(
+            "llm_relevance_scorer_failed",
+            getattr(pipeline, "_llm_relevance_scorer_failed", False),
+        )
+        llm_relevance_scorer_errors_count = generation_debug.get(
+            "llm_relevance_scorer_errors_count",
+            getattr(pipeline, "_llm_relevance_scorer_errors_count", 0),
+        )
         retrieved_text = "\n".join(item["full_text"] for item in retrieved_contexts)
         info_text = "\n".join(item["full_text"] for item in info_contexts)
         answer_l = final_answer.lower()
@@ -1490,6 +1765,10 @@ class ChatPage(BasePage):
             ),
             "selected_index": (selected_info or {}).get("selected_index", ""),
             "selected_file_ids": (selected_info or {}).get("selected_file_ids", []),
+            "selected_filenames": (selected_info or {}).get("selected_filenames", []),
+            "selected_file_id_to_filename": (selected_info or {}).get(
+                "selected_file_id_to_filename", {}
+            ),
             "selected_indices": (selected_info or {}).get("selected_indices", []),
             "selected_state": (selected_info or {}).get("selected_state", {}),
             "pipeline_used": pipeline.__class__.__name__,
@@ -1505,6 +1784,11 @@ class ChatPage(BasePage):
             "final_answer": final_answer,
             "answer_says_not_explicitly_stated": answer_says_not_explicitly_stated,
             "information_panel_contexts": info_contexts,
+            "llm_relevance_scorer_enabled": bool(llm_relevance_scorer_enabled),
+            "llm_relevance_scorer_failed": bool(llm_relevance_scorer_failed),
+            "llm_relevance_scorer_errors_count": int(
+                llm_relevance_scorer_errors_count or 0
+            ),
             "model_context_window": generation_debug.get(
                 "model_context_window", answer_generation_debug.get("model_context_window")
             ),
@@ -1545,6 +1829,16 @@ class ChatPage(BasePage):
             "final_selected_answer": final_answer,
             "warnings": warnings,
         }
+        try:
+            index_state_debug = self._build_index_state_debug(
+                selected_info, question, pipeline
+            )
+            debug_path = self._write_index_state_debug(index_state_debug)
+            payload["index_state_debug_path"] = str(debug_path)
+        except Exception as exc:
+            payload.setdefault("warnings", []).append(
+                f"Could not write index_state_latest.json: {exc}"
+            )
         return payload
 
     def stream_ui_chat_query(

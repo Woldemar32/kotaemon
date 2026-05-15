@@ -1,14 +1,11 @@
 id,question_type,language,status,error,source_hit,source_recall,context_reference_coverage,answer_similarity_lexical,latency_ms,response
-d3b_program_001,factoid,en,ok,,1.0,1.0,1.0,0.0,80311.13,The provided documents do not contain this information.
-d3b_program_002,factoid,en,ok,,1.0,1.0,1.0,0.8333,59260.28,The standard length of the program is six semesters.
-d3b_program_003,factoid,en,ok,,1.0,1.0,1.0,0.48,65242.68,"Students acquire a total of 180 ECTS credits that are distributed between a required area, a required elective area and an elective area as well as a “Digital Project” module and the Bachelor’s thesis."
-d3b_program_004,list,en,ok,,1.0,1.0,1.0,1.0,71242.87,"The program combines Information processing systems, programs and methods, Economics with a focus on the digital economy, Quantitative methods, mathematics and statistics, and Language, social, communication and decision-making skills (soft skills) and ethics."
-d3b_program_005,list,en,ok,,1.0,1.0,1.0,0.9091,73382.35,"Students can choose from the following study profiles: Accounting, Controlling & Taxation, Finance & Economics, Marketing, Organization, Innovation, and Supply Chain Management & Logistics."
-d3b_program_006,list,en,ok,,1.0,1.0,1.0,0.8182,68626.54,"The 75 ECTS credits are distributed as 25 ECTS credits in Business Administration and Digital Business, 20 ECTS credits in Information Management, 20 ECTS credits in Quantitative Methods, and 10 ECTS credits in Economics."
-d3b_program_007,factoid,en,ok,,1.0,1.0,1.0,0.3125,79587.72,"The “Digital Project” is explicitly designed for students to learn how to deal with and approach practice-related, digital and/or data-driven problems."
-d3b_program_008,factoid,en,ok,,1.0,1.0,1.0,0.0,72692.95,The provided documents do not contain this information.
-d3b_program_009,factoid,en,ok,,1.0,1.0,1.0,0.9,71901.9,"Semester five is particularly suitable for a semester abroad, as no specific modules have been assigned to this particular semester."
-d3b_program_010,factoid,en,ok,,1.0,1.0,1.0,0.0,70116.46,The provided documents do not contain this information.
-kucampus_001,factoid,de,ok,,1.0,1.0,1.0,0.0,60579.7,The provided documents do not contain this information.
-kucampus_002,procedure,de,ok,,1.0,1.0,1.0,0.0952,60270.28,The module handbook can be accessed in the menu on the left under the tab “Studiengänge.”
-kucampus_003,procedure,de,error,RetryError: RetryError[<Future at 0x2a1c2653f50 state=finished raised InternalServerError>],0.0,0.0,0.0,0.0,41408.49,
+d3b_program_001,factoid,en,ok,,1.0,1.0,1.0,0.5333,29630.44,The program is associated with a Bachelor of Science (bsc) degree.
+d3b_program_002,factoid,en,ok,,1.0,1.0,1.0,0.8333,14924.46,The standard length of the program is six semesters.
+d3b_program_003,factoid,en,ok,,1.0,1.0,1.0,0.48,17971.41,"Students acquire a total of 180 ECTS credits that are distributed between a required area, a required elective area and an elective area as well as a “Digital Project” module and the Bachelor’s thesis."
+d3b_program_004,list,en,ok,,1.0,1.0,1.0,1.0,16603.65,"The program combines Information processing systems, programs and methods, Economics with a focus on the digital economy, Quantitative methods, mathematics and statistics, and Language, social, communication and decision-making skills (soft skills) and ethics."
+d3b_program_005,list,en,ok,,1.0,1.0,1.0,0.9091,21580.9,"Students can choose from the following study profiles: Accounting, Controlling & Taxation, Finance & Economics, Marketing, Organization, Innovation, and Supply Chain Management & Logistics."
+d3b_program_006,list,en,ok,,1.0,1.0,1.0,0.8182,18154.06,"The 75 ECTS credits are distributed as 25 ECTS credits in Business Administration and Digital Business, 20 ECTS credits in Information Management, 20 ECTS credits in Quantitative Methods, and 10 ECTS credits in Economics."
+d3b_program_007,factoid,en,ok,,1.0,1.0,1.0,0.3125,19602.04,"The “Digital Project” is explicitly designed for students to learn how to deal with and approach practice-related, digital and/or data-driven problems."
+d3b_program_008,factoid,en,ok,,1.0,1.0,1.0,0.0,19281.21,The provided documents do not contain this information.
+d3b_program_009,factoid,en,ok,,1.0,1.0,1.0,0.9524,18230.72,Semester five is particularly suitable for a semester abroad because no specific modules have been assigned to this particular semester.
+d3b_program_010,factoid,en,ok,,1.0,1.0,1.0,0.0,16320.72,The provided documents do not contain this information.

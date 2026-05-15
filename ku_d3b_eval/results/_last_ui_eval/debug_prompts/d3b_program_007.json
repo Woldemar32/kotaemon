@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_007",
-  "timestamp": "2026-05-15T01:46:47.464494",
+  "timestamp": "2026-05-15T02:13:39.229583",
   "mode": "evaluation_ui",
   "question": "What is the purpose of the Digital Project in the D3B program?",
   "selected_pipeline": "FullQAPipeline",
@@ -335,6 +335,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1215,
@@ -381,7 +384,7 @@
   "retry_answer": "",
   "final_selected_answer": "The “Digital Project” is explicitly designed for students to learn how to deal with and approach practice-related, digital and/or data-driven problems.",
   "warnings": [],
-  "latency_ms": 79587.72,
+  "latency_ms": 19602.04,
   "reference": "The Digital Project lets a team of students work on a current research topic or a corporate-practice project and apply knowledge from digitalization and data analysis in a practical context.",
   "reference_contexts": [
     "In the context of the digital project work (Digital Project), a team of students will work on a current research topic or a project based on corporate practice that can also be carried out in collaboration with a company. The “Digital Project” offers students the opportunity to apply their knowledge gained so far in the field of digitalization and data analysis in a specific practical project context."

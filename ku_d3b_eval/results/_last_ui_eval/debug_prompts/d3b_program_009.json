@@ -1,6 +1,6 @@
 {
   "id": "d3b_program_009",
-  "timestamp": "2026-05-15T01:49:12.081089",
+  "timestamp": "2026-05-15T02:14:16.753556",
   "mode": "evaluation_ui",
   "question": "Which semester is particularly suitable for a semester abroad in D3B?",
   "selected_pipeline": "FullQAPipeline",
@@ -211,7 +211,7 @@
   "prompt_contains_6_semester": true,
   "prompt_contains_standard_length": true,
   "prompt_contains_180_ects": true,
-  "final_answer": "Semester five is particularly suitable for a semester abroad, as no specific modules have been assigned to this particular semester.",
+  "final_answer": "Semester five is particularly suitable for a semester abroad because no specific modules have been assigned to this particular semester.",
   "answer_says_not_explicitly_stated": false,
   "information_panel_contexts": [
     {
@@ -335,6 +335,9 @@
       "contains_180_ects": false
     }
   ],
+  "llm_relevance_scorer_enabled": false,
+  "llm_relevance_scorer_failed": true,
+  "llm_relevance_scorer_errors_count": 0,
   "model_context_window": 8192,
   "answer_max_tokens": 700,
   "reserved_prompt_tokens": 1217,
@@ -379,9 +382,9 @@
   "retry_contexts_sent": [],
   "retry_prompt": "",
   "retry_answer": "",
-  "final_selected_answer": "Semester five is particularly suitable for a semester abroad, as no specific modules have been assigned to this particular semester.",
+  "final_selected_answer": "Semester five is particularly suitable for a semester abroad because no specific modules have been assigned to this particular semester.",
   "warnings": [],
-  "latency_ms": 71901.9,
+  "latency_ms": 18230.72,
   "reference": "Semester five is particularly suitable for a semester abroad because no specific modules have been assigned to that semester.",
   "reference_contexts": [
     "Students have the possibility to complete part of their studies abroad. Semester five is particularly suitable for this, as no specific modules have been assigned to this particular semester."

@@ -1,0 +1,83 @@
+{
+  "timestamp": "2026-05-15T02:43:08.536059",
+  "question": "What academic degree is awarded in the MBA program?",
+  "selected_file_ids": [
+    "a78183e8-e42e-44af-b28f-af648c956c6a"
+  ],
+  "selected_filenames": [
+    "2b388023_fileadmin_190304_qualitaetsmanagement_Input_Studiengangsseiten_040_MBA_Studiengangsbeschreibung_MBA_.pdf"
+  ],
+  "selected_file_id_to_filename": {
+    "a78183e8-e42e-44af-b28f-af648c956c6a": "2b388023_fileadmin_190304_qualitaetsmanagement_Input_Studiengangsseiten_040_MBA_Studiengangsbeschreibung_MBA_.pdf"
+  },
+  "files": [
+    {
+      "file_id": "a78183e8-e42e-44af-b28f-af648c956c6a",
+      "filename": "2b388023_fileadmin_190304_qualitaetsmanagement_Input_Studiengangsseiten_040_MBA_Studiengangsbeschreibung_MBA_.pdf",
+      "num_chunks_in_docstore": 28,
+      "num_vectors_in_vectorstore": 28,
+      "sample_chunk_previews": [
+        "Stand 1 – Juli 2021   \n1          Studiengangsbeschreibung für den Master of Business Administration (MBA) an der Katholischen Universität Eichstätt-Ingolstadt",
+        "Stand 1 – Juli 2021   \n2 Inhalt  A. Allgemeine Struktur des Studiengangs .................................................. 3 B. Beschreibung des Studiengangs .......................................................... 5 1. Der Studiengang in drei Sätzen ........................................................ 5 2. Zusammenfassung des Studiengangs ................................................. 5 3. Zielgruppe ................................................................................ 5 C.",
+        "Stand 1 – Juli 2021   \n3  A. Allgemeine Struktur des Studiengangs  Name des Studiengangs:  Weiterbildungsstudiengang \"Master of Business Administration (MBA)\"  Verantwortliche Fakultät:  Wirtschaftswissenschaftliche Fakultät  Akademischer Grad: Master of Business Administration  Studienform:  ☐ Vollzeitstudiengang ☒ Teilzeitstudiengang ☐ Voll- und Teilzeitstudiengang ☐ Duales Studium ☐ Fernstudium  Art des Studiengangs:  ☐ grundständig ☐ konsekutiv ☒ weiterbildend  Wissenschaftliche/Praktische O"
+      ],
+      "contains_ostenstrasse": false,
+      "contains_ostenstraße": false,
+      "contains_pruefungsamt": false,
+      "contains_marktplatz_7": false,
+      "contains_85072_eichstaett": false
+    }
+  ],
+  "exact_indexed_text_search": {
+    "Ostenstraße 26": {
+      "files": [],
+      "chunk_ids": [],
+      "chunks": [],
+      "found": false,
+      "all_hits_belong_to_selected_file_ids": false
+    },
+    "Ostenstrasse 26": {
+      "files": [],
+      "chunk_ids": [],
+      "chunks": [],
+      "found": false,
+      "all_hits_belong_to_selected_file_ids": false
+    },
+    "Prüfungsamt": {
+      "files": [],
+      "chunk_ids": [],
+      "chunks": [],
+      "found": false,
+      "all_hits_belong_to_selected_file_ids": false
+    },
+    "Pruefungsamt": {
+      "files": [],
+      "chunk_ids": [],
+      "chunks": [],
+      "found": false,
+      "all_hits_belong_to_selected_file_ids": false
+    },
+    "Marktplatz 7": {
+      "files": [],
+      "chunk_ids": [],
+      "chunks": [],
+      "found": false,
+      "all_hits_belong_to_selected_file_ids": false
+    },
+    "85072 Eichstätt": {
+      "files": [],
+      "chunk_ids": [],
+      "chunks": [],
+      "found": false,
+      "all_hits_belong_to_selected_file_ids": false
+    },
+    "85072 Eichstaett": {
+      "files": [],
+      "chunk_ids": [],
+      "chunks": [],
+      "found": false,
+      "all_hits_belong_to_selected_file_ids": false
+    }
+  },
+  "retrieval_comparison": []
+}

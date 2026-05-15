@@ -14,6 +14,9 @@ from typing import Any, Iterable
 import gradio as gr
 from ktem.app import BasePage
 from ktem.db.models import Conversation, engine
+from kotaemon.indices.rankings.llm_trulens import (
+    get_llm_relevance_scorer_errors_count,
+)
 from sqlmodel import Session, select
 
 
@@ -99,6 +102,14 @@ class EvaluationPage(BasePage):
         self.dataset_info = gr.Markdown(
             self._format_dataset_info(default_total, int(max(default_limit, 1)))
         )
+        self.disable_llm_relevance_scorer = gr.Checkbox(
+            label="Disable LLM relevance scoring during evaluation",
+            value=True,
+            info=(
+                "Recommended for bulk evaluation: keeps original retrieval order and "
+                "skips the extra LLM calls used only for UI relevance scores."
+            ),
+        )
 
         with gr.Row():
             self.run_button = gr.Button("Run Evaluation", variant="primary")
@@ -143,6 +154,7 @@ class EvaluationPage(BasePage):
                 chat_page._command_state,
                 chat_page.chat_control.conversation_id,
                 self._app.user_id,
+                self.disable_llm_relevance_scorer,
             ]
             + chat_page._indices_input,
             outputs=[
@@ -379,6 +391,7 @@ class EvaluationPage(BasePage):
         command_state: str | None,
         conversation_id: str | None,
         user_id: int | None,
+        disable_llm_relevance_scorer: bool | str | None,
         *selecteds,
     ):
         try:
@@ -397,6 +410,21 @@ class EvaluationPage(BasePage):
         debug_prompt_dir = self.default_result_dir / "debug_prompts"
         debug_prompt_dir.mkdir(parents=True, exist_ok=True)
 
+        if isinstance(disable_llm_relevance_scorer, str):
+            disable_llm_relevance_scorer = disable_llm_relevance_scorer.strip().lower() in {
+                "1",
+                "true",
+                "yes",
+                "on",
+            }
+        else:
+            disable_llm_relevance_scorer = bool(disable_llm_relevance_scorer)
+        settings = deepcopy(settings or {})
+        if disable_llm_relevance_scorer:
+            for key in list(settings.keys()):
+                if key.endswith(".use_llm_reranking"):
+                    settings[key] = False
+
         predictions: list[dict[str, Any]] = []
         log_lines = [
             "Live UI evaluation started.",
@@ -404,6 +432,11 @@ class EvaluationPage(BasePage):
             f"Samples selected: {len(dataset)} of {len(full_dataset)}",
             f"Results directory: {self.default_result_dir}",
             "Evaluation uses ChatPage.run_ui_chat_query (same live Chat UI pipeline).",
+            (
+                "LLM relevance scoring for the Information panel: disabled."
+                if disable_llm_relevance_scorer
+                else "LLM relevance scoring for the Information panel: enabled."
+            ),
         ]
         yield f"⏳ Running... 0/{len(dataset)}", "", self._tail(log_lines), str(self.default_result_dir)
 
@@ -413,6 +446,9 @@ class EvaluationPage(BasePage):
         )
         success_count = 0
         failed_count = 0
+        scorer_parse_failures_count = 0
+        scorer_enabled_seen = False
+        scorer_errors_before = get_llm_relevance_scorer_errors_count()
         for idx, sample in enumerate(dataset, start=1):
             sample_id = str(sample.get("id", f"sample_{idx}"))
             question = str(sample.get("user_input", ""))
@@ -444,6 +480,22 @@ class EvaluationPage(BasePage):
                 debug_payload["reference"] = sample.get("reference", "")
                 debug_payload["reference_contexts"] = sample.get("reference_contexts", []) or []
                 debug_payload["expected_source_files"] = sample.get("expected_source_files", []) or []
+                debug_payload["llm_relevance_scorer_enabled"] = bool(
+                    debug_payload.get("llm_relevance_scorer_enabled", False)
+                )
+                debug_payload["llm_relevance_scorer_failed"] = bool(
+                    debug_payload.get("llm_relevance_scorer_failed", False)
+                )
+                debug_payload["llm_relevance_scorer_errors_count"] = int(
+                    debug_payload.get("llm_relevance_scorer_errors_count", 0) or 0
+                )
+                scorer_enabled_seen = (
+                    scorer_enabled_seen
+                    or debug_payload["llm_relevance_scorer_enabled"]
+                )
+                scorer_parse_failures_count += debug_payload[
+                    "llm_relevance_scorer_errors_count"
+                ]
 
                 retrieved_items = debug_payload.get("retrieved_contexts_available", []) or []
                 pred = {
@@ -469,6 +521,11 @@ class EvaluationPage(BasePage):
                     log_lines.append(f"WARNING {sample_id}: {warning}")
                 success_count += 1
                 log_lines.append(f"[{idx}/{len(dataset)}] {sample_id} OK latency={latency_ms}ms")
+                if debug_payload["llm_relevance_scorer_errors_count"]:
+                    log_lines.append(
+                        f"WARNING {sample_id}: LLM relevance scorer parse failures="
+                        f"{debug_payload['llm_relevance_scorer_errors_count']}"
+                    )
                 for warning in debug_payload.get("warnings", []) or []:
                     log_lines.append(f"WARNING {sample_id}: {warning}")
             except Exception as exc:
@@ -509,11 +566,20 @@ class EvaluationPage(BasePage):
             )
 
         summary, per_sample = self._evaluate_predictions(dataset, predictions)
+        scorer_parse_failures_count = max(
+            scorer_parse_failures_count,
+            get_llm_relevance_scorer_errors_count() - scorer_errors_before,
+        )
+        summary["llm_relevance_scorer_enabled"] = scorer_enabled_seen
+        summary["llm_relevance_scorer_errors_count"] = scorer_parse_failures_count
         with (self.default_result_dir / "summary.json").open("w", encoding="utf-8") as f:
             json.dump(summary, f, ensure_ascii=False, indent=2)
         self._write_csv(self.default_result_dir / "per_sample_metrics.csv", per_sample)
         metrics_table = self._format_metrics(summary)
         log_lines.append("Evaluation completed.")
+        log_lines.append(
+            f"LLM relevance scorer parse failures during evaluation: {scorer_parse_failures_count}"
+        )
         log_lines.append(f"Summary written: {self.default_result_dir / 'summary.json'}")
         yield (
             f"✅ Completed {len(dataset)}/{len(dataset)} | successful={success_count} failed={failed_count}",
