@@ -2,6 +2,7 @@ import gradio as gr
 from decouple import config
 from ktem.app import BaseApp
 from ktem.pages.chat import ChatPage
+from ktem.pages.evaluation import EvaluationPage
 from ktem.pages.help import HelpPage
 from ktem.pages.resources import ResourcesTab
 from ktem.pages.settings import SettingsPage
@@ -110,6 +111,15 @@ class App(BaseApp):
                     elem_classes=["fill-main-area-height", "scrollable"],
                 ) as self._tabs["settings-tab"]:
                     self.settings_page = SettingsPage(self)
+
+                with gr.Tab(
+                    "Evaluation",
+                    elem_id="evaluation-tab",
+                    id="evaluation-tab",
+                    visible=not self.f_user_management,
+                    elem_classes=["fill-main-area-height", "scrollable"],
+                ) as self._tabs["evaluation-tab"]:
+                    self.evaluation_page = EvaluationPage(self)
 
             with gr.Tab(
                 "Help",

@@ -2,7 +2,9 @@ import asyncio
 import json
 import re
 from copy import deepcopy
-from typing import Optional
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Optional
 
 import gradio as gr
 from decouple import config
@@ -1165,6 +1167,533 @@ class ChatPage(BasePage):
 
         return retrieval_content, plot_content
 
+    @staticmethod
+    def _live_doc_text(doc: Any) -> str:
+        text = getattr(doc, "text", None)
+        if text is not None:
+            return str(text)
+        content = getattr(doc, "content", None)
+        if content is not None:
+            return str(content)
+        return str(doc)
+
+    @staticmethod
+    def _live_doc_source(doc: Any) -> str:
+        metadata = getattr(doc, "metadata", None) or {}
+        for key in ("file_path", "source", "file_name", "filename", "path"):
+            value = metadata.get(key)
+            if value:
+                return str(value)
+        file_id = metadata.get("file_id")
+        if file_id:
+            return str(file_id)
+        return str(getattr(doc, "doc_id", ""))
+
+    def _live_doc_generation_text(self, doc: Any) -> str:
+        metadata = getattr(doc, "metadata", None) or {}
+        if "window" in metadata:
+            text = metadata["window"]
+        elif metadata.get("type") == "table":
+            text = metadata.get("table_origin", self._live_doc_text(doc))
+        elif metadata.get("type") == "chatbot":
+            text = metadata.get("window", self._live_doc_text(doc))
+        elif metadata.get("type") == "image":
+            text = metadata.get("image_origin", self._live_doc_text(doc))
+        else:
+            text = self._live_doc_text(doc)
+        return str(text).replace("\n", " ")
+
+    @staticmethod
+    def _live_contains_flags(text: str) -> dict:
+        lowered = str(text or "").lower()
+        return {
+            "contains_six_semesters": "six semesters" in lowered,
+            "contains_6_semester": "6 semester" in lowered,
+            "contains_standard_length": "standard length" in lowered,
+            "contains_180_ects": "180 ects" in lowered,
+        }
+
+    def _live_context_debug_item(self, rank: int, doc: Any) -> dict:
+        text = self._live_doc_text(doc)
+        item = {
+            "rank": rank,
+            "source": self._live_doc_source(doc),
+            "context_id": str(getattr(doc, "doc_id", "")),
+            "score": str(getattr(doc, "score", "")),
+            "text_preview": text[:500],
+            "full_text": text,
+        }
+        item.update(self._live_contains_flags(text))
+        return item
+
+    def _serialize_live_message(self, message: Any) -> str:
+        role = message.__class__.__name__
+        content = getattr(message, "content", str(message))
+        return f"[{role}]\n{content}"
+
+    @staticmethod
+    def _approx_live_tokens(text: str) -> int:
+        return max(1, int(len(str(text or "")) / 4))
+
+    @property
+    def _ku_d3b_eval_root(self) -> Path:
+        # libs/ktem/ktem/pages/chat/__init__.py -> repository root
+        return Path(__file__).resolve().parents[5] / "ku_d3b_eval"
+
+    def _describe_live_selected_state(self, selecteds: tuple[Any, ...]) -> dict:
+        """Describe the exact index selector values passed to the live pipeline."""
+        selected_indices = []
+        selected_file_ids: list[str] = []
+        selected_state = {}
+
+        for index in self._app.index_manager.indices:
+            selector_value: Any = None
+            if index.selector is None:
+                selector_value = None
+            elif isinstance(index.selector, int):
+                selector_value = selecteds[index.selector] if len(selecteds) > index.selector else None
+            elif isinstance(index.selector, tuple):
+                selector_value = [
+                    selecteds[i] if len(selecteds) > i else None for i in index.selector
+                ]
+
+            selected_state[str(index.id)] = selector_value
+
+            resolved_ids: list[str] = []
+            try:
+                selector_ui = index.get_selector_component_ui()
+                if selector_ui and hasattr(selector_ui, "get_selected_ids"):
+                    ids = selector_ui.get_selected_ids(selector_value) or []
+                    resolved_ids = [str(each) for each in ids if each is not None]
+            except Exception:
+                resolved_ids = []
+
+            selected_indices.append(
+                {
+                    "id": str(index.id),
+                    "name": getattr(index, "name", str(index.id)),
+                    "selector": selector_value,
+                    "resolved_file_ids": resolved_ids,
+                }
+            )
+            selected_file_ids.extend(resolved_ids)
+
+        return {
+            "selected_index": ", ".join(
+                f"{item['name']}({item['id']})" for item in selected_indices
+            ),
+            "selected_indices": selected_indices,
+            "selected_file_ids": selected_file_ids,
+            "selected_state": selected_state,
+        }
+
+    def _write_live_chat_debug(self, payload: dict) -> None:
+        debug_dir = self._ku_d3b_eval_root / "debug"
+        debug_dir.mkdir(parents=True, exist_ok=True)
+        latest = debug_dir / "live_chat_latest.json"
+        history = debug_dir / "live_chat_debug.jsonl"
+        latest.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        with history.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+    def _install_live_debug_hooks(self, pipeline, debug_state: dict) -> list:
+        """Capture the exact live pipeline artifacts without replacing the pipeline."""
+        restore_callbacks = []
+
+        original_retrieve = getattr(pipeline, "retrieve", None)
+        if callable(original_retrieve):
+
+            def capture_retrieve(message, history):
+                docs, infos = original_retrieve(message, history)
+                docs = list(docs or [])
+                infos = list(infos or [])
+                debug_state["retrieved_docs"] = docs
+                debug_state["information_panel_docs"] = infos
+                return docs, infos
+
+            try:
+                object.__setattr__(pipeline, "retrieve", capture_retrieve)
+                restore_callbacks.append(
+                    lambda: object.__setattr__(pipeline, "retrieve", original_retrieve)
+                )
+            except Exception as exc:
+                debug_state.setdefault("hook_warnings", []).append(
+                    f"Could not hook retrieve(): {exc}"
+                )
+
+        answering_pipeline = getattr(pipeline, "answering_pipeline", None)
+        if answering_pipeline is not None:
+            original_get_prompt = getattr(answering_pipeline, "get_prompt", None)
+            if callable(original_get_prompt):
+
+                def capture_get_prompt(question, evidence, evidence_mode):
+                    prompt, evidence_out = original_get_prompt(
+                        question, evidence, evidence_mode
+                    )
+                    debug_state["answer_evidence"] = evidence_out
+                    debug_state["answer_prompt"] = prompt
+                    debug_state["answer_evidence_mode"] = evidence_mode
+                    return prompt, evidence_out
+
+                try:
+                    object.__setattr__(
+                        answering_pipeline, "get_prompt", capture_get_prompt
+                    )
+                    restore_callbacks.append(
+                        lambda: object.__setattr__(
+                            answering_pipeline, "get_prompt", original_get_prompt
+                        )
+                    )
+                except Exception as exc:
+                    debug_state.setdefault("hook_warnings", []).append(
+                        f"Could not hook get_prompt(): {exc}"
+                    )
+
+            llm = getattr(answering_pipeline, "llm", None)
+            original_stream = getattr(llm, "stream", None)
+            if callable(original_stream):
+
+                def capture_stream(messages, *args, **kwargs):
+                    if not debug_state.get("answer_messages"):
+                        debug_state["answer_messages"] = list(messages)
+                    yield from original_stream(messages, *args, **kwargs)
+
+                try:
+                    object.__setattr__(llm, "stream", capture_stream)
+                    restore_callbacks.append(
+                        lambda: object.__setattr__(llm, "stream", original_stream)
+                    )
+                except Exception as exc:
+                    debug_state.setdefault("hook_warnings", []).append(
+                        f"Could not hook llm.stream(): {exc}"
+                    )
+
+        return restore_callbacks
+
+    def _build_live_debug_payload(
+        self,
+        sample_id: str,
+        mode: str,
+        question: str,
+        pipeline,
+        debug_state: dict,
+        final_answer: str,
+        selected_info: dict | None = None,
+        selected_pipeline: str | None = None,
+        selected_reasoning: str | None = None,
+    ) -> dict:
+        retrieved_docs = debug_state.get("retrieved_docs", []) or []
+        retrieved_contexts = [
+            self._live_context_debug_item(rank, doc)
+            for rank, doc in enumerate(retrieved_docs, start=1)
+        ]
+
+        evidence = str(debug_state.get("answer_evidence") or "")
+        contexts_sent = []
+        for rank, doc in enumerate(retrieved_docs, start=1):
+            text = self._live_doc_generation_text(doc)
+            if text and (text[:200].replace("\n", " ") in evidence or text in evidence):
+                item = self._live_context_debug_item(rank, doc)
+                item["text_preview"] = text[:500]
+                item["full_text"] = text
+                item.update(self._live_contains_flags(text))
+                contexts_sent.append(item)
+        if not contexts_sent and evidence:
+            item = {
+                "rank": 1,
+                "source": "prepared_evidence",
+                "context_id": "",
+                "text_preview": evidence[:500],
+                "full_text": evidence,
+            }
+            item.update(self._live_contains_flags(evidence))
+            contexts_sent.append(item)
+
+        messages = debug_state.get("answer_messages") or []
+        if messages:
+            final_prompt_or_messages = "\n\n".join(
+                self._serialize_live_message(message) for message in messages
+            )
+        else:
+            final_prompt_or_messages = str(debug_state.get("answer_prompt") or "")
+
+        info_contexts = []
+        # The Information panel renders the same retrieved docs (possibly after
+        # citation/highlight processing). Use the raw retrieved docs here so debug
+        # output has inspectable source/text instead of rendered HTML only.
+        for rank, doc in enumerate(retrieved_docs, start=1):
+            info_contexts.append(self._live_context_debug_item(rank, doc))
+
+        prompt_flags = self._live_contains_flags(final_prompt_or_messages)
+        generation_debug = getattr(pipeline, "_generation_debug", {}) or {}
+        answer_generation_debug = getattr(pipeline, "_answer_generation_debug", {}) or {}
+        retrieved_text = "\n".join(item["full_text"] for item in retrieved_contexts)
+        info_text = "\n".join(item["full_text"] for item in info_contexts)
+        answer_l = final_answer.lower()
+        answer_says_not_explicitly_stated = any(
+            marker in answer_l
+            for marker in (
+                "not explicitly stated",
+                "does not explicitly state",
+                "not explicitly state",
+            )
+        )
+
+        warnings = []
+        warnings.extend(debug_state.get("hook_warnings", []))
+        for phrase_key, phrase in (
+            ("six_semesters", "six semesters"),
+            ("6_semester", "6 semester"),
+        ):
+            if phrase in retrieved_text.lower() and phrase not in final_prompt_or_messages.lower():
+                warnings.append(
+                    f"Retrieved contexts contain '{phrase}' but the final answer prompt does not."
+                )
+            if phrase in info_text.lower() and phrase not in final_prompt_or_messages.lower():
+                warnings.append(
+                    f"Information panel contains '{phrase}' but the final answer prompt does not."
+                )
+
+        if (
+            any(prompt_flags.values())
+            and answer_says_not_explicitly_stated
+        ):
+            warnings.append(
+                "Final prompt contains target evidence but the answer says it is not explicitly stated."
+            )
+        if mode == "evaluation_ui" and not (selected_info or {}).get("selected_file_ids"):
+            warnings.append(
+                "Evaluation UI selected_file_ids is empty. Confirm that the Evaluation tab is using the same file/index selection state as the Chat tab."
+            )
+        if mode == "evaluation_ui" and not retrieved_contexts:
+            warnings.append(
+                "Evaluation UI has empty retrieved_contexts. No retrieved contexts were captured."
+            )
+        if mode == "evaluation_ui" and not [
+            item for item in retrieved_contexts if item.get("source")
+        ]:
+            warnings.append("Evaluation UI has empty retrieved_sources.")
+
+        payload = {
+            "id": sample_id,
+            "timestamp": datetime.now().isoformat(),
+            "mode": mode,
+            "question": question,
+            "selected_pipeline": selected_pipeline or pipeline.__class__.__name__,
+            "selected_reasoning": selected_reasoning or (
+                pipeline.get_info().get("id")
+                if hasattr(pipeline, "get_info")
+                else pipeline.__class__.__name__
+            ),
+            "selected_index": (selected_info or {}).get("selected_index", ""),
+            "selected_file_ids": (selected_info or {}).get("selected_file_ids", []),
+            "selected_indices": (selected_info or {}).get("selected_indices", []),
+            "selected_state": (selected_info or {}).get("selected_state", {}),
+            "pipeline_used": pipeline.__class__.__name__,
+            "reasoning_used": (
+                pipeline.get_info().get("id")
+                if hasattr(pipeline, "get_info")
+                else pipeline.__class__.__name__
+            ),
+            "retrieved_contexts_available": retrieved_contexts,
+            "contexts_actually_sent_to_answer_llm": contexts_sent,
+            "final_prompt_or_messages_sent_to_answer_llm": final_prompt_or_messages,
+            **{f"prompt_{key}": value for key, value in prompt_flags.items()},
+            "final_answer": final_answer,
+            "answer_says_not_explicitly_stated": answer_says_not_explicitly_stated,
+            "information_panel_contexts": info_contexts,
+            "model_context_window": generation_debug.get(
+                "model_context_window", answer_generation_debug.get("model_context_window")
+            ),
+            "answer_max_tokens": generation_debug.get(
+                "answer_max_tokens", answer_generation_debug.get("answer_max_tokens")
+            ),
+            "reserved_prompt_tokens": generation_debug.get("reserved_prompt_tokens"),
+            "available_context_tokens": generation_debug.get("available_context_tokens"),
+            "estimated_context_tokens": generation_debug.get("estimated_context_tokens"),
+            "estimated_final_prompt_tokens": generation_debug.get("estimated_final_prompt_tokens"),
+            "approximate_final_prompt_tokens": self._approx_live_tokens(
+                final_prompt_or_messages
+            ),
+            "prompt_exceeds_context_window": generation_debug.get(
+                "prompt_exceeds_context_window"
+            ),
+            "num_retrieved_contexts": generation_debug.get(
+                "num_retrieved_contexts", len(retrieved_contexts)
+            ),
+            "num_contexts_sent_to_llm": generation_debug.get(
+                "num_contexts_sent_to_llm", len(contexts_sent)
+            ),
+            "num_contexts_before_filtering": generation_debug.get(
+                "num_contexts_before_filtering", len(retrieved_contexts)
+            ),
+            "num_contexts_after_filtering": generation_debug.get(
+                "num_contexts_after_filtering", len(contexts_sent)
+            ),
+            "cleaned_contexts_sent_to_llm": generation_debug.get(
+                "cleaned_contexts_sent_to_llm", []
+            ),
+            "final_prompt_after_context_budgeting": final_prompt_or_messages,
+            "retry_triggered": answer_generation_debug.get("retry_triggered", False),
+            "retry_reason": answer_generation_debug.get("retry_reason", ""),
+            "retry_contexts_sent": answer_generation_debug.get("retry_contexts_sent", []),
+            "retry_prompt": answer_generation_debug.get("retry_prompt", ""),
+            "retry_answer": answer_generation_debug.get("retry_answer", ""),
+            "final_selected_answer": final_answer,
+            "warnings": warnings,
+        }
+        return payload
+
+    def stream_ui_chat_query(
+        self,
+        message: str,
+        history: list | None,
+        conversation_id: str | None,
+        settings: dict,
+        reasoning_type: str,
+        llm_type: str,
+        use_mind_map: bool | str,
+        use_citation: str,
+        language: str,
+        chat_state: dict,
+        command_state: str | None,
+        user_id: int,
+        *selecteds,
+        debug: bool = False,
+        sample_id: str | None = None,
+        debug_mode: str = "normal_chat_ui",
+    ):
+        """Shared live chat execution path used by normal Chat UI and Evaluation UI."""
+        queue: asyncio.Queue[Optional[dict]] = asyncio.Queue()
+        selected_info = self._describe_live_selected_state(selecteds)
+        pipeline, reasoning_state = self.create_pipeline(
+            settings,
+            reasoning_type,
+            llm_type,
+            use_mind_map,
+            use_citation,
+            language,
+            chat_state,
+            command_state,
+            user_id,
+            *selecteds,
+        )
+        pipeline.set_output_queue(queue)
+
+        debug_state = {}
+        restore_callbacks = (
+            self._install_live_debug_hooks(pipeline, debug_state) if debug else []
+        )
+
+        text, refs, plot, plot_gr = "", "", None, gr.update(visible=False)
+        try:
+            for response in pipeline.stream(message, conversation_id or "", history or []):
+                if not isinstance(response, Document):
+                    continue
+                if response.channel is None:
+                    continue
+                if response.channel == "chat":
+                    if response.content is None:
+                        text = ""
+                    else:
+                        text += response.content
+                if response.channel == "info":
+                    if response.content is None:
+                        refs = ""
+                    else:
+                        refs += response.content
+                if response.channel == "plot":
+                    plot = response.content
+                    plot_gr = self._json_to_plot(plot)
+
+                chat_state[pipeline.get_info()["id"]] = reasoning_state["pipeline"]
+                yield {
+                    "response": text,
+                    "info_panel": refs,
+                    "plot": plot,
+                    "plot_gr": plot_gr,
+                    "chat_state": chat_state,
+                    "pipeline": pipeline,
+                    "debug": None,
+                }
+        finally:
+            for restore in reversed(restore_callbacks):
+                restore()
+
+        if not debug:
+            return
+
+        debug_payload = None
+        debug_payload = self._build_live_debug_payload(
+            sample_id or "sample",
+            debug_mode,
+            message,
+            pipeline,
+            debug_state,
+            text,
+            selected_info=selected_info,
+            selected_pipeline=pipeline.__class__.__name__,
+            selected_reasoning=(
+                pipeline.get_info().get("id")
+                if hasattr(pipeline, "get_info")
+                else pipeline.__class__.__name__
+            ),
+        )
+        yield {
+            "response": text,
+            "info_panel": refs,
+            "plot": plot,
+            "plot_gr": plot_gr,
+            "chat_state": chat_state,
+            "pipeline": pipeline,
+            "debug": debug_payload,
+        }
+
+    def run_ui_chat_query(
+        self,
+        message: str,
+        history: list | None,
+        conversation_id: str | None,
+        settings: dict,
+        reasoning_type: str,
+        llm_type: str,
+        use_mind_map: bool | str,
+        use_citation: str,
+        language: str,
+        chat_state: dict,
+        command_state: str | None,
+        user_id: int,
+        *selecteds,
+        debug: bool = False,
+        sample_id: str | None = None,
+        debug_mode: str = "normal_chat_ui",
+    ) -> dict:
+        """Run the same live Chat UI pipeline to completion and return final artifacts."""
+        result = {}
+        for result in self.stream_ui_chat_query(
+            message,
+            history,
+            conversation_id,
+            settings,
+            reasoning_type,
+            llm_type,
+            use_mind_map,
+            use_citation,
+            language,
+            chat_state,
+            command_state,
+            user_id,
+            *selecteds,
+            debug=debug,
+            sample_id=sample_id,
+            debug_mode=debug_mode,
+        ):
+            pass
+        return result
+
     def create_pipeline(
         self,
         settings: dict,
@@ -1286,24 +1815,6 @@ class ChatPage(BasePage):
         if chat_output:
             chat_state["app"]["regen"] = True
 
-        queue: asyncio.Queue[Optional[dict]] = asyncio.Queue()
-
-        # construct the pipeline
-        pipeline, reasoning_state = self.create_pipeline(
-            settings,
-            reasoning_type,
-            llm_type,
-            use_mind_map,
-            use_citation,
-            language,
-            chat_state,
-            command_state,
-            user_id,
-            *selecteds,
-        )
-        print("Reasoning state", reasoning_state)
-        pipeline.set_output_queue(queue)
-
         text, refs, plot, plot_gr = "", "", None, gr.update(visible=False)
         msg_placeholder = getattr(
             flowsettings, "KH_CHAT_MSG_PLACEHOLDER", "Thinking ..."
@@ -1318,32 +1829,34 @@ class ChatPage(BasePage):
         )
 
         try:
-            for response in pipeline.stream(chat_input, conversation_id, chat_history):
-
-                if not isinstance(response, Document):
-                    continue
-
-                if response.channel is None:
-                    continue
-
-                if response.channel == "chat":
-                    if response.content is None:
-                        text = ""
-                    else:
-                        text += response.content
-
-                if response.channel == "info":
-                    if response.content is None:
-                        refs = ""
-                    else:
-                        refs += response.content
-
-                if response.channel == "plot":
-                    plot = response.content
-                    plot_gr = self._json_to_plot(plot)
-
-                chat_state[pipeline.get_info()["id"]] = reasoning_state["pipeline"]
-
+            for result in self.stream_ui_chat_query(
+                chat_input,
+                chat_history,
+                conversation_id,
+                settings,
+                reasoning_type,
+                llm_type,
+                use_mind_map,
+                use_citation,
+                language,
+                chat_state,
+                command_state,
+                user_id,
+                *selecteds,
+                debug=True,
+                sample_id="normal_chat_ui",
+                debug_mode="normal_chat_ui",
+            ):
+                text = result["response"]
+                refs = result["info_panel"]
+                plot = result["plot"]
+                plot_gr = result["plot_gr"]
+                chat_state = result["chat_state"]
+                if result.get("debug"):
+                    try:
+                        self._write_live_chat_debug(result["debug"])
+                    except Exception as exc:
+                        print(f"Failed to write live chat debug log: {exc}")
                 yield (
                     chat_history + [(chat_input, text or msg_placeholder)],
                     refs,

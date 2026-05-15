@@ -125,6 +125,7 @@ class LlamaCppChat(ChatLLM):
         pred: "CCCR" = self.client_object.create_chat_completion(
             messages=self.prepare_message(messages),
             stream=False,
+            **kwargs,
         )
 
         return LLMInterface(
@@ -145,6 +146,7 @@ class LlamaCppChat(ChatLLM):
         pred = self.client_object.create_chat_completion(
             messages=self.prepare_message(messages),
             stream=True,
+            **kwargs,
         )
         for chunk in pred:
             if not chunk["choices"]:

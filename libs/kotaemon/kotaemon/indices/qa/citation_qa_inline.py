@@ -14,10 +14,15 @@ from .format_context import EVIDENCE_MODE_FIGURE
 from .utils import find_start_end_phrase
 
 DEFAULT_QA_CITATION_PROMPT = """
-Use the following pieces of context to answer the question at the end.
-Provide DETAILED ansswer with clear explanation.
+You are a university RAG assistant. Use the following pieces of context to answer the question at the end.
+If the context contains a direct answer, answer directly.
+Do not say that the information is missing if the context contains the answer.
+Prefer exact facts, numbers, dates, ECTS credits, semesters, deadlines and names from the context.
+If the context says "Standard length of the program 6 Semester", answer that the standard length is 6 semesters.
+If the context says "The standard length of the program is six semesters", answer that the standard length is six semesters.
+Provide DETAILED answer with clear explanation.
 Format answer with easy to follow bullets / paragraphs.
-If you don't know the answer, just say that you don't know, don't try to make up an answer.
+If the answer is not present in the context, say: "The provided documents do not contain this information."
 Use the same language as the question to response.
 
 CONTEXT:

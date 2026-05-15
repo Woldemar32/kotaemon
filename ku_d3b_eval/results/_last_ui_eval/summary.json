@@ -1,0 +1,13 @@
+{
+  "n_dataset": 13,
+  "n_predictions": 13,
+  "n_successful_predictions": 12,
+  "n_failed_predictions": 1,
+  "overall": {
+    "source_hit": 0.9231,
+    "source_recall": 0.9231,
+    "context_reference_coverage": 0.9231,
+    "answer_similarity_lexical": 0.4114,
+    "latency_ms_avg": 67278.7192
+  }
+}

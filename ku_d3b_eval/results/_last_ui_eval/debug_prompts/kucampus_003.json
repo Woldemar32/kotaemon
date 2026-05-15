@@ -1,0 +1,14 @@
+{
+  "id": "kucampus_003",
+  "mode": "evaluation_ui",
+  "question": "Über welche Rubrik meldet man sich in KU.Campus zu Veranstaltungen und Prüfungen des eigenen Studiengangs an?",
+  "reference": "Für Module des eigenen Studiengangs erfolgt die Anmeldung im Studierendenportal über die Rubrik „Mein Studiengang“.",
+  "reference_contexts": [
+    "Die Anmeldung auf Veranstaltungen und Prüfungen zu Pflicht- und Wahlpflichtmodulen, Schwerpunkten, definierten Wahlmodulen etc. erfolgt auf KU.Campus ausschließlich über das Studierendenportal (Rubrik \"Mein Studiengang\")."
+  ],
+  "expected_source_files": [
+    "ku_d3b_data/texts/bdf87388_studium_informationen-fuer-studierende_pruefungsamt_kucampus-anmeldung-abmeldung-pruefungen-veransta.md"
+  ],
+  "error": "RetryError: RetryError[<Future at 0x2a1c2653f50 state=finished raised InternalServerError>]",
+  "latency_ms": 41408.49
+}
