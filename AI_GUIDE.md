@@ -1,102 +1,101 @@
 # AI Guide for this repository
 
-Краткая инструкция для Codex, Cursor и других AI-агентов. Полный контекст: [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) — **читайте его первым**, затем только файлы по задаче.
+Short instructions for Codex, Cursor, and other AI agents. Read [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) first, then only files relevant to the task.
 
 ---
 
-## Что это
+## What this is
 
-**Kotaemon fork** — RAG-приложение для чата с документами (PDF, Office, изображения и др.). UI на **Gradio** (`ktem`), переиспользуемая библиотека RAG — **`kotaemon`** в `src/`. Нет отдельного React-frontend; основной API — Gradio callbacks, не REST.
+**Kotaemon fork** — RAG app for chatting with documents (PDF, Office, images, etc.). UI is **Gradio** (`ktem`); reusable RAG library is **`kotaemon`** in `src/`. No separate React frontend; the main API is Gradio callbacks, not REST.
 
-Исходники: `src/kotaemon/`, `src/ktem/` (не `libs/kotaemon` из upstream). Python **≥ 3.11** (`pyproject.toml`).
+Source layout: `src/kotaemon/`, `src/ktem/` (not upstream `libs/kotaemon`). Python **≥ 3.11** (`pyproject.toml`).
 
 ---
 
-## Самые важные файлы
+## Most important files
 
-| Задача | Сначала читать |
-|--------|----------------|
-| Запуск приложения | `app.py`, `launch.sh`, `Makefile` |
-| Конфиг моделей и индексов | `flowsettings.py`, `.env.example`, `config_example.txt` |
-| Чат (UI + события) | `src/ktem/pages/chat/__init__.py`, `src/ktem/main.py` |
+| Task | Read first |
+|------|------------|
+| Launch app | `app.py`, `launch.sh`, `Makefile` |
+| Models & indices config | `flowsettings.py`, `.env.example`, `config_example.txt` |
+| Chat UI & events | `src/ktem/pages/chat/__init__.py`, `src/ktem/main.py` |
 | Reasoning / RAG pipeline | `src/ktem/reasoning/simple.py`, `src/kotaemon/indices/qa/citation_qa.py` |
-| Индексация файлов | `src/ktem/index/file/pipelines.py`, `src/ktem/index/file/index.py` |
+| File indexing | `src/ktem/index/file/pipelines.py`, `src/ktem/index/file/index.py` |
 | LLM providers | `src/kotaemon/llms/`, `src/ktem/llms/manager.py`, `flowsettings.KH_LLMS` |
 | Embeddings | `src/kotaemon/embeddings/`, `src/ktem/embeddings/manager.py` |
 | Database | `src/ktem/db/models.py`, `src/ktem/db/engine.py`, `src/ktem/index/models.py` |
 | Docker | `Dockerfile`, `launch.sh`, `README.md` |
 | Tests / CI | `tests/`, `.github/workflows/unit-test.yaml`, `pyproject.toml` |
-| Оболочка приложения | `src/ktem/app.py`, `src/ktem/components.py` |
-| Локальная `.gguf` (llama.cpp) | `scripts/serve_local.py`, `scripts/server_llamacpp_*.bat/sh` |
-| GraphRAG / LightRAG | `flowsettings.py` (флаги `USE_*`), `src/ktem/index/file/graph/` |
+| App shell | `src/ktem/app.py`, `src/ktem/components.py` |
+| Local `.gguf` (llama.cpp) | `scripts/serve_local.py`, `scripts/server_llamacpp_*.bat/sh` |
+| GraphRAG / LightRAG | `flowsettings.py` (`USE_*` flags), `src/ktem/index/file/graph/` |
 
 ---
 
-## Что обычно не читать
+## Usually skip unless the task requires them
 
-Игнорируйте, если задача **прямо** не про них:
-
-| Путь | Причина |
-|------|---------|
-| `ktem_app_data/` | Runtime: SQLite, uploads, vectorstore, HF cache — не исходники |
-| `uv.lock` | Большой lock; может ссылаться на legacy `libs/kotaemon` |
-| `__pycache__/`, `.venv/` | Кэш / окружение |
-| `docs/theme/assets/` | Сгенерированные assets MkDocs |
-| `.omx/` | Служебные state-файлы |
-| `dataset/` | Тестовые документы, не код |
-| `templates/project-default/` | Cookiecutter шаблон нового проекта |
-| Adobe / Azure DI / GraphRAG MS | Тяжёлые опции — только при задаче на эту интеграцию |
-| Весь `src/kotaemon/loaders/` | Только если меняется парсинг конкретного формата |
+| Path | Reason |
+|------|--------|
+| `ktem_app_data/` | Runtime: SQLite, uploads, vectorstore, HF cache |
+| `uv.lock` | Large lock; may reference legacy `libs/kotaemon` |
+| `__pycache__/`, `.venv/` | Cache / environment |
+| `docs/theme/assets/` | Generated MkDocs assets |
+| `.omx/` | Internal state files |
+| `dataset/` | Test documents, not application code |
+| `templates/project-default/` | Cookiecutter template |
+| Adobe / Azure DI / MS GraphRAG | Heavy optional integrations |
+| All of `src/kotaemon/loaders/` | Only when changing parsing for a specific format |
 
 ---
 
-## Частые задачи и куда идти
+## Common tasks
 
-| Задача | Куда |
-|--------|------|
-| Изменить поведение чата | `src/ktem/pages/chat/`, `src/ktem/reasoning/` |
-| Изменить промпты / формат ответа | `src/kotaemon/indices/qa/`, `src/kotaemon/llms/prompts/`, `src/ktem/reasoning/prompt_optimization/` |
-| Изменить индексацию документов | `src/ktem/index/file/pipelines.py`, `src/kotaemon/indices/ingests/` |
-| Добавить Ollama / local model | `.env`, `flowsettings.py` (`LOCAL_MODEL`, `KH_OLLAMA_URL`), UI `src/ktem/llms/`, шпаргалка `config_example.txt` |
-| Запустить llama.cpp для `.gguf` | `scripts/serve_local.py` (`LOCAL_MODEL` = **путь к файлу**), затем LLM в Resources с `base_url` на порт 31415 |
-| Добавить новый LLM provider | `src/kotaemon/llms/`, запись в `KH_LLMS`, `src/ktem/llms/ui.py` + `db.py` |
-| Исправить Docker | `Dockerfile`, `launch.sh`, `README.md` |
-| Исправить тесты / CI | `tests/`, `.github/workflows/unit-test.yaml` — **не** `cd libs/kotaemon`; использовать `pytest tests`, Python 3.11+ |
+| Task | Where to go |
+|------|-------------|
+| Change chat behavior | `src/ktem/pages/chat/`, `src/ktem/reasoning/` |
+| Change prompts / answer format | `src/kotaemon/indices/qa/`, `src/kotaemon/llms/prompts/`, `src/ktem/reasoning/prompt_optimization/` |
+| Change document indexing | `src/ktem/index/file/pipelines.py`, `src/kotaemon/indices/ingests/` |
+| Add Ollama / local model | `.env`, `flowsettings.py` (`LOCAL_MODEL`, `KH_OLLAMA_URL`), UI `src/ktem/llms/`, `config_example.txt` |
+| Run llama.cpp for `.gguf` | `scripts/serve_local.py` (`LOCAL_MODEL` = **path to file**), then add LLM in Resources with `base_url` pointing to port **31415** |
+| New LLM provider | `src/kotaemon/llms/`, entry in `KH_LLMS`, `src/ktem/llms/ui.py` + `db.py` |
+| Fix Docker | `docker-compose.yml`, `Dockerfile`, `launch.sh`, `README.md`, `make docker-up` |
+| Fix tests / CI | `tests/`, `.github/workflows/unit-test.yaml` — run `pytest tests` from repo root, Python 3.11+ |
 | GraphRAG / LightRAG | `flowsettings.GRAPHRAG_INDEX_TYPES`, `src/ktem/index/file/graph/`, `settings.yaml.example` |
 
 ---
 
-## Команды
+## Commands
 
 ```bash
-# Install (из корня)
+# Install (from repo root)
 make install
-# или: python -m venv .venv && pip install -r requirements_gerageragera39.txt && pip install -e .
+# or: python -m venv .venv && pip install -r requirements_gerageragera39.txt && pip install -e .
 
 # Run (Gradio :7860)
 python app.py
 
-# Локальный llama.cpp для .gguf (после пути в .env)
+# Local llama.cpp for .gguf (path in .env)
 python scripts/serve_local.py
 
-# Docker
-docker build --target full -t kotaemon:full .
-docker run --rm -p 7860:7860 -v "%cd%\ktem_app_data:/app/ktem_app_data" --env-file .env kotaemon:full
+# Docker Compose (persistent ./ktem_app_data, restart unless-stopped)
+docker compose up -d --build
+docker compose --profile ollama up -d --build
+docker compose down          # keeps data
 
 # Tests
 pytest tests
 
-# Lint (если настроен pre-commit)
+# Lint (if pre-commit is configured)
 pre-commit run --all-files
 ```
 
 ---
 
-## Важные предупреждения
+## Warnings
 
-1. **Не коммитьте и не выводите** содержимое `.env` — только имена переменных из `.env.example`.
-2. **Не удаляйте и не правьте** `ktem_app_data/` без бэкапа — там БД и индексы пользователя.
-3. **Не доверяйте путям `libs/kotaemon`** в CI, `uv.lock`, `run_*.sh`, `mkdocs.yml` — в форке код в `src/` (см. §2 в `PROJECT_CONTEXT.md`).
-4. **`LOCAL_MODEL`**: в `flowsettings`/Ollama — имя модели; в `serve_local.py` — путь к `.gguf`. Не путать сценарии.
-5. **`config_example.txt`** не подхватывается приложением — это пример полей для вкладки Resources.
-6. Перед правками: **`PROJECT_CONTEXT.md` → 2–5 релевантных файлов** — не сканировать весь репозиторий.
+1. **Never commit or print** `.env` contents — only variable names from `.env.example`.
+2. **Do not delete or edit** `ktem_app_data/` without a backup — user DB and indices live there.
+3. **Do not trust paths** `libs/kotaemon` in CI, `uv.lock`, `run_*.sh`, `mkdocs.yml` without verifying — this fork uses `src/` (see §2 in `PROJECT_CONTEXT.md`).
+4. **`LOCAL_MODEL`**: in `flowsettings`/Ollama — **model name**; in `serve_local.py` — **path to `.gguf`**. Different workflows.
+5. **`config_example.txt`** is not loaded by the app — example fields for the Resources tab.
+6. Before broad edits: **`PROJECT_CONTEXT.md` → 2–5 relevant files** — do not scan the whole repo.

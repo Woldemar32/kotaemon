@@ -1,13 +1,13 @@
-## Installation (Online HuggingFace Space)
+# Installation (Hugging Face Space — upstream template)
 
-1. Go to [HF kotaemon_template](https://huggingface.co/spaces/cin-model/kotaemon_template).
-2. Use Duplicate function to create your own space. Or use this [direct link](https://huggingface.co/spaces/cin-model/kotaemon_template?duplicate=true).
+These steps apply to the **upstream** [kotaemon_template](https://huggingface.co/spaces/cin-model/kotaemon_template) on Hugging Face, not necessarily this fork’s `flowsettings.py` or `src/` layout.
+
+1. Open [HF kotaemon_template](https://huggingface.co/spaces/cin-model/kotaemon_template) or [duplicate directly](https://huggingface.co/spaces/cin-model/kotaemon_template?duplicate=true).
    ![Duplicate space](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/duplicate_space.png)
    ![Change space params](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/change_space_params.png)
-3. Wait for the build to complete and start up (apprx 10 mins).
+2. Wait for the build (~10 minutes).
    ![Wait space build](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/space_build.png)
-   ![Close space build](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/close_logs_space.png)
-4. Follow the first setup instructions (and register for Cohere API key if needed).
-   ![Cohere API](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/cohere_api_key.png)
-5. Complete the setup and use your own private space!
-   ![App Startup](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/initial_startup.png)
+3. Complete first-time setup (API keys as prompted).
+4. Use your private Space URL.
+
+For this fork, prefer [Getting Started](index.md) (local `pip install` or Docker).

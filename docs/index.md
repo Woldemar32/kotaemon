@@ -1,48 +1,69 @@
-# Getting Started with Kotaemon
+# Getting Started
 
-![type:video](https://github.com/Cinnamon/kotaemon/assets/25688648/815ecf68-3a02-4914-a0dd-3f8ec7e75cd9)
+This documentation describes **this repository** — a custom fork of [Kotaemon](https://github.com/Cinnamon/kotaemon) with sources in `src/kotaemon` and `src/ktem`, Python 3.11+, and configuration via `flowsettings.py` and `.env`.
 
-This page is intended for **end users** who want to use the `kotaemon` tool for Question
-Answering on local documents. If you are a **developer** who wants contribute to the project, please visit the [development](development/index.md) page.
+- **End users:** follow [Basic Usage](usage.md) and [Local models](local_model.md).
+- **Developers:** see [Development](development/index.md).
 
-## Installation (Online HuggingFace Space) - easy (10 mins)
+## Prerequisites
 
-Visit this [guide](online_install.md).
+- **Python 3.11+**
+- An LLM and an embedding model (cloud API or local via Ollama / llama.cpp)
+- Optional: Docker for containerized deployment
 
-## Installation (Offline) - intermediate (20 mins)
+## Installation (recommended — from source)
 
-### Download
+From the repository root:
 
-Download the `kotaemon-app.zip` file from the [latest release](https://github.com/Cinnamon/kotaemon/releases/latest/).
+```bash
+python -m venv .venv
+.venv\Scripts\activate          # Windows
+# source .venv/bin/activate     # Linux/macOS
 
-### Run setup script
+pip install -r requirements_gerageragera39.txt
+pip install -e .
+cp .env.example .env            # set API keys or local model names
+python app.py
+```
 
-0. Unzip the downloaded file.
-1. Navigate to the `scripts` folder and start an installer that matches your OS:
-   - Windows: `run_windows.bat`. Just double click the file.
-   - macOS: `run_macos.sh`
-     1. Right click on your file and select Open with and Other.
-     2. Enable All Applications and choose Terminal.
-     3. NOTE: If you always want to open that file with Terminal, then check Always Open With.
-     4. From now on, double click on your file and it should work.
-   - Linux: `run_linux.sh`. Please run the script using `bash run_linux.sh` in your terminal.
-2. After the installation, the installer will ask to launch the ktem's UI, answer to continue.
-3. If launched, the application will be open automatically in your browser.
-4. Default login information is: `username: admin / password: admin`. You should change this credential right after the first login on the UI.
+Or with Make and uv:
 
-## Launch
+```bash
+make install
+make run
+```
 
-To launch the app after initial setup or any change, simply run the `run_*` script again.
+The app opens at **http://localhost:7860** (port `7860` by default).
 
-A browser window will be opened and greets you with this screen:
+When user management is enabled (`KH_FEATURE_USER_MANAGEMENT`, default in `flowsettings.py`), first login is typically **`admin` / `admin`** — change the password in Settings after login.
 
-![Chat tab](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/chat-tab.png)
+## Installation (Docker Compose)
 
-## Usage
+```bash
+cp .env.example .env
+docker compose up -d --build
+```
 
-For how to use the application, see [Usage](usage.md). This page will also be available to
-you within the application.
+Data persists in `./ktem_app_data` on the host. See [README — Docker Compose](../README.md#docker-compose-recommended).
+
+## Installation (upstream zip / OS scripts)
+
+The original Kotaemon project ships zip releases and `scripts/run_*.bat|sh` installers that install from `libs/kotaemon`. **Those paths do not match this fork.** Prefer `pip install -e .` from this repo root.
+
+If you use upstream’s [Hugging Face Space template](online_install.md), you are deploying Cinnamon’s template, not necessarily this fork’s defaults.
+
+## First launch
+
+1. Open **Resources** and confirm LLM + embedding models (defaults often come from `flowsettings.py` and `.env`).
+2. Open your file collection tab (e.g. **File Collection**), upload documents, and click **Upload and Index**.
+3. Open **Chat**, select files or **Search All**, and ask a question.
+
+See [Basic Usage](usage.md) for details.
+
+## Help inside the app
+
+The **Help** tab mirrors much of the usage documentation.
 
 ## Feedback
 
-Feel free to create a bug report or a feature request on our [repo](https://github.com/Cinnamon/kotaemon/issues).
+Report issues in your project’s issue tracker. Upstream: [Cinnamon/kotaemon issues](https://github.com/Cinnamon/kotaemon/issues).

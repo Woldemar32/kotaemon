@@ -1,12 +1,15 @@
-repo_name: Cinnamon/kotaemon
+# Update repo_name / repo_url to your fork when publishing docs
+repo_name: kotaemon
 repo_url: https://github.com/Cinnamon/kotaemon
-site_name: kotaemon Docs
+site_name: Kotaemon Documentation
 edit_uri: edit/main/docs/
 
 nav:
   - Getting Started:
       - Quick Start: index.md
       - Basic Usage: usage.md
+      - Local Models: local_model.md
+      - About: about.md
   # - Application:
   #     - Customize UI: pages/app/customize-ui.md
   # - Functional description: pages/app/functional-description.md
@@ -73,7 +76,7 @@ plugins:
               - "!^_"
             members_order: source
             separate_signature: true
-          paths: [libs/kotaemon/kotaemon]
+          paths: [src/kotaemon]
   - git-revision-date-localized:
       enable_creation_date: true
       type: timeago

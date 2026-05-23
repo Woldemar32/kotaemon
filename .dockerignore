@@ -2,14 +2,21 @@
 .git/
 .mypy_cache/
 __pycache__/
+.venv/
 ktem_app_data/
 env/
+.cursor/
+dataset/
+docs/
+tests/
+uv.lock
 .pre-commit-config.yaml
 .commitlintrc
 .gitignore
 .gitattributes
-# README.md is listed in pyproject.toml but not needed at runtime (app.py adds src/ to PYTHONPATH)
+compose.override.yml
 *.zip
 *.sh
 
 !/launch.sh
+!/scripts/download_pdfjs.sh

@@ -1,157 +1,98 @@
+# Basic Usage
+
 ## 1. Add your AI models
 
 ![resources tab](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/resources-tab.png)
 
-- The tool uses Large Language Model (LLMs) to perform various tasks in a QA pipeline.
-  So, you need to provide the application with access to the LLMs you want
-  to use.
-- You only need to provide at least one. However, it is recommended that you include all the LLMs
-  that you have access to, you will be able to switch between them while using the
-  application.
+The app uses **large language models (LLMs)** and **embedding models** across the QA pipeline. You need at least one of each (or defaults from `flowsettings.py` / `.env`).
 
-To add a model:
+Adding more models lets you switch between them in chat and settings.
 
-1. Navigate to the `Resources` tab.
-2. Select the `LLMs` sub-tab.
-3. Select the `Add` sub-tab.
-4. Config the model to add:
-   - Give it a name.
-   - Pick a vendor/provider (e.g. `ChatOpenAI`).
-   - Provide the specifications.
-   - (Optional) Set the model as default.
-5. Click `Add` to add the model.
-6. Select `Embedding Models` sub-tab and repeat the step 3 to 5 to add an embedding model.
+### Via the UI (recommended)
+
+1. Open the **Resources** tab (hidden in SSO mode; configure models in `flowsettings.py` instead).
+2. **LLMs** → **Add**: name, provider (e.g. `ChatOpenAI`), YAML spec, optional **default**.
+3. **Embedding Models** → **Add** the same way.
+4. Optional: **Reranking models** (e.g. `TeiFastReranking` for a local TEI server — see [README](../README.md)).
+
+Field examples for Ollama (host vs Docker): [`config_example.txt`](../config_example.txt) in the repo root. That file is **not** loaded automatically; copy values into the Resources form.
+
+### Via `.env` and `flowsettings.py`
+
+Copy [`.env.example`](../.env.example) to `.env`. Variables seed defaults in `flowsettings.py` (e.g. `LOCAL_MODEL`, `LOCAL_MODEL_EMBEDDINGS`, `KH_OLLAMA_URL` for Ollama).
 
 <details markdown>
-
-<summary>(Optional) Configure model via the .env file</summary>
-
-Alternatively, you can configure the models via the `.env` file with the information needed to connect to the LLMs. This file is located in
-the folder of the application. If you don't see it, you can create one.
-
-Currently, the following providers are supported:
+<summary>Provider examples (.env)</summary>
 
 ### OpenAI
 
-In the `.env` file, set the `OPENAI_API_KEY` variable with your OpenAI API key in order
-to enable access to OpenAI's models. There are other variables that can be modified,
-please feel free to edit them to fit your case. Otherwise, the default parameter should
-work for most people.
-
 ```shell
 OPENAI_API_BASE=https://api.openai.com/v1
-OPENAI_API_KEY=<your OpenAI API key here>
-OPENAI_CHAT_MODEL=gpt-3.5-turbo
-OPENAI_EMBEDDINGS_MODEL=text-embedding-ada-002
+OPENAI_API_KEY=<your key>
+OPENAI_CHAT_MODEL=gpt-4o-mini
+OPENAI_EMBEDDINGS_MODEL=text-embedding-3-large
 ```
 
 ### Azure OpenAI
 
-For OpenAI models via Azure platform, you need to provide your Azure endpoint and API
-key. Your might also need to provide your developments' name for the chat model and the
-embedding model depending on how you set up Azure development.
-
 ```shell
 AZURE_OPENAI_ENDPOINT=
 AZURE_OPENAI_API_KEY=
-OPENAI_API_VERSION=2024-02-15-preview # could be different for you
-AZURE_OPENAI_CHAT_DEPLOYMENT=gpt-35-turbo # change to your deployment name
-AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT=text-embedding-ada-002 # change to your deployment name
+OPENAI_API_VERSION=2024-02-15-preview
+AZURE_OPENAI_CHAT_DEPLOYMENT=gpt-35-turbo
+AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT=text-embedding-ada-002
 ```
 
-### Local models
+### Local models (Ollama)
 
-Pros:
+In this fork, `LOCAL_MODEL` and `LOCAL_MODEL_EMBEDDINGS` in `.env` are **Ollama model names**, not file paths. Default LLM/embedding specs in `flowsettings.py` point at `KH_OLLAMA_URL` (default `http://localhost:11434/v1/`).
 
-- Privacy. Your documents will be stored and process locally.
-- Choices. There are a wide range of LLMs in terms of size, domain, language to choose
-  from.
-- Cost. It's free.
+For a **`.gguf` file** served by llama.cpp, use `scripts/serve_local.py` and set `LOCAL_MODEL` to the **full path** to the file — see [Local models](local_model.md).
 
-Cons:
-
-- Quality. Local models are much smaller and thus have lower generative quality than
-  paid APIs.
-- Speed. Local models are deployed using your machine so the processing speed is
-  limited by your hardware.
-
-#### Find and download a LLM
-
-You can search and download a LLM to be ran locally from the [Hugging Face
-Hub](https://huggingface.co/models). Currently, these model formats are supported:
-
-- GGUF
-
-You should choose a model whose size is less than your device's memory and should leave
-about 2 GB. For example, if you have 16 GB of RAM in total, of which 12 GB is available,
-then you should choose a model that take up at most 10 GB of RAM. Bigger models tend to
-give better generation but also take more processing time.
-
-Here are some recommendations and their size in memory:
-
-- [Qwen1.5-1.8B-Chat-GGUF](https://huggingface.co/Qwen/Qwen1.5-1.8B-Chat-GGUF/resolve/main/qwen1_5-1_8b-chat-q8_0.gguf?download=true):
-  around 2 GB
-
-#### Enable local models
-
-To add a local model to the model pool, set the `LOCAL_MODEL` variable in the `.env`
-file to the path of the model file.
-
-```shell
-LOCAL_MODEL=<full path to your model file>
-```
-
-Here is how to get the full path of your model file:
-
-- On Windows 11: right click the file and select `Copy as Path`.
 </details>
 
 ## 2. Upload your documents
 
 ![file index tab](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/file-index-tab.png)
 
-In order to do QA on your documents, you need to upload them to the application first.
-Navigate to the `File Index` tab and you will see 2 sections:
+1. Open your collection tab (e.g. **File Collection**, or **Files** if multiple index types exist).
+2. **Upload and Index** — drag-and-drop or pick files.
+3. **File list** — view or delete indexed files.
 
-1. File upload:
-   - Drag and drop your file to the UI or select it from your file system.
-     Then click `Upload and Index`.
-   - The application will take some time to process the file and show a message once it is done.
-2. File list:
-   - This section shows the list of files that have been uploaded to the application and allows users to delete them.
+Supported types are configured per index in `flowsettings.py` (`KH_INDICES` → `supported_file_types`). The default collection includes PDF, Office, images, CSV, HTML, Markdown, ZIP, and more.
 
 ## 3. Chat with your documents
 
 ![chat tab](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/chat-tab.png)
 
-Now navigate back to the `Chat` tab. The chat tab is divided into 3 regions:
+The chat tab has three areas:
 
-1. Conversation Settings Panel
-   - Here you can select, create, rename, and delete conversations.
-     - By default, a new conversation is created automatically if no conversation is selected.
-   - Below that you have the file index, where you can choose whether to disable, select all files, or select which files to retrieve references from.
-     - If you choose "Disabled", no files will be considered as context during chat.
-     - If you choose "Search All", all files will be considered during chat.
-     - If you choose "Select", a dropdown will appear for you to select the
-       files to be considered during chat. If no files are selected, then no
-       files will be considered during chat.
-2. Chat Panel
-   - This is where you can chat with the chatbot.
-3. Information Panel
+1. **Conversation settings** — select/create/rename/delete conversations; choose file context (**Disabled**, **Search All**, or **Select** specific files).
+2. **Chat panel** — message input and replies (streaming when the pipeline supports it).
+3. **Information panel** — retrieved evidence, citations, and scores.
 
 ![information panel](https://raw.githubusercontent.com/Cinnamon/kotaemon/develop/docs/images/info-panel-scores.png)
 
-- Supporting information such as the retrieved evidence and reference will be
-  displayed here.
-- Direct citation for the answer produced by the LLM is highlighted.
-- The confidence score of the answer and relevant scores of evidences are displayed to quickly assess the quality of the answer and retrieved content.
+**Scores (when shown):**
 
-- Meaning of the score displayed:
-  - **Answer confidence**: answer confidence level from the LLM model.
-  - **Relevance score**: overall relevant score between evidence and user question.
-  - **Vectorstore score**: relevant score from vector embedding similarity calculation (show `full-text search` if retrieved from full-text search DB).
-  - **LLM relevant score**: relevant score from LLM model (which judge relevancy between question and evidence using specific prompt).
-  - **Reranking score**: relevant score from Cohere [reranking model](https://cohere.com/rerank).
+| Score | Meaning |
+|-------|---------|
+| **Answer confidence** | Model confidence for the answer |
+| **Relevance score** | Overall relevance of evidence to the question |
+| **Vectorstore score** | Embedding similarity (or full-text label if from keyword search) |
+| **LLM relevant score** | LLM-judged relevance |
+| **Reranking score** | Cross-encoder / reranker (e.g. Cohere, TEI) |
 
-Generally, the score quality is `LLM relevant score` > `Reranking score` > `Vectorscore`.
-By default, overall relevance score is taken directly from LLM relevant score. Evidences are sorted based on their overall relevance score and whether they have citation or not.
+Generally: `LLM relevant score` > `Reranking score` > vector score. Evidence is ordered by overall relevance and citation presence.
+
+## 4. Reasoning pipelines
+
+In **Settings**, choose a **reasoning** option (registered in `flowsettings.py` → `KH_REASONINGS`), for example:
+
+- `FullQAPipeline` — default RAG with citations
+- `FullDecomposeQAPipeline` — decomposed QA
+- `ReactAgentPipeline` / `RewooAgentPipeline` — agent-style flows
+
+## 5. Evaluation (optional)
+
+The **Evaluation** tab runs RAG evaluation (e.g. ragas) when configured. Sample questions for `dataset/testing_files` are in `rag_eval_dataset.json` at the repo root.

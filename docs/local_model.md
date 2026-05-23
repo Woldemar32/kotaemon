@@ -1,90 +1,83 @@
-# Setup local LLMs & Embedding models
+# Local LLMs and embedding models
 
-## Prepare local models
+This fork defaults to **Ollama** (OpenAI-compatible API) via `flowsettings.py` and `.env`. You can also use other OpenAI-compatible servers or **llama.cpp** for single `.gguf` files.
 
-#### NOTE
+!!! note "Docker vs host"
+    When Kotaemon runs **inside Docker**, replace `http://localhost` with `http://host.docker.internal` for services on the host machine.
 
-In the case of using Docker image, please replace `http://localhost` with `http://host.docker.internal` to correctly communicate with service on the host machine. See [more detail](https://stackoverflow.com/questions/31324981/how-to-access-host-port-from-docker-container).
+## Ollama (recommended)
 
-### Ollama OpenAI compatible server (recommended)
+1. Install [Ollama](https://github.com/ollama/ollama) and start it.
+2. Pull models, for example:
 
-Install [ollama](https://github.com/ollama/ollama) and start the application.
-
-Pull your model (e.g):
-
-```
-ollama pull llama3.1:8b
+```text
+ollama pull qwen2.5:7b
 ollama pull nomic-embed-text
 ```
 
-Setup LLM and Embedding model on Resources tab with type OpenAI. Set these model parameters to connect to Ollama:
+3. Set in `.env` (names must match `ollama list`):
 
+```shell
+LOCAL_MODEL=qwen2.5:7b
+LOCAL_MODEL_EMBEDDINGS=nomic-embed-text
+KH_OLLAMA_URL=http://localhost:11434/v1/
 ```
-api_key: ollama
-base_url: http://localhost:11434/v1/
-model: gemma2:2b (for llm) | nomic-embed-text (for embedding)
-```
+
+4. Restart `python app.py`, or add/update models under **Resources** using `config_example.txt` as a field reference.
 
 ![Models](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/models.png)
 
-### oobabooga/text-generation-webui OpenAI compatible server
+## OpenAI-compatible servers (generic)
 
-Install [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui/).
+In **Resources**, add LLM / embedding specs with `__type__: kotaemon.llms.ChatOpenAI` or `kotaemon.embeddings.OpenAIEmbeddings` and set:
 
-Follow the setup guide to download your models (GGUF, HF).
-Also take a look at [OpenAI compatible server](https://github.com/oobabooga/text-generation-webui/wiki/12-%E2%80%90-OpenAI-API) for detail instructions.
-
-Here is a short version
-
-```
-# install sentence-transformer for embeddings creation
-pip install sentence_transformers
-# change to text-generation-webui src dir
-python server.py --api
+```text
+api_key: <provider-specific or dummy>
+base_url: http://localhost:<port>/v1/
+model: <model id on that server>
 ```
 
-Use the `Models` tab to download new model and press Load.
+Examples: [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) (often port 5000), other local gateways.
 
-Setup LLM and Embedding model on Resources tab with type OpenAI. Set these model parameters to connect to `text-generation-webui`:
+## llama.cpp for a single `.gguf` file
 
+`scripts/serve_local.py` reads `LOCAL_MODEL` from `.env` as a **filesystem path** to a `.gguf` file (not an Ollama name).
+
+```bash
+# .env
+LOCAL_MODEL=C:\models\my-model.gguf
+
+python scripts/serve_local.py
 ```
+
+Default server port is **31415** (see `scripts/serve_local.py` and `server_llamacpp_*.bat|sh`).
+
+Register the LLM in **Resources** (OpenAI-compatible):
+
+```text
 api_key: dummy
-base_url: http://localhost:5000/v1/
-model: any
+base_url: http://localhost:31415/v1/
+model: <name shown by the server>
 ```
 
-### llama-cpp-python server (LLM only)
+!!! warning "Two meanings of LOCAL_MODEL"
+    - **Ollama / flowsettings:** model name in `.env` (e.g. `qwen2.5:7b`).
+    - **serve_local.py:** path to `.gguf`. Do not mix these in the same workflow without updating `.env`.
 
-See [llama-cpp-python OpenAI server](https://llama-cpp-python.readthedocs.io/en/latest/server/).
+## Local reranker (TEI)
 
-Download any GGUF model weight on HuggingFace or other source. Place it somewhere on your local machine.
-
-Run
-
-```
-LOCAL_MODEL=<path/to/GGUF> python scripts/serve_local.py
-```
-
-Setup LLM model on Resources tab with type OpenAI. Set these model parameters to connect to `llama-cpp-python`:
-
-```
-api_key: dummy
-base_url: http://localhost:8000/v1/
-model: model_name
-```
+Run [Text Embeddings Inference](https://huggingface.co/docs/text-embeddings-inference) (e.g. `BAAI/bge-reranker-v2-m3` on port 8080) and add **TeiFastReranking** in Resources. See [README — Local reranker](../README.md#local-reranker-text-embeddings-inference).
 
 ## Use local models for RAG
 
-- Set default LLM and Embedding model to a local variant.
+1. Set default LLM and embedding in **Resources** (or via `flowsettings.py` defaults).
+2. In the file collection settings, set the collection’s embedding model to your local embedding.
+3. In **Settings** → retrieval, set **LLM relevant scoring** to a local LLM or disable if the machine cannot handle parallel LLM calls.
 
-![Models](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/llm-default.png)
+![LLM default](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/llm-default.png)
 
-- Set embedding model for the File Collection to a local model (e.g: `ollama`)
+![Index embedding](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/index-embedding.png)
 
-![Index](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/index-embedding.png)
+![Retrieval setting](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/retrieval-setting.png)
 
-- Go to Retrieval settings and choose LLM relevant scoring model as a local model (e.g: `ollama`). Or, you can choose to disable this feature if your machine cannot handle a lot of parallel LLM requests at the same time.
-
-![Settings](https://raw.githubusercontent.com/Cinnamon/kotaemon/main/docs/images/retrieval-setting.png)
-
-You are set! Start a new conversation to test your local RAG pipeline.
+Start a new conversation to test the pipeline.

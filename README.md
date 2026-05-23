@@ -1,16 +1,102 @@
-Luca's dataset is in `.\dataset\documents`
+# Kotaemon (custom fork)
 
-Upload `.\dataset\testing_files` in your system!
+<!-- start-intro -->
 
-`rag_eval_dataset.json` is a file with simple questions for files in `.\dataset\testing_files`
+**Kotaemon** is an open-source RAG application for chatting with your documents (PDF, Office, images, HTML, and more). This repository is a **custom fork** of [Cinnamon/kotaemon](https://github.com/Cinnamon/kotaemon) with a flattened layout and project-specific defaults.
+
+The codebase ships two Python packages under `src/`:
+
+| Package | Role |
+|---------|------|
+| **`kotaemon`** | Reusable RAG building blocks: LLMs, embeddings, loaders, vector/doc stores, retrievers, QA pipelines, agents |
+| **`ktem`** | Gradio UI: Chat, file collections, Evaluation, Resources, Settings, Help |
+
+- **UI:** Gradio 4 (no separate React frontend; chat is Gradio callbacks, not a public REST API)
+- **Python:** 3.11+ (`pyproject.toml`)
+- **Config:** `flowsettings.py` + `.env` (see `.env.example`)
+- **Runtime data:** `ktem_app_data/` (SQLite, uploads, vector store — do not commit)
+
+For architecture, entry points, and AI-agent routing, see [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) and [`AI_GUIDE.md`](AI_GUIDE.md).
+
+<!-- end-intro -->
+
+## Quick start (local)
+
+```bash
+# From repository root
+python -m venv .venv
+.venv\Scripts\activate          # Windows
+# source .venv/bin/activate     # Linux/macOS
+
+pip install -r requirements_gerageragera39.txt
+pip install -e .
+cp .env.example .env            # edit API keys / local model names
+
+python app.py                   # http://localhost:7860
+```
+
+Or with **Make** + **uv**:
+
+```bash
+make install
+make run
+```
+
+Default admin login (when user management is enabled): `admin` / `admin` — change after first login.
+
+## Evaluation dataset
+
+Luca's dataset is in `dataset/documents`.
+
+Upload `dataset/testing_files` in the app to try indexing and chat.
+
+`rag_eval_dataset.json` contains simple questions for files in `dataset/testing_files`.
 
 ## Docker (Python 3.11)
 
 The container image uses **Python 3.11** and installs dependencies from `requirements_gerageragera39.txt`, matching a local `pip install -r requirements_gerageragera39.txt` setup.
 
-**Prerequisites:** Docker Desktop (or Docker Engine) running, with BuildKit enabled (default in recent Docker versions).
+**Prerequisites:** Docker Desktop (or Docker Engine) with Compose v2.
 
-### Build images
+### Docker Compose (recommended)
+
+Persistent app data is stored in **`./ktem_app_data`** on the host (SQLite, uploads, vector index). The container uses **`restart: unless-stopped`**, so it comes back after a reboot; data is kept on `docker compose down` (only removed with `docker compose down -v`).
+
+```bash
+cp .env.example .env          # edit keys / model names
+docker compose up -d --build  # http://localhost:7860
+```
+
+**With Ollama in Docker** (models in volume `ollama_models`):
+
+```bash
+# In .env set: KH_OLLAMA_URL=http://ollama:11434/v1/
+docker compose --profile ollama up -d --build
+docker compose exec ollama ollama pull qwen2.5:7b
+docker compose exec ollama ollama pull nomic-embed-text
+```
+
+**Optional local reranker (TEI):**
+
+```bash
+docker compose --profile reranker up -d
+# In Resources use endpoint_url: http://host.docker.internal:8080
+```
+
+**Makefile shortcuts:** `make docker-up`, `make docker-up-ollama`, `make docker-down`, `make docker-logs`
+
+**Windows:** `.\scripts\docker-up.ps1 -Build` or `.\scripts\docker-up.ps1 -Ollama -Build`
+
+See [`.env.compose.example`](.env.compose.example) and [`compose.override.example.yml`](compose.override.example.yml) (named volume instead of bind mount).
+
+| Command | Effect |
+|---------|--------|
+| `docker compose up -d` | Start app, keep data |
+| `docker compose down` | Stop containers, **keep** `./ktem_app_data` |
+| `docker compose down -v` | Stop and **delete** named volumes (`ollama_models`, etc.) |
+| `docker compose logs -f kotaemon` | Follow logs |
+
+### Build images (manual `docker build`)
 
 Three build targets are available:
 
@@ -52,12 +138,15 @@ docker build --target lite \
 Create a `.env` file in the project root (copy from `.env.example`) before running, or mount your own env file.
 
 ```bash
-# Persist app data on the host
+# Persist app data on the host (Windows cmd)
 docker run --rm -p 7860:7860 \
   -v "%cd%\ktem_app_data:/app/ktem_app_data" \
   --env-file .env \
   kotaemon:full
+```
 
+```powershell
+# PowerShell
 docker run --rm -p 7860:7860 `
   -v "${PWD}\ktem_app_data:/app/ktem_app_data" `
   --env-file .env `
@@ -87,9 +176,6 @@ Start TEI with `BAAI/bge-reranker-v2-m3` on port **8080**:
 docker run -d --gpus all -p 8080:80 \
   ghcr.io/huggingface/text-embeddings-inference:latest \
   --model-id BAAI/bge-reranker-v2-m3
-
-
-docker run -d --gpus all -p 8080:80 ghcr.io/huggingface/text-embeddings-inference:86-1.9 --model-id BAAI/bge-reranker-v2-m3
 ```
 
 On first start the image downloads the model; wait until the service responds before running retrieval in Kotaemon.
@@ -128,15 +214,12 @@ docker run --rm -p 7860:7860 -e KH_DEMO_MODE=true kotaemon:lite
 docker run --rm -p 7860:7860 -e KH_SSO_ENABLED=true --env-file .env kotaemon:lite
 ```
 
-### Local install (without Docker)
+## Documentation
 
-```bash
-python -m venv .venv
-.venv\Scripts\activate          # Windows
-# source .venv/bin/activate     # Linux/macOS
-pip install -r requirements_gerageragera39.txt
-pip install -e .
-python app.py
-```
+- **End users:** [docs/usage.md](docs/usage.md), [docs/local_model.md](docs/local_model.md)
+- **Developers:** [docs/development/](docs/development/), [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)
+- **MkDocs site:** configure `mkdocs.yml` and run `mkdocs serve` from the repo root
 
-Python **3.11** is required (`requires-python >= 3.11` in `pyproject.toml`).
+## Legacy install scripts
+
+`scripts/run_*.sh` and `scripts/run_windows.bat` target the **upstream** monorepo layout (`libs/kotaemon`). In this fork, prefer **`pip install -e .`** from the repository root instead.

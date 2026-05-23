@@ -1,0 +1,12 @@
+# Optional overrides — copy to compose.override.yml (auto-loaded by Docker Compose)
+#
+#   cp compose.override.example.yml compose.override.yml
+#
+# Example: use a Docker named volume instead of ./ktem_app_data on the host
+
+services:
+  kotaemon:
+    volumes:
+      - kotaemon_app_data:/app/ktem_app_data
+
+# volumes: kotaemon_app_data  # already declared in docker-compose.yml

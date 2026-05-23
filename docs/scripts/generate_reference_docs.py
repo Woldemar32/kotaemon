@@ -73,7 +73,7 @@ def generate_docs_for_src_code(
 
 
 generate_docs_for_src_code(
-    code_dir=doc_dir.parent / "libs" / "kotaemon" / "kotaemon",
+    code_dir=doc_dir.parent / "src" / "kotaemon",
     target_doc_folder="reference",
     ignored_modules={"contribs"},
 )

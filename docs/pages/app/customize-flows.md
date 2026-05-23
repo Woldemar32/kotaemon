@@ -84,24 +84,57 @@ The reasoning pipeline:
         """
 ```
 
-## Register your pipeline to ktem
+## Register your pipeline in ktem
 
-To register your pipelines to ktem, you declare it in the `flowsettings.py`
-file. This file locates at the current working directory where you start the
-ktem. In most use cases, it is this
-[one](https://github.com/Cinnamon/kotaemon/blob/main/flowsettings.py).
+Declare pipelines in `flowsettings.py` at the repository root (loaded via theflow when you run `python app.py`).
+
+### Reasoning pipelines
 
 ```python
-KH_REASONING = ["<python.module.path.to.the.reasoning.class>"]
-
-KH_INDEX = "<python.module.path.to.the.indexing.class>"
+KH_REASONINGS = [
+    "ktem.reasoning.simple.FullQAPipeline",
+    "ktem.reasoning.simple.FullDecomposeQAPipeline",
+    "ktem.reasoning.react.ReactAgentPipeline",
+    "ktem.reasoning.rewoo.RewooAgentPipeline",
+    # add your dotted path:
+    # "my_package.reasoning.MyQAPipeline",
+]
 ```
 
-You can register multiple reasoning pipelines to ktem by populating the
-`KH_REASONING` list. The user can select which reasoning pipeline to use
-in their Settings page.
+Users pick the active pipeline in **Settings** → reasoning options. Each class should implement `get_info()` and `get_user_settings()` when exposing UI settings.
 
-For now, there's only one supported index option for `KH_INDEX`.
+### File index types and collections
+
+Register index **classes**:
+
+```python
+KH_INDEX_TYPES = ["ktem.index.file.FileIndex"]  # add custom BaseIndex subclasses
+```
+
+Register default **collections** (created on first setup):
+
+```python
+KH_INDICES = [
+    {
+        "name": "File Collection",
+        "index_type": "ktem.index.file.FileIndex",
+        "config": {
+            "supported_file_types": ".pdf, .txt, ...",
+            "private": True,
+        },
+    },
+]
+```
+
+Optional: override the file indexing pipeline globally or per index:
+
+```python
+FILE_INDEX_PIPELINE = "my_package.indexing.MyIndexingPipeline"
+```
+
+See [File index](index/file.md) for `FILE_INDEX_PIPELINE_*` splitter and extractor overrides.
+
+Classes must be importable (installed package or on `PYTHONPATH`; this repo adds `src/` in `app.py`).
 
 Make sure that your class is discoverable by Python.
 
@@ -213,7 +246,7 @@ models they want to use through the settings.
             "citation_llm": {
                 "name": "LLM for citation",
                 "value": llms.get_default(),
-                "component: "dropdown",
+                "component": "dropdown",
                 "choices": list(llms.options().keys()),
             },
             ...

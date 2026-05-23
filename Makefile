@@ -1,4 +1,4 @@
-.PHONY: install install-gpu run dev
+.PHONY: install install-gpu run dev docker-build docker-up docker-up-ollama docker-down docker-logs docker-ps
 
 install:
 	uv venv .venv --python 3.11
@@ -14,3 +14,25 @@ run:
 
 dev:
 	.venv/Scripts/python app.py --reload
+
+# --- Docker Compose (persistent data in ./ktem_app_data) ---
+docker-build:
+	docker compose build
+
+docker-up:
+	docker compose up -d --build
+
+docker-up-ollama:
+	docker compose --profile ollama up -d --build
+
+docker-up-full:
+	docker compose --profile ollama --profile reranker up -d --build
+
+docker-down:
+	docker compose down
+
+docker-logs:
+	docker compose logs -f kotaemon
+
+docker-ps:
+	docker compose ps

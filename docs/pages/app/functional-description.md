@@ -1,3 +1,6 @@
+!!! warning "Legacy planning document"
+    This page describes **planned enterprise features** from upstream product design. It is **not** a guarantee of what is implemented in this fork. For actual behavior, see [Usage](../../usage.md), [User management](ext/user-management.md), and `flowsettings.py`.
+
 ## User group / tenant management
 
 ### Create new user group

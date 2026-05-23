@@ -1,14 +1,15 @@
-`ktem` provides user management as an extension. To enable user management, in
-your `flowsettings.py`, set the following variables:
+`ktem` provides user management when enabled in `flowsettings.py` (default in this fork: `KH_FEATURE_USER_MANAGEMENT = True`).
 
-- `KH_FEATURE_USER_MANAGEMENT`: True to enable.
-- `KH_FEATURE_USER_MANAGEMENT_ADMIN`: the admin username. This user will be
-  created when the app 1st start.
-- `KH_FEATURE_USER_MANAGEMENT_PASSWORD`: the admin password. This value
-  accompanies the admin username.
+Set in `flowsettings.py` or via environment (`decouple` / `.env` where supported):
 
-Once enabled, you have access to the following features:
+- `KH_FEATURE_USER_MANAGEMENT` — enable login and per-user data.
+- `KH_FEATURE_USER_MANAGEMENT_ADMIN` — admin username created on first start.
+- `KH_FEATURE_USER_MANAGEMENT_PASSWORD` — admin password for that user.
 
-- User login/logout (located in Settings Tab)
-- User changing password (located in Settings Tab)
-- Create / List / Edit / Delete user (located in Resources > Users Tab)
+When enabled:
+
+- **Welcome** tab — sign in / sign out (other tabs hidden until login).
+- **Settings** — change password.
+- **Resources → Users** — create, list, edit, delete users (**admin only**; non-admin users do not see the Resources tab).
+
+In **SSO mode** (`KH_SSO_ENABLED`), the Resources tab is hidden; manage models via `flowsettings.py` / `.env` instead.
