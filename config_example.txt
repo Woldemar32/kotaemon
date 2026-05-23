@@ -1,0 +1,40 @@
+For .venv:
+
+api_key: ollama
+base_url: http://localhost:11434/v1
+model: qwen3:8b
+temperature: 0
+timeout: 120
+
+
+api_key: ollama
+base_url: http://localhost:11434/v1
+model: qwen3-embedding:0.6b
+timeout: 600
+
+______________________________________
+
+For Docker:
+
+api_key: ollama
+base_url: http://host.docker.internal:11434/v1
+model: qwen3:8b
+temperature: 0
+timeout: 120
+
+
+api_key: ollama
+base_url: http://host.docker.internal:11434/v1
+model: qwen3-embedding:0.6b
+timeout: 600
+
+______________________________________
+
+docker run -d --gpus all -p 8080:80  ghcr.io/huggingface/text-embeddings-inference:latest  --model-id BAAI/bge-reranker-v2-m3
+
+Spec:         TeiFastReranking
+
+
+endpoint_url: http://localhost:8080
+is_truncated: true
+model_name: BAAI/bge-reranker-v2-m3

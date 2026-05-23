@@ -1,1 +1,3 @@
 *.bat   text eol=crlf
+*.sh    text eol=lf
+requirements*.txt text eol=lf encoding=utf-8

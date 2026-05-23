@@ -1,4 +1,16 @@
 import os
+import sys
+from pathlib import Path
+
+# Prefer in-tree sources over copies installed in site-packages.
+PROJECT_ROOT = Path(__file__).resolve().parent
+SRC_DIR = PROJECT_ROOT / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from gpu_config import configure_gpu_for_project
+
+configure_gpu_for_project()
 
 from theflow.settings import settings as flowsettings
 
@@ -19,6 +31,7 @@ demo.queue().launch(
     favicon_path=app._favicon,
     inbrowser=True,
     allowed_paths=[
+        str(SRC_DIR / "ktem" / "assets"),
         "libs/ktem/ktem/assets",
         GRADIO_TEMP_DIR,
     ],

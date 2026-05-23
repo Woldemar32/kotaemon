@@ -1,5 +1,5 @@
-# Lite version
-FROM python:3.10-slim AS lite
+# Lite version (Python 3.11, dependencies from requirements_gerageragera39.txt)
+FROM python:3.11-slim AS lite
 
 # Common dependencies
 RUN apt-get update -qqy && \
@@ -19,6 +19,8 @@ RUN apt-get update -qqy && \
 # Setup args
 ARG TARGETPLATFORM
 ARG TARGETARCH
+ARG TORCH_INDEX_URL=https://download.pytorch.org/whl/cu121
+ARG REQUIREMENTS_FILE=requirements_gerageragera39.txt
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -26,39 +28,40 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONIOENCODING=UTF-8
 ENV TARGETARCH=${TARGETARCH}
 
-# Create working directory
 WORKDIR /app
 
-# Download pdfjs
+# Download pdfjs (script only; keeps this layer cacheable)
 COPY scripts/download_pdfjs.sh /app/scripts/download_pdfjs.sh
-RUN chmod +x /app/scripts/download_pdfjs.sh
+RUN sed -i 's/\r$//' /app/scripts/download_pdfjs.sh && chmod +x /app/scripts/download_pdfjs.sh
 ENV PDFJS_PREBUILT_DIR="/app/libs/ktem/ktem/assets/prebuilt/pdfjs-dist"
-RUN bash scripts/download_pdfjs.sh $PDFJS_PREBUILT_DIR
+RUN bash scripts/download_pdfjs.sh "$PDFJS_PREBUILT_DIR"
 
-# Install uv dependencies
-RUN pip install --no-cache-dir "uv"
+# Install pinned dependencies before copying the full tree (better layer cache)
+COPY ${REQUIREMENTS_FILE} /app/${REQUIREMENTS_FILE}
+COPY pyproject.toml /app/pyproject.toml
+COPY src /app/src
 
-# Copy contents
+RUN python -m venv .venv \
+    && .venv/bin/pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && .venv/bin/pip install --no-cache-dir -r "${REQUIREMENTS_FILE}"
+
+# Application source and config
 COPY . /app
 COPY launch.sh /app/launch.sh
 COPY .env.example /app/.env
 
-# Install pip packages
-RUN --mount=type=ssh  \
-    --mount=type=cache,target=/root/.cache/uv  \
-    uv sync --frozen --no-cache \
-    && uv pip install --python .venv "pdfservices-sdk@git+https://github.com/niallcm/pdfservices-python-sdk.git@bump-and-unfreeze-requirements"
+RUN sed -i 's/\r$//' /app/launch.sh
 
-RUN --mount=type=ssh  \
-    --mount=type=cache,target=/root/.cache/uv  \
-    if [ "$TARGETARCH" = "amd64" ]; then uv pip install --python .venv "graphrag<=0.3.6" future; fi
+# Optional: Microsoft GraphRAG (amd64 only)
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+        .venv/bin/pip install --no-cache-dir "graphrag<=0.3.6" future; \
+    fi
 
 ENTRYPOINT ["sh", "/app/launch.sh"]
 
-# Full version
+# Full version (OCR, LibreOffice, PyTorch for unstructured)
 FROM lite AS full
 
-# Additional dependencies for full version
 RUN apt-get update -qqy && \
     apt-get install -y --no-install-recommends \
         tesseract-ocr \
@@ -71,28 +74,18 @@ RUN apt-get update -qqy && \
         && \
     apt-get autoremove && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install torch and torchvision for unstructured
-RUN --mount=type=ssh  \
-    --mount=type=cache,target=/root/.cache/uv  \
-    uv pip install --python .venv torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+# PyTorch is not pinned in requirements_gerageragera39.txt; install for unstructured
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+        .venv/bin/pip install --no-cache-dir \
+            torch torchvision torchaudio \
+            --index-url "${TORCH_INDEX_URL}" \
+            --extra-index-url https://pypi.org/simple; \
+    else \
+        .venv/bin/pip install --no-cache-dir torch torchvision torchaudio; \
+    fi
 
-# Install additional pip packages
-RUN --mount=type=ssh  \
-    --mount=type=cache,target=/root/.cache/uv  \
-    uv pip install --python .venv "libs/kotaemon[adv]" \
-    && uv pip install --python .venv unstructured[all-docs]
-
-# Install lightRAG
 ENV USE_LIGHTRAG=true
-RUN --mount=type=ssh  \
-    --mount=type=cache,target=/root/.cache/uv  \
-    uv pip install --python .venv aioboto3 nano-vectordb ollama xxhash "lightrag-hku<=1.3.0"
 
-RUN --mount=type=ssh  \
-    --mount=type=cache,target=/root/.cache/uv  \
-    uv pip install --python .venv "docling<=2.5.2"
-
-# Download NLTK data from LlamaIndex
 RUN /app/.venv/bin/python -c "from llama_index.core.readers.base import BaseReader"
 
 ENTRYPOINT ["sh", "/app/launch.sh"]
@@ -100,10 +93,9 @@ ENTRYPOINT ["sh", "/app/launch.sh"]
 # Ollama-bundled version
 FROM full AS ollama
 
-# Install ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
-# RUN nohup bash -c "ollama serve &" && sleep 4 && ollama pull qwen2.5:7b
 RUN nohup bash -c "ollama serve &" && sleep 4 && ollama pull nomic-embed-text
 
+ENV OLLAMA_ENABLED=true
 ENTRYPOINT ["sh", "/app/launch.sh"]

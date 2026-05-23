@@ -1,0 +1,140 @@
+[
+  {
+    "id": "apo_orig_01",
+    "question": "How many times can a student repeat a failed exam at KU Eichstätt-Ingolstadt (excluding the bachelor's thesis)?",
+    "ground_truth": "A student can repeat a failed exam twice. The exam can be repeated a maximum of two times, excluding the bachelor's or master's thesis.",
+    "source_file": "a_APO_ab_WS_14_15.pdf"
+  },
+  {
+    "id": "apo_orig_02",
+    "question": "What duration range is specified for an oral exam at KU Eichstätt-Ingolstadt?",
+    "ground_truth": "An oral exam should not be shorter than 15 minutes or longer than 60 minutes.",
+    "source_file": "a_APO_ab_WS_14_15.pdf"
+  },
+  {
+    "id": "apo_orig_03",
+    "question": "How many ECTS points is the bachelor's thesis worth at KU Eichstätt-Ingolstadt?",
+    "ground_truth": "The bachelor's thesis is worth 10 ECTS points.",
+    "source_file": "a_APO_ab_WS_14_15.pdf"
+  },
+  {
+    "id": "apo_orig_04",
+    "question": "What overall grade average is required to receive the distinction 'mit Auszeichnung' (with distinction) in the bachelor's or master's exam at KU?",
+    "ground_truth": "A final grade of 1.20 or better is required to receive the distinction 'mit Auszeichnung' (with distinction).",
+    "source_file": "a_APO_ab_WS_14_15.pdf"
+  },
+  {
+    "id": "apo_orig_05",
+    "question": "When is the earliest a student can receive the topic for their bachelor's thesis?",
+    "ground_truth": "The topic of the bachelor's thesis can be issued at the earliest when mandatory or required elective modules worth at least 60 percent of the total ECTS points of the program have been successfully completed.",
+    "source_file": "a_APO_ab_WS_14_15.pdf"
+  },
+  {
+    "id": "apo_orig_06",
+    "question": "Within what time period must a student submit a request for file inspection (Akteneinsicht) after a grade is announced?",
+    "ground_truth": "The request for file inspection must be submitted within one month after the grade is announced.",
+    "source_file": "a_APO_ab_WS_14_15.pdf"
+  },
+  {
+    "id": "apo_orig_07",
+    "question": "What happens if the deadline for completing the bachelor's or master's exam is exceeded by more than two semesters for reasons the student is responsible for?",
+    "ground_truth": "The bachelor's or master's exam is considered definitively failed (endgültig nicht bestanden).",
+    "source_file": "a_APO_ab_WS_14_15.pdf"
+  },
+  {
+    "id": "apo_orig_08",
+    "question": "What percentage of a course may a student miss and still fulfill the attendance requirement at KU Eichstätt-Ingolstadt?",
+    "ground_truth": "A student may miss no more than 25 percent of the course sessions and still fulfill the attendance requirement.",
+    "source_file": "a_APO_ab_WS_14_15.pdf"
+  },
+  {
+    "id": "apo_2022_01",
+    "question": "According to the 2022 amended APO, how is it treated if an exam is written wholly or partly by someone else on behalf of the author, including through the use of artificial intelligence (AI)?",
+    "ground_truth": "It is treated as deception (Täuschung), specifically ghostwriting: the rule applies when someone writes all or part of the exam in another person’s name and on their behalf, including when artificial intelligence is used.",
+    "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf"
+  },
+  {
+    "id": "apo_2022_02",
+    "question": "What is the Studium.Pro program at KU and how many areas does it have?",
+    "ground_truth": "Studium.Pro is an interdisciplinary study offering at KU that complements a student's main program and enables the acquisition of competencies reflecting a culture of academic responsibility. It is divided into five areas: Pro Diskurs, Pro Horizont, Pro Gesellschaft, Pro Beruf, and Pro International.",
+    "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf"
+  },
+  {
+    "id": "apo_2022_03",
+    "question": "When an electronic remote exam (elektronische Fernprüfung) is offered, must an in-person alternative also be provided?",
+    "ground_truth": "Yes. When an electronic remote exam is held, the same exam must also be offered in person (in Präsenzform) during the same examination period.",
+    "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf"
+  },
+  {
+    "id": "apo_2022_04",
+    "question": "What is a Take-Home-Prüfung and how is it conducted according to the 2022 APO?",
+    "ground_truth": "A Take-Home-Prüfung is an exam in electronic form that does not take place in person at KU, but is instead completed at home without supervision within a specified time frame. Exam materials are issued and submitted electronically. Limited aids may be permitted.",
+    "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf"
+  },
+  {
+    "id": "apo_2022_05",
+    "question": "How long is the text portion of a Portfolio exam supposed to be according to the 2022 amended APO?",
+    "ground_truth": "The text portion of a Portfolio typically comprises approximately 18,000 to 30,000 characters without spaces, depending on the ECTS points specified in the program regulations.",
+    "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf"
+  },
+  {
+    "id": "apo_2022_06",
+    "question": "According to the 2022 APO, what happens to the exam attempt if a technical failure occurs during an electronic remote exam?",
+    "ground_truth": "If a technical failure occurs, the exam is ended at the current point and the exam attempt is considered as not having taken place (not counted). This does not apply if the disruption is proven to be within the student's own area of responsibility.",
+    "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf"
+  },
+  {
+    "id": "apo_2022_07",
+    "question": "According to the 2022 amended APO, how is carrying mobile devices and digital storage media during an exam treated?",
+    "ground_truth": "Carrying mobile devices and digital storage media is treated as an attempt to cheat (Täuschungsversuch).",
+    "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf"
+  },
+  {
+    "id": "d3b_01",
+    "question": "How many total ECTS points must a student earn to complete the Digital & Data-Driven Business bachelor's program at KU?",
+    "ground_truth": "A student must earn a total of 180 ECTS points to complete the Digital & Data-Driven Business bachelor's program.",
+    "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
+  },
+  {
+    "id": "d3b_02",
+    "question": "What academic degree is awarded upon completing the Digital & Data-Driven Business program at KU Eichstätt-Ingolstadt?",
+    "ground_truth": "Graduates receive the degree of Bachelor of Science (B.Sc.).",
+    "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
+  },
+  {
+    "id": "d3b_03",
+    "question": "How many ECTS points is the Digital Project worth in the D3B program, and what is the maximum time horizon to complete it?",
+    "ground_truth": "The Digital Project is worth 10 ECTS points and represents 2 working months within a maximum time horizon of 9 months.",
+    "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
+  },
+  {
+    "id": "d3b_04",
+    "question": "Which four study profiles (Studienprofile) are generally offered in the Digital & Data-Driven Business program?",
+    "ground_truth": "The four study profiles generally offered are: Accounting, Taxation & Controlling; Finance & Economics; Marketing, Organization, Innovation; and Supply Chain Management & Logistics.",
+    "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
+  },
+  {
+    "id": "d3b_05",
+    "question": "How many ECTS points must a student complete within a specific study profile for it to appear on their final certificate (Zeugnis)?",
+    "ground_truth": "A student must successfully complete at least 30 ECTS points within a specific study profile for it to be listed on their final certificate.",
+    "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
+  },
+  {
+    "id": "d3b_06",
+    "question": "Which faculty is primarily responsible for the Digital & Data-Driven Business program, and which faculty also participates?",
+    "ground_truth": "The Wirtschaftswissenschaftliche Fakultät (Faculty of Business and Economics) is primarily responsible, with the Mathematisch-Geographische Fakultät (Faculty of Mathematics and Geography) also participating.",
+    "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
+  },
+  {
+    "id": "d3b_07",
+    "question": "Which study semester is especially suitable for studying abroad in the D3B program, and why?",
+    "ground_truth": "The fifth study semester is especially suitable for studying abroad because no modules are assigned to it that would be difficult to study abroad except with considerable effort.",
+    "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
+  },
+  {
+    "id": "d3b_08",
+    "question": "What are the four core subject areas that the Digital & Data-Driven Business program combines?",
+    "ground_truth": "The four core subject areas are: (1) Information processing systems, methods and concepts; (2) Business and economics with a focus on the digital economy; (3) Quantitative methods; and (4) Language, social, communication and action competence (soft skills) and ethics.",
+    "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
+  }
+]

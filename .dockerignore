@@ -8,7 +8,7 @@ env/
 .commitlintrc
 .gitignore
 .gitattributes
-README.md
+# README.md is listed in pyproject.toml but not needed at runtime (app.py adds src/ to PYTHONPATH)
 *.zip
 *.sh
 
