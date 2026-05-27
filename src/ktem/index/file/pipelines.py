@@ -248,7 +248,7 @@ class DocumentRetrievalPipeline(BaseFileIndexRetriever):
             },
             "retrieval_mode": {
                 "name": "Retrieval mode",
-                "value": "hybrid",
+                "value": "vector",
                 "choices": ["vector", "text", "hybrid"],
                 "component": "dropdown",
             },
@@ -266,13 +266,13 @@ class DocumentRetrievalPipeline(BaseFileIndexRetriever):
             },
             "use_reranking": {
                 "name": "Use reranking",
-                "value": True,
+                "value": False,
                 "choices": [True, False],
                 "component": "checkbox",
             },
             "use_llm_reranking": {
                 "name": "Use LLM relevant scoring",
-                "value": not config("USE_LOW_LLM_REQUESTS", default=False, cast=bool),
+                "value": False,
                 "choices": [True, False],
                 "component": "checkbox",
             },

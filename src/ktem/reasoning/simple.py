@@ -322,16 +322,18 @@ class FullQAPipeline(BaseReasoning):
             f"in {time.time() - evidence_start:.2f}s"
         )
 
-        def generate_relevant_scores():
-            nonlocal docs
-            docs = self.retrievers[0].generate_relevant_scores(message, docs)
+        # def generate_relevant_scores():
+        #     nonlocal docs
+        #     docs = self.retrievers[0].generate_relevant_scores(message, docs)
 
-        # generate relevant score using
-        if evidence and self.retrievers:
-            scoring_thread = threading.Thread(target=generate_relevant_scores)
-            scoring_thread.start()
-        else:
-            scoring_thread = None
+        # # generate relevant score using
+        # if evidence and self.retrievers:
+        #     scoring_thread = threading.Thread(target=generate_relevant_scores)
+        #     scoring_thread.start()
+        # else:
+        #     scoring_thread = None
+
+        scoring_thread = None
 
         _reasoning_log("Starting answer generation")
         answer = yield from self.answering_pipeline.stream(
@@ -354,8 +356,8 @@ class FullQAPipeline(BaseReasoning):
             yield Document(channel="chat", content=processed_answer)
 
         # show the evidence
-        if scoring_thread:
-            scoring_thread.join()
+        # if scoring_thread:
+        #     scoring_thread.join()
 
         yield from self.show_citations_and_addons(answer, docs, message)
 
@@ -376,7 +378,7 @@ class FullQAPipeline(BaseReasoning):
             settings: the settings for the pipeline
             retrievers: the retrievers to use
         """
-        max_context_length_setting = settings.get("reasoning.max_context_length", 32000)
+        max_context_length_setting = settings.get("reasoning.max_context_length", 4000)
 
         pipeline = cls.prepare_pipeline_instance(settings, retrievers)
 
@@ -429,11 +431,12 @@ class FullQAPipeline(BaseReasoning):
         return {
             "highlight_citation": {
                 "name": "Citation style",
-                "value": (
-                    "highlight"
-                    if not config("USE_LOW_LLM_REQUESTS", default=False, cast=bool)
-                    else "off"
-                ),
+                # "value": (
+                #     "highlight"
+                #     if not config("USE_LOW_LLM_REQUESTS", default=False, cast=bool)
+                #     else "off"
+                # ),
+                "value": "off",
                 "component": "radio",
                 "choices": [
                     ("citation: highlight", "highlight"),
@@ -458,10 +461,21 @@ class FullQAPipeline(BaseReasoning):
             },
             "system_prompt": {
                 "name": "System Prompt",
-                "value": ("This is a question answering system."),
+                "value": """You are a precise university assistant. Answer ONLY based on the provided context.
+
+            Rules:
+            - If the answer is not in the context, say "I don't have this information in the knowledge base"
+            - Be concise and direct
+            - Never speculate beyond what's in the context
+            /no_think"""
             },
             "qa_prompt": {
-                "name": "QA Prompt (contains {context}, {question}, {lang})",
+                "name": """Context:
+                {context}
+
+                Question: {question}
+
+                Answer strictly based on the context above. Be concise. Respond in {lang}.""",
                 "value": DEFAULT_QA_TEXT_PROMPT,
             },
             "n_last_interactions": {
