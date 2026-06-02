@@ -136,5 +136,187 @@
     "question": "What are the four core subject areas that the Digital & Data-Driven Business program combines?",
     "ground_truth": "The four core subject areas are: (1) Information processing systems, methods and concepts; (2) Business and economics with a focus on the digital economy; (3) Quantitative methods; and (4) Language, social, communication and action competence (soft skills) and ethics.",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf"
-  }
+  },
+  {
+  "id": "apo_2024_01",
+  "question": "According to the 2024 APO amendment, what is required for taking university examinations at KU?",
+  "ground_truth": "Taking university examinations requires enrollment or matriculation according to Art. 87 Abs. 1 Satz 1 BayHIG, unless a cooperation agreement with another university allows students to participate in courses and complete study or examination achievements without enrollment at KU.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_02",
+  "question": "According to the 2024 APO amendment, what must be included with written examination work completed without supervision?",
+  "ground_truth": "Written examination work completed without supervision, such as term papers, study papers, portfolios and similar work, must include a list of the aids used. Content taken directly or indirectly from publications or other sources must be marked as such.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_03",
+  "question": "According to the 2024 APO amendment, who decides which aids may be used in an examination?",
+  "ground_truth": "The examiner decides and informs students in good time which aids may be used in the examination.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_04",
+  "question": "According to the 2024 APO amendment, under what condition is the use of artificial intelligence not treated as deception?",
+  "ground_truth": "The use of artificial intelligence is not treated as deception if AI is permitted as an aid under the conditions of § 12 Abs. 7 or § 16 Abs. 6.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_05",
+  "question": "What special section was added to the APO by the 2024 amendment?",
+  "ground_truth": "A new section was added for special provisions for university of applied sciences degree programs, including practical study semesters and special rules for examination bodies.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_06",
+  "question": "According to the 2024 APO amendment, what is a practical study semester?",
+  "ground_truth": "A practical study semester is an integrated, university-regulated, supervised study semester with defined content, usually completed in a company or other professional practice institution outside the university.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_07",
+  "question": "According to the 2024 APO amendment, how long does a practical study semester usually last if the program regulations do not specify otherwise?",
+  "ground_truth": "It usually lasts a continuous period of 22 weeks, including accompanying courses.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_08",
+  "question": "According to the 2024 APO amendment, what happens if a second examination date lies in the following semester and using it would exceed the maximum study duration?",
+  "ground_truth": "The maximum study duration is extended automatically by one semester.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_09",
+  "question": "According to the 2024 APO amendment, when is withdrawal from a semester-accompanying examination no longer allowed?",
+  "ground_truth": "For semester-accompanying examinations, starting the examination performance, such as submitting a paper or giving a presentation, counts as registration, and withdrawal is no longer allowed from that point.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "apo_2024_10",
+  "question": "According to the 2024 APO amendment, how is the grade determined if two examiners evaluate an examination differently and cannot agree?",
+  "ground_truth": "If two examiners cannot agree on a common evaluation, the grade is calculated as the arithmetic mean rounded down to one decimal place.",
+  "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf"
+},
+{
+  "id": "study_plan_01",
+  "question": "Which four exemplary study profiles are shown in the D3B study plan document?",
+  "ground_truth": "The D3B study plan document shows four exemplary study profiles: Accounting, Taxation and Controlling; Finance and Economics; Marketing, Organization, Innovation; and Supply Chain Management and Logistics.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_02",
+  "question": "How many ECTS are planned for each semester in the exemplary D3B study plans?",
+  "ground_truth": "Each semester in the exemplary D3B study plans is planned with 30 ECTS.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_03",
+  "question": "In the Accounting, Taxation and Controlling study profile, how many ECTS is the Bachelor thesis worth?",
+  "ground_truth": "In the Accounting, Taxation and Controlling study profile, the Bachelor thesis is worth 10 ECTS.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_04",
+  "question": "In the Finance and Economics study profile, in which semester is the Bachelor thesis shown?",
+  "ground_truth": "In the Finance and Economics study profile, the Bachelor thesis is shown in the sixth semester.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_05",
+  "question": "Which study profile includes the module Digital & Data Project in Marketing, Organization, Innovation?",
+  "ground_truth": "The module Digital & Data Project in Marketing, Organization, Innovation is included in the Marketing, Organization, Innovation study profile.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_06",
+  "question": "Which study profile includes Digital Project in SCM, Logistics and Operations Research?",
+  "ground_truth": "Digital Project in SCM, Logistics and Operations Research is included in the Supply Chain Management and Logistics study profile.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_07",
+  "question": "Which common modules appear in the first two semesters of the D3B study plans?",
+  "ground_truth": "Common early modules include Grundlagen: Informationssysteme, Mathe für WiWi, Betriebliches Rechnungswesen, Digital Business Models, Einf. VWL, Business English I, Business Analytics, Einführung Quantitative Methoden, Statistik I, Digital Business Strategies, Organisation, Innovation, Mikroökonomie, and Business English II.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_08",
+  "question": "What do bold and italic module names indicate in the D3B study plan document?",
+  "ground_truth": "Bold module names indicate elective modules, and italic module names indicate elective or study-profile modules.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_09",
+  "question": "Which module is shown as a 10 ECTS project in the Finance and Economics study profile?",
+  "ground_truth": "The Finance and Economics study profile shows Digital & Data Project in Finance & Economics as a 10 ECTS project.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "study_plan_10",
+  "question": "Which study profile includes the module Digital Seminar in Data Science & Quantitative Applications?",
+  "ground_truth": "The module Digital Seminar in Data Science & Quantitative Applications appears in the Marketing, Organization, Innovation profile and in the Supply Chain Management and Logistics profile.",
+  "source_file": "Studienverlaufsplan_BA_D3B.pdf"
+},
+{
+  "id": "elective_2026_01",
+  "question": "Which elective areas are listed in the SoSe 2026 D3B elective module catalogue?",
+  "ground_truth": "The SoSe 2026 D3B elective module catalogue lists the elective areas Digitalization & Analytics, Data Competence, Application Competence, Business Language and Management Skills, and Wirtschafts- und Unternehmensethik.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_02",
+  "question": "How many ECTS is the module Digital Seminar in Data Science & Quantitative Applications worth in the SoSe 2026 elective module catalogue?",
+  "ground_truth": "The module Digital Seminar in Data Science & Quantitative Applications is worth 10 ECTS.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_03",
+  "question": "Which modules are listed in the Data Competence elective area in the SoSe 2026 catalogue?",
+  "ground_truth": "The Data Competence elective area lists Algorithmen und Datenstrukturen, Rechnergestützte Statistik mit R, and Hands-on Machine Learning and Data Science.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_04",
+  "question": "What examination form is listed for Business English I in the SoSe 2026 elective catalogue?",
+  "ground_truth": "Business English I has the examination form Klausur plus mündliche Prüfung.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_05",
+  "question": "What prerequisite is listed for Business English II in the SoSe 2026 elective catalogue?",
+  "ground_truth": "Business English II requires Business English I.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_06",
+  "question": "How many ECTS must students complete from a study profile catalogue for the profile to be shown on the certificate?",
+  "ground_truth": "Students must successfully complete at least 30 ECTS from a study profile catalogue for the profile to be shown on the certificate.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_07",
+  "question": "Which modules are listed in the Supply Chain Management and Logistics study profile in the SoSe 2026 catalogue?",
+  "ground_truth": "The Supply Chain Management and Logistics profile lists Digital Seminar in Data Science & Quantitative Applications, Retail Management Fundamentals, Systementwicklung, Operations Analytics, Supply Chain Analytics, SCM Projektstudium, and Internat. Transportlogistik und Distributionssysteme (VHB).",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_08",
+  "question": "Which module in the Supply Chain Management and Logistics profile is worth 10 ECTS?",
+  "ground_truth": "Digital Seminar in Data Science & Quantitative Applications is worth 10 ECTS.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_09",
+  "question": "Which modules are listed in the Sustainability in Business and Economics study profile?",
+  "ground_truth": "The Sustainability in Business and Economics profile lists Ringvorlesung: Nachhaltige Wirtschaft, Innovating for Sustainability: Frameworks and Practices from Global and Local Organizations, Sustainable Entrepreneurship, Umweltökonomie & Umweltpolitik, Öffentliche Finanzen und nachhaltige Wirtschaftspolitik, Sustainable Development, and Company Taxation in the EU: Towards more Fairness and Sustainability.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+},
+{
+  "id": "elective_2026_10",
+  "question": "Which modules are listed in the Application Competence elective area in the SoSe 2026 catalogue?",
+  "ground_truth": "The Application Competence elective area lists Steuerbilanzen und Rechtsformwahl, Marketing and Management, Operations Analytics, and Kapitalmarkttheorie.",
+  "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf"
+}
 ]
+
+  
