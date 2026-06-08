@@ -1,0 +1,63 @@
+{
+  "AccountingControllingTaxation": [
+    "Data Processing in Accounting, Auditing and Taxation",
+    "Grundlagen der internationalen Rechnungslegung",
+    "Konzernrechnungslegung",
+    "Grundlagen des Controlling",
+    "Kostenorientiertes Controlling",
+    "Unternehmensplanung & -steuerung",
+    "Unternehmensanalyse",
+    "Erbschaftssteuer, Substanz- und Verkehrssteuern",
+    "Taxation of Digital Businesses",
+    "Bilanzsteuerrecht und DATEV",
+    "Finanzwissenschaft",
+    "Digitales Recht",
+    "Prüfungslehre",
+    "Applied Machine Learning"
+  ],
+  "FinanceEconomics": [
+    "Kapitalmarkttheorie",
+    "Makroökonomie",
+    "Econometrics",
+    "Finanzwissenschaft",
+    "Behavioral Finance",
+    "Geldpolitik",
+    "Data Science in Finance mit Python",
+    "Computational Statistics",
+    "Decision Theory",
+    "Development Economics",
+    "Political Economy",
+    "Sozialpolitik",
+    "Seminar zur Makroökonomik",
+    "Seminar zur Finanzwissenschaft"
+  ],
+  "MarketingOrganizationInnovation": [
+    "Grundlagen des Marketingmanagement",
+    "Service Performance Management",
+    "Service and Technology Marketing",
+    "Innovation through Design for Digital Customer Experience and Sustainable Solutions",
+    "Brand Management in the Digital Age",
+    "Consumer Behavior and Market Research",
+    "Global Marketing Management",
+    "International Business",
+    "Marketing Analytics mit R",
+    "Pricing and Product Management",
+    "Entrepreneurial Finance & Strategy",
+    "Humanressourcen-Management",
+    "Einführung in das Strategische Management"
+  ],
+  "SupplyChainManagementLogistics": [
+    "Digital Seminar in Data Science & Quantitative Applications",
+    "Supply Chain Controlling",
+    "Strategic Sourcing in Global Markets",
+    "Angewandte Statistische Methoden",
+    "Retail Operations",
+    "Systementwicklung",
+    "Operations Analytics",
+    "Supply Chain Analytics",
+    "Decision Theory",
+    "SCM Projektstudium",
+    "Internat. Transportlogistik und Distributionssysteme (VHB)",
+    "Nachhaltigkeit durch Logistik und Informationsverarbeitung (VHB)"
+  ]
+}

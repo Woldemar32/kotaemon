@@ -1,0 +1,40 @@
+{
+  "formalities": {
+    "leadTime": {
+      "description": "Die Vorlaufzeit ist abhängig von der Art der Arbeit (Bachelor/Master) und dem Thema. Bei Praxispartnern kann zusätzlicher Abstimmungsbedarf entstehen.",
+      "duration": {
+        "minWeeks": 4,
+        "maxWeeks": 6
+      }
+    },
+    "applicationDeadlines": {
+      "bachelorThesis": {
+        "winterSemester": "15.07",
+        "summerSemester": "01.02"
+      },
+      "masterThesis": {
+        "winterSemester": "15.07",
+        "summerSemester": "01.02"
+      }
+    },
+    "requiredDocuments": [
+      {
+        "name": "Formblatt",
+        "description": "Ausgefülltes Formblatt des Lehrstuhls mit Angaben zu Studiengang, Schwerpunkt, Wunschthema, ECTS-Punkten sowie absolvierten Lehrveranstaltungen inklusive Noten.",
+        "url": "https://www.ku.de/wfi/wi/lehre/abschlussarbeiten/ablauf"
+      }
+    ]
+  },
+  "requirements": {
+    "mandatoryChairCourses": false,
+    "mandatoryChairCoursesComment": "Es gibt keine formale Vorgabe. Die erfolgreiche Teilnahme an Lehrveranstaltungen des Lehrstuhls wird jedoch empfohlen, da die dort vermittelten Inhalte häufig Voraussetzung für die Bearbeitung der Themen sind.",
+    "companyCooperationPossible": true,
+    "ownTopicProposalPossible": true,
+    "topicListAvailable": true,
+    "empiricalThesisPossible": true,
+    "empiricalThesisCondition": "Bei entsprechenden statistischen Kenntnissen."
+  },
+  "metadata": {
+    "lastUpdated": "2023-02"
+  }
+}

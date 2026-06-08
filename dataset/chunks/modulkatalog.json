@@ -1,0 +1,3209 @@
+[
+    {
+        "chunk_id": "modul_82-021-BWL13-H-0507",
+        "modultitel": "Betriebliches Rechnungswesen",
+        "modultitel_englisch": "Management Accounting",
+        "details": {
+            "Modulnummer": "82-021-BWL13-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, Controlling und Wirtschaftsprüfung",
+            "Modulverantwortlich": "Prof. Dr. Max Göttsche",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Veranstaltung vermittelt ein grundlegendes betriebswirtschaftliches Verständnis in Bezug auf",
+            "Buchführung und Kostenrechnung.",
+            "Am Ende der Veranstaltung sollen die Studierenden in der Lage sein, die Zusammenhänge zwi-",
+            "schen der Buchführung und der Kostenrechnung zu erkennen, so dass der Grundstock für eine",
+            "weiterführende betriebswirtschaftliche Ausbildung gegeben ist.",
+            "Zur Vermittlung dieser Kompetenzen soll die Übung wesentlich beitragen."
+        ],
+        "inhalte_und_themen": [
+            "Teil I Buchführung: Grundlagen der Buchungstechnik; Warenverkehr; Industriebuchungen; Zah-",
+            "lungsverkehr; Personalaufwand; Abschlussbuchungen",
+            "Teil II Kostenrechnung: Aufgaben und Systeme des Rechnungswesens; Kostenartenrechnung; Kos-",
+            "tenstellenrechnung; Kostenträgerrechnung; Kostenanalysen"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-VWL05-S-VL-0717",
+        "modultitel": "Einführung in die VWL: Staat, Wirtschaft und Gesellschaft",
+        "modultitel_englisch": "Foundations of Economics: State, Economy and Society",
+        "details": {
+            "Modulnummer": "82-021-VWL05-S-VL-0717",
+            "Niveau": "Bachelormodul",
+            "Turnus": "VWL, Nachhaltige Wirtschaftspolitik",
+            "Modulverantwortlich": "Prof. Dr. Maria Waldinger",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Der Kurs dient als Einführung in die Volkswirtschaftslehre. Die Vorlesung macht mit grundle-",
+            "genden Begriffen und Herangehensweisen der Volkswirtschaftslehre vertraut. Es werden sowohl",
+            "mikro- als auch makroökonomische Themen behandelt.",
+            "Sie verstehen den Gegenstand der VWL und kennen die grundsätzliche wissenschaftliche",
+            "Methode der VWL.",
+            "Sie unterscheiden analytisch zwischen Korrelation und kausalem Zusammenhang in Daten.",
+            "Sie verstehen die Grundideen der Ökonomie, Knappheit, Arbeitsteilung, Opportunitätskosten",
+            "und Anreize.",
+            "Sie haben einen Überblick über das Zusammenspiel von Angebot und Nachfrage am Markt.",
+            "Sie verstehen Formen von Marktversagen.",
+            "Sie verstehen die Grundlagen der Wohlfahrtsmessung. Sie können die Möglichkeiten und",
+            "Grenzen des Bruttoinlandsprodukts (BIP) als Wohlfahrtsindikator beurteilen und lernen",
+            "alternative Konzepte der Wohlfahrtsmessung kennen.",
+            "Sie verstehen die Grundlagen des Wirtschaftswachstums und verschiedene Ansätze, dieses",
+            "zu erklären.",
+            "Sie verstehen die Grundlagen offener Volkswirtschaften und die Chancen und Risiken von",
+            "Freihandel.",
+            "Sie haben ein Grundverständnis der Ziele, Methoden und Probleme empirischer Wirtschafts-",
+            "forschung.",
+            "Studierende können eigenständig komplexe Fragestellungen strukturieren, analysieren und Lösungsvorschläge",
+            "erarbeiten (bspw. Mindestlöhne, Mietkontrollen).",
+            "Studierende erwerben Kenntnisse über zahlreiche praktische Beispiele aus dem Wirtschaftsleben",
+            "und sind dadurch am Ende des Kurses imstande, theoretische mikro- und makroökonomische",
+            "Konzepte in ihrer Relevanz für reales Wirtschaftsleben zu beurteilen."
+        ],
+        "inhalte_und_themen": [
+            "Denken wie ein Volkswirt",
+            "Grundlagen der empirischen Wirtschaftsforschung",
+            "Angebot und Nachfrage, Elastizitäten",
+            "Wohlfahrt und Marktversagen",
+            "Komparativer Vorteil und Außenhandel",
+            "VGR und Wirtschaftskreislauf",
+            "Wachstumstheorien",
+            "Kreditmarkt",
+            "Geldmarkt"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Paralleler Besuch der Mathematik-Vorlesung empfohlen"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-D3B01-H-0621",
+        "modultitel": "Digital and Sustainable Business Models",
+        "modultitel_englisch": "Digital and Sustainable Business Models",
+        "details": {
+            "Modulnummer": "82-021-D3B01-H-0621",
+            "Niveau": "Bachelormodul",
+            "Turnus": "BWL, insb. Dienstleistungsmanagement",
+            "Modulverantwortlich": "Prof. Dr. Katja Gelbrich",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Studierende des Kurses lernen, die Grundlagen und Struktur von Geschäftsmodellen zu ver-",
+            "stehen und dieses Wissen auf das Digitale Business und nachhaltige Geschäftsmodelle anzu-",
+            "wenden. Sie erlangen ein grundlegendes Verständnis verschiedener digitaler und nachhaltiger",
+            "Geschäftsmodelle im Konsumgüter- (B2C) und Investitionsgüterbereich (B2B). Sie lernen, wie",
+            "diese Geschäftsmodelle entwickelt, organisiert und vermarktete werden. Sie lernen die Erfolgs-",
+            "faktoren digitaler Geschäftsmodelle kennen, insbesondere mit Blick auf die Infrastruktur (z.B.",
+            "Kernaktivitäten, Geschäftspartner), das Angebot (z.B. das Nutzenversprechen), die Kunden (z.B.",
+            "Kundensegmente und Kundenbeziehungen) und die Finanzstruktur (z.B. Kostenstruktur und Um-",
+            "satzgenerierung).",
+            "Die begleitende Übung trägt zur Erarbeitung dieser Lernziele/Kompetenzen bei. Die Studierenden",
+            "wissen, sich kritisch mit ausgewählten Aspekten der Vorlesung sowie mit neuen Themengebieten",
+            "vertieft auseinander zu setzen. Sie lernen, ihr Wissen auf konkrete Firmen anzuwenden (sowohl",
+            "multinationale Firmen als auch Start-ups), und zwar anhand von Beispielen und kleinen Fall-",
+            "studien aus dem realen Geschäftsleben. Dadurch sind sie in der Lage, sich eigenes Fachwissen",
+            "anzueignen. Weiterhin erlangen sie die Fähigkeit, theoretische Konzepte aus der Vorlesung auf",
+            "Management-Probleme anzuwenden, indem sie Fallstudien diskutieren."
+        ],
+        "inhalte_und_themen": [
+            "Teil I: Digitale Geschäftsmodelle",
+            "Geschäftsmodelle und Geschäftsmodell-Canvas",
+            "Überblick und Beschreibung digitaler Geschäftsmodelle",
+            "Erfolgsfaktoren digitaler Geschäftsmodelle",
+            "Teil II: Nachhaltige Geschäftsmodelle",
+            "Grundlagen des Service Design",
+            "Co-Creation von innovativen Geschäftsmodellen",
+            "Nachhaltige und transformative Geschäftsmodelle / Transformative Service Research"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Abschlussklausur zum Vorlesungsstoff (60%) und zum Übungsstoff (40%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-D3B02-H-0721",
+        "modultitel": "Grundlagen von Informationssystemen",
+        "modultitel_englisch": "Basics of Information Systems",
+        "details": {
+            "Modulnummer": "82-021-D3B02-H-0721",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Lehrstuhl für Angewandte Mathematik",
+            "Modulverantwortlich": "Prof. Dr. Marcel Oliver",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "kennen die Grundlagen der digitalen Logik und der Automatentheorie.",
+            "kennen den grundlegenden Hard- und Software-Aufbau von Rechnern und verstehen die Funkti-",
+            "onsweise der Komponenten sowie deren Zusammenspiel bei der Informationsverarbeitung.",
+            "kennen architektonische Grundlagen von Computernetzwerken und Protokollen insbesondere im",
+            "Internet.",
+            "kennen Datenbankmanagementsysteme und Sprachen zur strukturierten Kommunikation mit",
+            "Datenbanken."
+        ],
+        "inhalte_und_themen": [
+            "Boolean algebra",
+            "Logic gates",
+            "Representations for integers and real numbers, number system conversions",
+            "Floating point arithmetic, floating point errors",
+            "Character representations (ASCII, Unicode), character strings",
+            "Finite state automata and regular expressions (deterministic vs. non-deterministic automata,",
+            "conversions between them, and conversions from and to regular expressions)",
+            "Beyond regular languages: Chomsky hierarchy, Turing machines, and the halting problem",
+            "Basics of computer architecture: functional units of a modern computer, Moore’s law, Dennard",
+            "scaling, instruction set architectures, RISC vs. CISC, brief introduction to assembly",
+            "Operating systems: Memory management, process scheduling, concurrency, deadlock and starva-",
+            "tion, file systems (including mounting, soft and hard links, RAID)",
+            "Error detection and correction: Parity, Checksums, Hamming codes",
+            "Transmission Control Protocol/Internet Protocol (TCP/IP)",
+            "Databases, Structured Query Language"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-QM05-H-0507",
+        "modultitel": "Mathematik für Wirtschaftswissenschaftler",
+        "modultitel_englisch": "Mathematics for students of economics",
+        "details": {
+            "Modulnummer": "82-021-QM05-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Angewandte Mathematik",
+            "Modulverantwortlich": "Apl. Prof. Dr. Günther Wirsching",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Studierenden der Betriebswirtschaftslehre erlernen im Rahmen dieses Moduls das mathema-",
+            "tische Grundwissen sowie einen sachgerechten und kritischen Umgang mit grundlegenden mathe-",
+            "matischen Begriffen.",
+            "Im Rahmen der Vorlesung erwerben die Studierenden zum einen die methodischen Kompetenzen",
+            "im Umgang mit den grundlegenden mathematischen Methoden.",
+            "Zum anderen entwickeln die Studierenden die mathematische Kompetenz des abstrakten Denkens",
+            "durch eine formale symbolische Problemdarstellung und durch den Umgang mit mathematischen",
+            "Repräsentationen.",
+            "Die mathematisch-logische Fähigkeit erarbeiten sich die Studierenden im Rahmen der Übung",
+            "durch das selbstständige Rechnen von einfachen Rechenaufgaben per Hand.",
+            "In den Lerngruppen sowie im Tutorium entwickeln die Studierenden die Fähigkeiten zum struk-",
+            "turierten Arbeiten und zur Kommunikation mathematischer Zusammenhänge."
+        ],
+        "inhalte_und_themen": [
+            "Aussagenlogik",
+            "Grundthemen der linearen Algebra",
+            "Gauß-Algorithmus",
+            "Differential- und Integralrechnung mehrerer Veränderlicher",
+            "Extremwertaufgaben mit Nebenbedingungen",
+            "Differenzengleichungen"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Schulmathematik (Abitur G8)"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "erreichen",
+            "Notenrelevanz": "Schriftliche Prüfung (90 Minuten) (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-QM03-H-507",
+        "modultitel": "Deskriptive Statistik und Wahrscheinlichkeitstheorie",
+        "modultitel_englisch": "Descriptive Statistics and Probability Theory",
+        "details": {
+            "Modulnummer": "82-021-QM03-H-507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Statistik und Quantitative Methoden",
+            "Modulverantwortlich": "Prof. Dr. Sven Resnjanskij",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden der Betriebswirtschaftslehre erlernen im Rahmen des Moduls die grundlegenden",
+            "Begriffe und Methoden der Statistik.",
+            "Die methodischen Kompetenzen erwerben die Studierenden im Rahmen der Vorlesung. Dabei wird",
+            "zunächst die Theorie behandelt, welche eine methodische Grundlage bildet.",
+            "Im Rahmen der Übung wenden die Studierenden die Verfahren der Wahrscheinlichkeitstheorie",
+            "und der deskriptiven Statistik auf praktische Fragestellungen an.",
+            "Durch eine selbständige Arbeitsweise entwickeln die Studierenden eine Selbstkompetenz und den",
+            "eigenverantwortlichen Umgang mit statistischen Methoden sowie deren effiziente Anwendung in",
+            "der Praxis."
+        ],
+        "inhalte_und_themen": [
+            "Einführung",
+            "Deskriptive Statistik (einschließlich Indexrechnung und Konzentrationsmessung)",
+            "Wahrscheinlichkeitstheorie:",
+            "Grundlagen (einschließlich Axiomatik, bedingte Wahrscheinlichkeit und Satz von Bayes)",
+            "Diskrete univariate Verteilungen",
+            "Stetige univariate Verteilungen",
+            "Diskrete multivariate Verteilungen",
+            "Stetige multivariate Verteilungen",
+            "Grenzwertsätze (einschließlich Tschebyscheff-Ungleichung und Gesetze der großen Zahlen)"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Mathematik für Wirtschaftswissenschaftler"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis:Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-D3B04-H-0721",
+        "modultitel": "Digital Business Strategies, Organization and Innovation",
+        "modultitel_englisch": "Digital Business Strategies, Organization and Innovation",
+        "details": {
+            "Modulnummer": "82-021-D3B04-H-0721",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Lehrstuhl für ABWL, Personal und Organisation",
+            "Modulverantwortlich": "Prof. Dr. Max Ringlstetter",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden entwickeln ein generisches Verständnis des Begriffes der (Unternehmens-)Führung.",
+            "Sie erlangen grundlegende Kenntnisse zum Wesen und Aufbau eines Unternehmens bzw. einer Or-",
+            "ganisation, sowie (digitaler) Geschäftsmodelle.",
+            "Die Studierenden sind in der Lage Konzepte der Innovation zu reproduzieren. Analoges gilt für",
+            "die Konzepte zu digitalen Geschäftsmodellen.",
+            "Die Studierenden erlernen die Grundlagen des Strategischen Managements im Einsatzbereich",
+            "digitaler Geschäftsmodelle. Dies gilt beispielsweise für agile Management Methoden und digitale",
+            "Innovationen",
+            "Die erlernten Perspektiven und Methoden können die Studierenden auf Beispielunternehmen an-",
+            "wenden"
+        ],
+        "inhalte_und_themen": [
+            "Teil I: Führung & Organisation",
+            "Teil II: Innovation & Digitale Geschäftsmodelle – Strukturen & Prozesse",
+            "Teil III: Strategisches Management für digitale Geschäftsfelder"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-BWL12-H-0507",
+        "modultitel": "Digital Systems",
+        "modultitel_englisch": "Digital Systems",
+        "details": {
+            "Modulnummer": "82-021-BWL12-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "BWL, insb. Wirtschaftsinformatik",
+            "Modulverantwortlich": "Prof. Dr. Thomas Setzer",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Studierenden erhalten ein grundlegendes Verständnis über das Management von und mit",
+            "Information sowie die Gestaltung betriebswirtschaftlicher Informationssysteme.",
+            "Sie erlernen relevante Grundlagen der Systementwicklung, der Prozessund Datenmodellierung,",
+            "der Datenkommunikation und -analyse, vernetzter Informationssysteme sowie Daten- und Inter-",
+            "netbasierter Geschäftsmodelle und IT-Systeme",
+            "Nach Abschluss der Veranstaltung verfügen die Studierenden über ein grundlegendes Fachwissen",
+            "auf dem Gebiet der Wirtschaftsinformatik sowie über wirtschaftliche, technische und algorithmi-",
+            "sche Konzepte und Verfahren digitaler Geschäftssysteme und -modelle und können Transferleis-",
+            "tungen in diesem Bereich erbringen."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen digitaler Systeme",
+            "Unternehmenssoftware und ERP-Systeme",
+            "Datenbank-Managementsysteme",
+            "Operative und analytische Aufgaben, Methoden und Prozesse",
+            "Internet, Web-Anwendungen und IT-Sicherheit",
+            "Internetbasierte Geschäftsmodelle und -systeme",
+            "Suchmaschinen, Plattformen, Empfehlungssysteme"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-D3B07-H-0122",
+        "modultitel": "Einführung Quantitative Methoden",
+        "modultitel_englisch": "Introduction Quantitative Methods",
+        "details": {
+            "Modulnummer": "82-021-D3B07-H-0122",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Lehrstuhl für Angewandte Mathematik",
+            "Modulverantwortlich": "Prof. Dr. Marcel Oliver",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden erlernen im Rahmen dieses Moduls aufbauend auf den Grundlagen von Ma-",
+            "thematik für Wirtschaftswissenschaftlern erweiterte Konzepte zur Darstellung ökonomischer und",
+            "digitaler Modelle mit Hilfe komplexer mathematischer Methoden.",
+            "Im Rahmen der Vorlesung erwerben die Studierenden einen sachgerechten und kritischen Umgang",
+            "mit den erlernten mathematischen Methoden.",
+            "Zum anderen entwickeln die Studierenden fortgeschrittene mathematische Kompetenz des ab-",
+            "strakten Denkens durch eine formale symbolische Problemdarstellung und durch den Umgang",
+            "mit fortgeschrittenen mathematischen Repräsentationen.",
+            "Die mathematisch-logische Fähigkeit erarbeiten sich die Studierenden im Rahmen der Übung",
+            "durch das selbstständige Rechnen von einfachen Rechenaufgaben per Hand.",
+            "In den Lerngruppen sowie im Tutorium entwickeln die Studierenden die Fähigkeiten zum struktu-",
+            "rierten Arbeiten und zur Kommunikation mathematischer Zusammenhänge."
+        ],
+        "inhalte_und_themen": [
+            "Integralrechnung mehrerer Veränderliche",
+            "Eigenwerte, Diagonalisierung, Singulärwertzerlegung, und Orthogonale Matrizen",
+            "Lineare Optimierung in Matrixschreibung, Simplex, Dualität",
+            "Differenzengleichungen"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Mathematik für Wirtschaftswissenschaftler oder vergleichbare Veranstaltungen"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-VWL06-H-0218",
+        "modultitel": "Mikroökonomie",
+        "modultitel_englisch": "Microeconomics",
+        "details": {
+            "Modulnummer": "82-021-VWL06-H-0218",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Mikroökonomie, WFI",
+            "Modulverantwortlich": "Prof. Dr. Alexander M. Danzer",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Studierende des Kurses lernen einen sachgerechten und kritischen Umgang mit den grundlegenden",
+            "Konzepten von Konsumenten- und Produzentenverhalten, deren (teils strategische) Interaktion auf",
+            "Märkten, sowie den Wirkungen wirtschaftspolitischer Regulierung.",
+            "Studierende erwerben Techniken zur partiellen und allgemeinen Analyse von Marktgleichgewich-",
+            "ten mit und ohne staatliche Intervention. Sie sind so in der Lage, reale wirtschaftspolitische Inter-",
+            "ventionen kritisch zu analysieren und zu hinterfragen. Studierende erlernen damit die methodi-",
+            "schen Grundlagen zur Wohlfahrtsanalyse.",
+            "Sie entwickeln die Fähigkeit, verschiedene Marktformen (Wettbewerb, Monopol, Oligopol) zu un-",
+            "terscheiden und deren Wohlfahrtseffekte zu beurteilen. Studierende erwerben Kenntnisse in der",
+            "Anwendung grundlegender spieltheoretischer Konzepte.",
+            "Studierende erwerben Kenntnisse über zahlreiche praktische Beispiele aus dem Wirtschaftsleben",
+            "und sind dadurch am Ende des Kurses imstande, theoretische mikroökonomische Konzepte in ihrer",
+            "Relevanz für reales Wirtschaftsleben zu beurteilen.",
+            "Nach Abschluss des Kurses verfügen die Studierenden über Kenntnisse der Grundlagen der Mi-",
+            "kroökonomie, insbesondere über das Verhalten der Wirtschaftssubjekte (Verbraucher und Unter-",
+            "nehmen), deren Interaktion auf verschiedenen Arten von Märkten, sowie deren Reaktionen auf",
+            "staatliche Interventionen."
+        ],
+        "inhalte_und_themen": [
+            "Konsumenten",
+            "Präferenzen und Budgetbeschränkung",
+            "Konsumentenverhalten und Marktnachfrage",
+            "Konsumentenrente",
+            "Verhalten bei Unsicherheit",
+            "Unternehmen",
+            "Produktions- und Kostenfunktion",
+            "Gewinnmaximierung auf Wettbewerbsmärkten",
+            "Produzentenrente",
+            "Verhalten bei Unsicherheit",
+            "Marktformen mit Marktmacht",
+            "Monopol",
+            "Oligopol (Cournot)",
+            "Analyse von Wettbewerbsmärkten und Märkten mit Marktmacht",
+            "Gesamtwohlfahrt",
+            "Staatliche Regulierung"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Mathematik, Einführung in die Volkswirtschaftslehre (bzw. Makroökonomie I in der alten PO)"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (90 min) 100%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-IFM12-H-0316",
+        "modultitel": "Data Mining and Business Analytics",
+        "modultitel_englisch": "Data Mining and Business Analytics",
+        "details": {
+            "Modulnummer": "82-021-IFM12-H-0316",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Wirtschaftsinformatik",
+            "Modulverantwortlich": "Prof. Dr. Thomas Setzer",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden verstehen die wesentlichen Aspekte, Potenziale und Herausforderungen der Busi-",
+            "ness Analytics und können Problemstellungen im Business Analytics strukturiert mittels Modellen",
+            "und Methoden des Data Mining angehen.",
+            "Die Studierenden kennen grundlegende statistische/maschinelle Lernverfahren zur Lösung von",
+            "Fragestellungen der Business Analytics sowie deren theoretische Eigenschaften. Damit sind sie",
+            "befähigt, problemspezifisch Modelle und Verfahren vergleichend zu bewerten, geeignete Verfahren",
+            "auszuwählen, zu erproben und deren Konfigurationen gewinnbringend anzupassen.",
+            "Durch das erworbene theoretische Verständnis sowie das praxisorientierte Know-how und die Um-",
+            "setzung der Techniken in den Übungen können die Studierenden erfolgreich gängige Softwarepa-",
+            "kete im Data Mining einsetzen."
+        ],
+        "inhalte_und_themen": [
+            "zur Adressierung typischer Problemstellungen im Business Analytics. Die Teilnehmer lernen struktu-",
+            "rierte Vorgehensmodelle sowie relevante Data Mining-Methoden kennen. Diese umfassen die Vorverar-",
+            "beitung, Exploration und Reduktion von Daten sowie Clustering, Klassifikation, Dimensionsreduktion",
+            "und Assoziationsregeln. In Übungen wenden die Teilnehmer ihr Wissen in Aufgaben mit realistischen",
+            "Datensätzen an. Die Vorlesungsstruktur ist wie folgt:",
+            "Einführung in Business Analytics und Data Mining",
+            "Datenvorbereitung, Datenreduktion und explorative Datenanalyse",
+            "Klassifikationsmethoden",
+            "Clusteranalyse, Assoziationsregeln"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "de",
+            "Notenrelevanz": "Klausur (90 Minuten) 100%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-BWL06-H-0507",
+        "modultitel": "Investition, Finanzierung und Steuern",
+        "modultitel_englisch": "Investment, Finance and Tax",
+        "details": {
+            "Modulnummer": "82-021-BWL06-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "schaftliche Steuerlehre",
+            "Modulverantwortlich": "Prof. Dr. Thomas Mählmann",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Studierende des Kurses erlernen den Überblick über die Theorien sowie über die quantitativen",
+            "Methoden der Investitions- und Finanzierungslehre sowie über die generelle Funktionsweise der",
+            "Kapitalmärkte. Sie erhalten ferner einen Überblick über die Ertragsbesteuerung und deren Einfluss",
+            "auf Investitions- und Finanzierungsentscheidungen.",
+            "Studierende erwerben Techniken zur Lösung von ertragsteuerlichen Sachverhalten und deren ei-",
+            "genständige Übertragung auf neue Sachverhalte. Dabei erlernen sie auch den Umgang mit den",
+            "einschlägigen Rechtsquellen.",
+            "Diese erworbenen Kenntnisse sind essentiell und werden in den verschiedensten Bereichen der",
+            "Betriebswirtschaftslehre angewandt, bspw. in der Bewertung von Investitionsprojekten."
+        ],
+        "inhalte_und_themen": [
+            "A: Gegenstand und Aufgabe der Finanzwirtschaft",
+            "1. Finanzbereich und Leistungsbereich",
+            "2. Aufgaben der Finanzwirtschaft",
+            "B: Investitionsentscheidungen",
+            "1. Zusammenhang zwischen Investition und Finanzierung",
+            "2. Investitionsentscheidungen bei gegebenem Kalkulationszinsfuß",
+            "2.1 Kapitalwert, Endwert und äquivalente Annuität als Entscheidungskriterien",
+            "2.2 Der interne Zinsfuß als Beurteilungskriterium",
+            "C: Finanzierungsentscheidungen",
+            "1. Finanzierungsarten",
+            "2. Finanzierungstitel und Märkte",
+            "3. Betrachtungsweisen der Finanzierungsbeziehung",
+            "4. Beteiligungsfinanzierung",
+            "5. Kreditfinanzierung",
+            "D: Ertragsbesteuerung",
+            "1. Grundlagen",
+            "2. Besteuerung natürlicher Personen",
+            "3. Besteuerung von Kapitalgesellschaften",
+            "E. Investitions- und Finanzierungsentscheidungen unter Berücksichtigung von Steuern"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "teter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Leistungsnachweis Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-IFM02-H-0822",
+        "modultitel": "Software Engineering und Programmierung",
+        "modultitel_englisch": "Software Engineering and Programming",
+        "details": {
+            "Modulnummer": "82-021-IFM02-H-0822",
+            "Niveau": "Bachelormodul",
+            "Turnus": "BWL, insb. Wirtschaftsinformatik",
+            "Modulverantwortlich": "Prof. Dr. Thomas Setzer",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Studierende",
+            "erhalten grundlegende Kompetenzen zur selbstständigen und reflektierten Planung und Lösung",
+            "fachlicher Aufgabenstellungen mit einer modernen Programmiersprache.",
+            "sind in der Lage, Programme zu strukturieren und zu modularisieren.",
+            "entwickeln ein Verständnis für die Zusammenhänge und die Phasen in der Software-Entwicklung.",
+            "erlangen ein grundlegendes Verständnis für die Prinzipien und Implementierung objektorientierter",
+            "Software.",
+            "erlangen die Fähigkeit, Programm-Entwürfe und Programm-Code zu diskutieren, zu analysieren,",
+            "zu bewerten und zu verbessern.",
+            "können Lösungen mittels einer modernen Programmiersprache umsetzen."
+        ],
+        "inhalte_und_themen": [
+            "sowie der Programmierung. Es werden folgende Themen behandelt",
+            "Computer und Programme",
+            "Prinzipien und Vorgehensmodellen bei der Softwareentwicklung",
+            "Datentypen und -strukturen",
+            "Programmfluss- und Entscheidungsstrukturen",
+            "Funktionen und Modularisierung",
+            "Programmierparadigmen und Objekt-Orientierung",
+            "Debugging und Testen",
+            "Chaos und Simulation",
+            "Umsetzung fachlicher Aufgaben mittels entwickelter Programme",
+            "In dem Kurs wird eine moderne Programmiersprache wie Python, Ruby oder Java verwendet."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "tern und Informationssystemen"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-D3B08-H-0522",
+        "modultitel": "Software Tools for Simulation and Optimization",
+        "modultitel_englisch": "Software Tools for Simulation and Optimization",
+        "details": {
+            "Modulnummer": "82-021-D3B08-H-0522",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, insb. Logistik und Operations Analytics",
+            "Modulverantwortlich": "Prof. Dr. Pirmin Fontaine",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "erweitern ihre Grundkenntnisse zur mathematischen Programmierung.",
+            "können mathematische Modelle aus den Bereichen der Betriebs- und Volkswirtschaftslehre in ei-",
+            "nem Softwaretool (z.B. IBM ILOG CPLEX Optimization Studio, OPL) eigenständig implementieren",
+            "und lösen sowie die erhaltenen Ergebnisse interpretieren.",
+            "sind in der Lage, stochastische Modelle aus unterschiedlichen Bereichen der Betriebs- und Volks-",
+            "wirtschaftslehre strukturiert darzustellen und in einer Simulationssoftware (z.B. AnyLogic) zu",
+            "implementieren.",
+            "können die aus einer Simulationsstudie gewonnenen Ergebnisse interpretieren, präsentieren und",
+            "Handlungsempfehlungen ableiten."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen der mathematischen Modellierung und Optimierung",
+            "Grundlagen von Modellierungssprachen",
+            "Einführung in ein Softwaretool zur Optimierung (z.B. IBM ILOG CPLEX Optimization Studio,",
+            "OPL)",
+            "Ereignisorientierte Simulation und Monte-Carlo-Simulation",
+            "Stufenmodell zur Durchführung einer Simulationsstudie",
+            "Modellierung und Implementierung von Modellen in einem Simulationssystem (z.B. AnyLogic)",
+            "Interpretation von Simulationsergebnissen"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Wahrscheinlichkeitsrechnung und Wahrscheinlichkeitsverteilungen"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Alle Teilleistungen müssen bestanden sein; einzelne Teilleistungen sind nicht wiederholbar.",
+            "Notenrelevanz": "Klausur zu den Theorieinhalten (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-QM04-H-0507",
+        "modultitel": "Induktive und multivariate Statistik",
+        "modultitel_englisch": "Statistical Inference and Multivariate Statistics",
+        "details": {
+            "Modulnummer": "82-021-QM04-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Statistik und Quantitative Methoden",
+            "Modulverantwortlich": "Prof. Dr. Ulrich Küsters",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Studierenden der Betriebswirtschaftslehre erlernen im Rahmen dieses Moduls die grundlegen-",
+            "den Begriffe und Methoden der induktiven und multivariaten Statistik.",
+            "Die methodischen Kompetenzen erwerben die Studierenden im Rahmen der Vorlesung, die auf",
+            "den Inhalten des vorhergehenden Moduls der deskriptiven Statistik und Wahrscheinlichkeitstheo-",
+            "rie beruht. Dabei wird zunächst die Theorie behandelt, welche die methodische Kompetenz der",
+            "Studierenden erweitert.",
+            "Im Rahmen der Übung wenden die Studierenden die Verfahren der induktiven und multivariaten",
+            "Statistik auf einfache betriebs- und volkswirtschaftliche Probleme an.",
+            "Durch eine selbständige Arbeitsweise entwickeln die Studierenden eine Selbstkompetenz und den",
+            "eigenverantwortlichen Umgang mit statistischen Methoden sowie derer effizienten Anwendung in",
+            "der Praxis."
+        ],
+        "inhalte_und_themen": [
+            "Inferenzstatistik",
+            "Stichprobenfunktionen",
+            "Punktschätzung",
+            "Konfidenzintervalle",
+            "Signifikanztests",
+            "Multivariate Statistik",
+            "Korrelation",
+            "Regression",
+            "Einfaktorielle Varianzanalyse",
+            "Partielle Korrelation",
+            "Assoziationsmaße für qualitative Merkmale",
+            "Assoziationsmaße und Tests für ordinale Merkmale"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Deskriptive Statistik und Wahrscheinlichkeitstheorie"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "",
+        "modultitel": "Sustainable Operationsmanagement",
+        "modultitel_englisch": "Sustainable Operations Management",
+        "details": {
+            "Modulnummer": "Nicht angegeben",
+            "Niveau": "Bachelormodul",
+            "Turnus": "BWL, Logistik und Operations Analytics",
+            "Modulverantwortlich": "Prof. Dr. Pirmin Fontaine",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "erlernen ein gutes Verstandnis für Produktions-, Logistik- und Mobilitätskonzepte erlernen.",
+            "erhalten ein einführendes Verständnis über die aktuellen Methoden und Konzepte im Produktions-,",
+            "Logistik- und Mobilitäts-Management erhalten.",
+            "die Berücksichtigung von Nachhaltigkeit in Produktions-, Logistik- und Mobilitätskonzepte ken-",
+            "nen.",
+            "lernen ausgewählte Aspekte der Entscheidungsfindung in Produktion, Logistik und Mobilität ken-",
+            "nen und erlangen erste Fähigkeiten, das erlernte Wissen im Zuge von Analyse- und Entscheidungs-",
+            "situationen in der betrieblichen Praxis umzusetzen."
+        ],
+        "inhalte_und_themen": [
+            "Modelle und modellgestützte Planung",
+            "Konzepte der nachhaltigen Produktion, Logistik und Mobilität",
+            "Lineare Planungsrechnung",
+            "Projektplanung (Netzplantechnik)",
+            "Gestaltung und Planung von Produktionssystemen",
+            "Bestellmengenplanung",
+            "Transport- und Tourenplanung",
+            "Mobilitätskonzepte"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-H-BA-0507",
+        "modultitel": "Bachelorarbeit",
+        "modultitel_englisch": "Bachelor Thesis",
+        "details": {
+            "Modulnummer": "82-021-H-BA-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Betreuender Lehrstuhl der WFI",
+            "Modulverantwortlich": "Betreuer",
+            "ECTS": "10 ECTS"
+        },
+        "kompetenzen": [
+            "Ziel der Erstellung der Bachelorarbeit ist, dass sich die Studierenden am Ende ihres Bachelorstu-",
+            "diums in selbstständiger Arbeit einen betriebswirtschaftlichen Forschungsinhalt erschließen.",
+            "Sie sollen in die Lage versetzt werden, eine Forschungsfrage strukturiert zu bearbeiten, unter-",
+            "schiedliche wissenschaftliche Perspektiven miteinander zu verknüpfen und daraus Handlungsim-",
+            "plikationen abzuleiten."
+        ],
+        "inhalte_und_themen": [
+            "Selbstständige Bearbeitung eines Themas mit wirtschaftswissenschaftlichem Bezug",
+            "Formulierung einer Forschungsfrage",
+            "Recherche und Erarbeitung des Forschungsstandes",
+            "Bearbeitung der in der Forschungsfrage formulierten Problemstellung",
+            "Formulierung eines wissenschaftlich begründeten Urteils"
+        ],
+        "voraussetzungen": {
+            "Formale": "Grundvoraussetzung ist die erfolgreiche Teilnahme an einem Proseminar",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch oder Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Schriftliche Arbeit",
+            "Notenrelevanz": "das Thema festgelegt hat, und evtl. einem Zweitgutachter bewertet."
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-D3B03-H-0721",
+        "modultitel": "Digitales Projekt",
+        "modultitel_englisch": "Digital Project",
+        "details": {
+            "Modulnummer": "82-021-D3B03-H-0721",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Wirtschaftsinformatik",
+            "Modulverantwortlich": "Prof. Dr. Thomas Setzer",
+            "ECTS": "Nicht angegeben"
+        },
+        "kompetenzen": [
+            "können eine Themenstellung mit forschungs- und/oder anwendungs-orientierten Fokus struktu-",
+            "riert bearbeiten sowie Zwischenstände verständlich präsentieren und kritisch reflektieren.",
+            "erwerben die Fähigkeit, in Teamarbeit ein Projekt zu koordinieren und zu managen.",
+            "sind in der Lage, eine komplexe fachliche Aufgabenstellung im Bereich der Datengenerierung,",
+            "Datenaufnahme, Datenanalyse oder Gestaltung und Entwicklung digitaler Prozesse und Systeme",
+            "zu formalisieren, zu modularisieren und prototypisch umzusetzen.",
+            "besitzen die Kompetenzen, Resultate ihrer Umsetzung zu interpretieren, kritisch zu bewerten, zu",
+            "verifizieren und bzgl. fachlicher Aufgabenstellung und Relevanz zu validieren und zu reflektieren.",
+            "können wissenschaftliche Texte zu analytisch-gestaltungsorientierter Forschung verfassen."
+        ],
+        "inhalte_und_themen": [
+            "In dem Kurs werden Lösungen zu fachlichen Aufgabenstellungen aus der Praxis oder Forschung in",
+            "kleinen Teams von Studierenden erarbeitet.",
+            "Es werden komplexe Aufgabenstellung im Bereich der Datenanalyse und/oder der Gestaltung und",
+            "Entwicklung digitaler Prozesse und Systeme formalisiert, modularisiert und mittels strukturierter",
+            "Methoden und Techniken der System- und Software-Modellierung und -entwicklung umgesetzt",
+            "und bewertet."
+        ],
+        "voraussetzungen": {
+            "Formale": "keine",
+            "Empfohlene": "keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch und Englisch",
+            "Anforderung": "mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Portfolio",
+            "Notenrelevanz": "Endpräsentation (25 %)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-D3B09-H-0124",
+        "modultitel": "Digital Seminar in Data Science & Quantitative Applications",
+        "modultitel_englisch": "Digital Seminar in Data Science & Quantitative Applications",
+        "details": {
+            "Modulnummer": "82-021-D3B09-H-0124",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, insb. Logistik und Operations Analytics",
+            "Modulverantwortlich": "Prof. Dr. Pirmin Fontaine",
+            "ECTS": "10 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden belegen das Proseminar Supply Chain Management (SCM) (82-021-PS07-H-",
+            "0507). Zusätzlich zu den im Proseminar geforderten Leistungen implementieren die Studieren-",
+            "den die jeweiligen Daten-, Simulations- oder Optimierungsmodelle in einem Softwaresystem und",
+            "führen hiermit numerische Analysen durch. Das Modul vermittelt hierdurch die folgenden Kom-",
+            "petenzen:",
+            "Die Studierenden lernen eine spezifische Themenstellung selbständig und wissenschaftlich zu",
+            "bearbeiten.",
+            "Die Studierenden erlernen die Methoden des wissenschaftlichen Arbeitens, bspw. Literaturre-",
+            "cherche, Zitierweisen etc.",
+            "Die Studierenden lernen Daten-, Simulations- oder Optimierungsmodelle zu implementieren",
+            "und im Hinblick auf ökonomische (betriebswirtschaftliche) Fragestellungen zu analysieren.",
+            "Die Studierenden werden mit den Grundlagen des Projektmanagements und der Teamarbeit",
+            "vertraut.",
+            "Die Studierenden lernen ein Thema strukturiert und verständlich vor einer Fachgruppe zu",
+            "präsentieren.",
+            "Nach Abschluss des Moduls verfügen die Studierenden über ein grundlegendes Fachwissen im",
+            "Supply Chain Managements und können Transferleistungen in diesem Bereich erbringen.",
+            "Zur Erarbeitung dieser Kompetenzen wird von den Studierenden sowohl ein überdurchschnittliches",
+            "Eigenengagement als auch eine enge Abstimmung mit dem/der betreuenden Dozenten/Dozentin",
+            "erwartet."
+        ],
+        "inhalte_und_themen": [
+            "Im Rahmen des Digital Seminar in Data Science & Quantitative Applications bearbeiten die Stu-",
+            "dierenden unterschiedliche Themen aus dem Supply Chain Management",
+            "Es werden grundlegende Methoden zur quantitativen Analyse und/oder Optimierung im betriebs-",
+            "wirtschaftlichen Kontext vermittelt.",
+            "Es werden Methoden des wissenschaftlichen Arbeitens vermittelt.",
+            "Es werden Grundlagen des Projektmanagements, Softwareentwicklung und der Teamarbeit ver-",
+            "mittelt."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "analytischer Programmiersprachen."
+        },
+        "pruefung": {
+            "Sprache": "Deutsch oder Englisch. Die Unterrichtssprache wird zuvor bekanntgegeben.",
+            "Anforderung": "eines Themenblocks geht in die Bewertung mit ein.",
+            "Notenrelevanz": "Präsentation (20 %)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-D3B06-H-0122",
+        "modultitel": "Algorithmen und Datenstrukturen",
+        "modultitel_englisch": "Algorithms and Data Structures",
+        "details": {
+            "Modulnummer": "82-021-D3B06-H-0122",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Beteiligte Fachgebiete",
+            "Modulverantwortlich": "Prof. Dr. Marcel Oliver",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierendenkönnen die Funktion von Algorithmen erklären und deren Eigenschaften ana-",
+            "lysieren. können einfache Algorithmen entwickeln und in einer Programmiersprache implemen-",
+            "tieren. kennen wichtige Algorithmen und Datenstrukturen zum Sortierproblem und Suchen so-",
+            "wie für graphbasierte Problemstellungen und können diese an Beispielen anwenden. können die",
+            "Grundlagen objektorientierter Programmierung erläutern und anwenden. kennen algorithmische",
+            "Paradigmen und können diese an Beispielen erläutern."
+        ],
+        "inhalte_und_themen": [
+            "Eigenschaften von Algorithmen, z. B Effizienz, Komplexität, Rekursion",
+            "Datenstrukturen Array, Liste, Baum und Graph",
+            "Sortier- und Suchalgorithmen",
+            "Graph-Algorithmen",
+            "Grundlagen der objektorientierten Programmierung",
+            "Algorithmische Paradigmen"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Grundlagen von Informationssystemen, Software Engineering – Programming"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Prüfung)",
+            "Notenrelevanz": "Klausur oder mündliche Prüfung (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-VWLECO17-H-0916",
+        "modultitel": "Behavioral Finance",
+        "modultitel_englisch": "Behavioral Finance",
+        "details": {
+            "Modulnummer": "82-021-VWLECO17-H-0916",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Juniorprofessor Digital Finance",
+            "Modulverantwortlich": "Prof. Dr. David Streich",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Behavioral finance uses insights from psychology to understand how human behavior influences",
+            "the decisions of individual and professional investors, markets, and managers. Some decisions are",
+            "simple, day-to-day choices, such as how hard we are going to study for the next test, or what",
+            "brand of soda we are going to buy, but others significantly impact our financial well-being, such",
+            "as whether we should buy a particular stock, or how we should allocate our money among various",
+            "investment funds. The purpose of this lecture is to present what we have learned about financial",
+            "decision-making from behavioral finance research.",
+            "Students will refresh the foundations of modern finance: expected utility theory, asset pricing",
+            "(CAPM), the efficient market hypothesis, and agency relationships.",
+            "Students will become aware of the inability of these standard tools to account for various para-",
+            "doxes and anomalies, leading to the genesis of behavioral finance as reflected in prospect theory.",
+            "Students will be provided the theoretical foundation of this concept.",
+            "Students will learn the psychological foundations of Behavioral Finance: cognitive limitations and",
+            "heuristics, overconfidence, and emotion.",
+            "Armed with this psychological background, students will learn how psychology impacts financial",
+            "decision making at the level of the individual. For instance, the lecture will investigate the extent",
+            "to which the faulty use of heuristics leads to sub optimal financial decision-making.",
+            "Students will become aware of the behavioral foundations of some central stock-market puzzles.",
+            "For instance, in 1987 the Dow Jones fell by almost one quarter without any apparent reason. In",
+            "this context, the global financial crisis will also be discussed."
+        ],
+        "inhalte_und_themen": [
+            "Foundations of Neoclassical Finance",
+            "Expected Utility Theory",
+            "Asset Pricing, Market Efficiency, and Agency Relationships",
+            "Theoretical Foundations of Behavioral Finance",
+            "Prospect Theory",
+            "Framing, and Mental Accounting",
+            "Psychological Foundations of Behavioral Finance",
+            "Heuristics and Biases",
+            "Overconfidence",
+            "Investor Behavior",
+            "Implications of Heuristics and Biases for Financial Decision-Making",
+            "Implications of Overconfidence for Financial Decision-Making",
+            "Individual Investors and the Force of Emotion",
+            "Market Outcomes",
+            "Behavioral Explanations for Anomalies",
+            "Do Behavioral Factors Explain Stock Market Puzzles?"
+        ],
+        "voraussetzungen": {
+            "Formale": "None",
+            "Empfohlene": "None"
+        },
+        "pruefung": {
+            "Sprache": "English",
+            "Anforderung": "Gained competences are tested in a written exam (90 minutes)",
+            "Notenrelevanz": "Written Exam 100%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-TA15-H-0507",
+        "modultitel": "stainability",
+        "modultitel_englisch": "stainability",
+        "details": {
+            "Modulnummer": "82-021-TA15-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Betriebswirtschaftliche Steuerlehre",
+            "Modulverantwortlich": "Prof. Dr. Reinald Koch",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Studierende des Moduls lernen grundlegende Vorschriften des europäischen Steuerrechts kennen.",
+            "Dabei wird ihnen u.a. die Fähigkeit vermittelt, steuerliche Konsequenzen grenzüberschreitenden,",
+            "wirtschaftlichen Handelns zu erkennen.",
+            "Studierende erwerben Techniken zur Lösung von komplexen steuerlichen Sacherhalten und deren",
+            "eigenständige Übertragung auf neue Sachverhalte. Dabei erlernen sie auch den Umgang mit den",
+            "einschlägigen (internationalen) Rechtsquellen.",
+            "Nach Abschluss des Moduls verfügen die Studierenden über einen umfassenden Überblick über die",
+            "Unternehmenssteuersysteme der Europäischen Union und das hierfür relevante Europarecht."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen europäischer Rechtsformen",
+            "Besteuerungskonzepte der EU-Mitgliedstaaten",
+            "Bestimmungen zur Besteuerung von ausländischen Einkünften",
+            "Einfluss von EU-Steuerrecht auf Steuergestaltungs- möglichkeiten"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100 %)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-AC02-H-0507",
+        "modultitel": "Grundlagen des Controlling",
+        "modultitel_englisch": "Fundamentals of Controlling",
+        "details": {
+            "Modulnummer": "82-021-AC02-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Unternehmensrechnung",
+            "Modulverantwortlich": "Prof. mult. Anton Burger",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden erhalten einen umfassenden Einblick in grundlegende Konzepte des Controllings.",
+            "Sie verknüpfen unterschiedliche Konzepte, um ein tieferes Verständnis zu erlangen und lernen die",
+            "Instrumente in der Praxis zu implementieren.",
+            "Durch das kritische Verstehen der Instrumente werden die Reflexionsfähigkeit und die analytische",
+            "Kompetenz zur Verdichtung von komplexen Sachverhalten geschult."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen des Controlling",
+            "Grundlagen der Informationsversorgung",
+            "Externes Rechnungswesen",
+            "Kennzahlen und Kennzahlensysteme",
+            "Kosten- und Erlösrechnung",
+            "Planung und Kontrolle",
+            "Organisation und Entwicklungstendenzen"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "BWL II (ReWe), BWL III (KoRe) und VI (IFK I)"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "",
+        "modultitel": "Data Analytics Lab",
+        "modultitel_englisch": "Data Analytics Lab",
+        "details": {
+            "Modulnummer": "Nicht angegeben",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, insbesondere Wirtschaftsinformatik",
+            "Modulverantwortlich": "Prof. Dr. Thomas Setzer",
+            "ECTS": "Nicht angegeben"
+        },
+        "kompetenzen": [
+            "Studierende können Aufgabenstellungen in den Bereichen Data Science, Business Analytics, Software-",
+            "und Data Engineering sowie KI-Integration systematisch strukturieren.",
+            "Sie sind in der Lage, Vorgehensmodelle zur Datentransformation zu konfigurieren sowie relevante",
+            "Phasen reflektiert zu gestalten, zu bewerten und anzupassen.",
+            "Studierende können in mentorierten Teams Lösungen zu datenwissenschaftlichen Fragestellungen",
+            "erarbeiten, präsentieren und fachlich diskutieren.",
+            "Sie sind befähigt, Aufgaben mithilfe moderner datenwissenschaftlicher Programmiersprachen oder",
+            "Software-Werkzeuge umzusetzen, zu evaluieren und zu dokumentieren.",
+            "Studierende können entwickelten Code bzw. konfigurierte Softwarelösungen theoriefundiert, kri-",
+            "tisch reflektieren und im Hinblick auf die zugrunde liegende Problemstellung validieren."
+        ],
+        "inhalte_und_themen": [
+            "Der Kurs vermittelt Techniken und Verfahren für die systematische Kon-",
+            "zeption, Konfiguration, Implementierung, Bewertung und Anpassung von Lösungen für Aufgaben im",
+            "Bereich Business Analytics, Datenanalyse, KI-Integration sowie Software- und Datenengineering. Dazu",
+            "entwickeln die Studierenden in Teams datenanalytische Prozessmo-delle und Methoden, beispielsweise",
+            "für öffentliche Herausforderungen und Datensätze, die im Internet verfügbar sind oder von Partner-",
+            "organisationen bereitgestellt werden, einschließlich der zu diesem Zweck bereitgestellten Daten und",
+            "Aufgabenbeschreibungen.",
+            "Strukturierung und Kategorisierung von Aufgaben im Bereich Business Analytics und Data Science",
+            "sowie Entwicklung geeigneter datenanalytischer Prozessmodelle.",
+            "Koordination und Durchführung von Projektarbeit in moderierten Teams.",
+            "Datenexploration, Datenvorverarbeitung sowie Feature Engineering.",
+            "Entwicklung, Implementierung und kriterienbasierte Bewertung von Datenanalyse- und Machine-",
+            "Learning-Verfahren.",
+            "Konzeption, Anwendung und Interpretation von Evaluierungs- und Validierungsmethoden.",
+            "Präsentation und Diskussion von Vorgehensmodellen, Lösungsschritten, Implementierungen sowie",
+            "der Qualität der erzielten Ergebnisse.",
+            "Der Kurs verwendet eine moderne Sprache für Computing- und Machine-Learning-Aufgaben wie Py-",
+            "thon, R oder Java und/oder nutzt ggf. vorhande-ne Softwarekomponenten, die dann entsprechend",
+            "integriert und konfigu-riert werden sollen."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Grundlegende Kenntnisse in Data Science und Machine Learning"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis (Portfolio)",
+            "Notenrelevanz": "wissenschaftlichen Artikels (Paper)."
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-FM05",
+        "modultitel": "Data Science in Finance mit Python",
+        "modultitel_englisch": "Data Science in Finance with Python",
+        "details": {
+            "Modulnummer": "82-021-FM05",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, Finanzierung und Banken",
+            "Modulverantwortlich": "Prof. Dr. Thomas Mählmann",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Der Studierende lernt realistische Problemstellungen des Portfoliomanagements, insbesondere der",
+            "Entwicklung und Umsetzung regelgebundener (systematischer) Handelsstrategien (smart beta, al-",
+            "ternative alpha), kennen und befasst sich mit praxisrelevanten Lösungsansätzen. Das Augenmerk",
+            "liegt auf der Umsetzung datenanalytischer Konzepte in Python, mit denen der Studierende nach er-",
+            "folgreichem Abschluss dieses Moduls in der Lage ist, diverse Problemstellungen im gesamten Inves-",
+            "titionsprozess zu berücksichtigen. Studierende erwerben in diesem Modul digitale Kompetenzen,",
+            "da sie lernen, Finanzdaten mithilfe von Python zu analysieren und auszuwerten, was wesentliche",
+            "Fähigkeiten im Umgang mit modernen digitalen Werkzeugen und Technologien vermittelt."
+        ],
+        "inhalte_und_themen": [
+            "Das Modul beinhaltet unter anderem die folgenden Themen:",
+            "Grundlagen der Datenanalyse in Python mit Pandas",
+            "Risiko und Rendite",
+            "Mean-Variance Portfolio Optimierung",
+            "Quantitative Handels- und Portfolio Strategien"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Portfolioleistung",
+            "Notenrelevanz": "Python-Programmieraufgaben."
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-FM08-H-0723",
+        "modultitel": "Digital Finance",
+        "modultitel_englisch": "Digital Finance",
+        "details": {
+            "Modulnummer": "82-021-FM08-H-0723",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Juniorprofessor Digital Finance",
+            "Modulverantwortlich": "Prof. Dr. David Streich",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "In diesem Modul erlangen Studenten strukturierte Kenntnisse hin-sichtlich der vielfältigen von",
+            "Finanzintermediären ausgeübten Tä-tigkeiten, sowie der Disruption dieser Tätigkeiten durch di-",
+            "gitale Technologien.",
+            "Anhand von grundlegenden finanzwirtschaftlichen Theorien erlan-gen Studenten zunächst ein",
+            "vertieftes Verständnis der verschie-denen Funktionen von Finanzintermediären.",
+            "Darauf basierend wird die Nutzung digitaler Technologien zur Aus-übung dieser Funktionen, sowie",
+            "die Bedeutung für die Geschäfts-modelle bestehender Anbieter beleuchtet."
+        ],
+        "inhalte_und_themen": [
+            "Daseinsberechtigung von Finanzintermediären",
+            "Finanzierung (Kreditvergabe, P2P-Lending, Offerings, Crowdfun-ding, etc.)",
+            "Elektronischer Wertpapierhandel",
+            "Zahlungsabwicklung (Online-Zahlungsdienstleistungen, Kryp-towährungen, etc.)",
+            "Anlageberatung/Vermögensverwaltung (automatisierter Handel, Robo-Advisory)"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten) 100%",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-IM01-H-0507",
+        "modultitel": "Einführung in das strategische Management",
+        "modultitel_englisch": "Introduction to Strategic Management",
+        "details": {
+            "Modulnummer": "82-021-IM01-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, Organisation, Personal",
+            "Modulverantwortlich": "Prof. Dr. Max Ringlstette",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Erreichen eines Überblicks über das Feld der Unternehmensführung sowie die grundlegenden Kon-",
+            "zepte und Instrumente des strategischen Managements",
+            "Verständnis der Perspektiven der Geschäftsstrategien und Unternehmensstrategien",
+            "Entwicklung eines Bewusstseins für spezielle Branchenlogiken",
+            "Fähigkeit zum richtigen, situationsbezogenen Einsatz der vermittelten Tools, sowie Verständnis",
+            "derer Limitationen",
+            "Fähigkeit zur kritischen Reflexion der Konzepte der Unternehmensführung sowie –strategie, auch",
+            "vor dem Hintergrund von ethischen Gesichtspunkten",
+            "Die Studierenden werden in die Lage versetzt, Ethik als strategische Dimension zu identifizieren.",
+            "Dies gilt sowohl für eine \"Restriktion\" die aus der Ethik einer Unternehmensführung erwächst, vor",
+            "allem aber für die Potentiale, die sich aus einer konsequenten ethischen Unternehmensführung",
+            "bilden."
+        ],
+        "inhalte_und_themen": [
+            "Einführung in die theoretischen Grundlagen und Methoden der strategischen Unternehmensführung",
+            "Überblick über Konzepte und Instrumente zur internen und externen Unternehmensanalyse",
+            "Vorstellung der typischen Strategien auf Unternehmens- und Geschäftsfeldebene"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Problemstellungen und Präsentation von Handlungsempfehlungen)",
+            "Notenrelevanz": "nagement Summary)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-Intdis01-H-0507",
+        "modultitel": "Einführung in die Wirtschafts- und Unternehmensethik",
+        "modultitel_englisch": "Introduction to Economic and Business Ethics",
+        "details": {
+            "Modulnummer": "82-021-Intdis01-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Wirtschaftsethik und Sozialpolitik",
+            "Modulverantwortlich": "Prof. Dr. Jörg Althammer",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Studierende des Moduls erlernen:",
+            "einen sachgerechten und kritischen Umgang mit den Theorien und Methoden der Wirtschafts- und",
+            "Unternehmensethik.",
+            "die wissenschaftstheoretischen Grundlagen der normativen Theorie.",
+            "die Inhalte der zeitgenössischen Diskussion über die gesellschaftliche Verantwortung von Unter-",
+            "nehmen (CSR) zu reflektieren und in der Praxis anzuwenden.",
+            "ethische Probleme auf gesellschaftlicher und unternehmerischer Ebene zu erkennen, adäquat zu",
+            "analysieren, Problemlösungen zu entwickeln und diese eigenständig auf neue Sachverhalte zu",
+            "übertragen."
+        ],
+        "inhalte_und_themen": [
+            "Wissenschaftstheoretische Grundlagen",
+            "Das normative Problem in den Sozialwissenschaften",
+            "Gesellschaftliche Finalziele: Freiheit, Gerechtigkeit, ökonomische Effizienz",
+            "Theorien der sozialen Gerechtigkeit",
+            "Aspekte verantwortlicher Unternehmensführung (Corporate Social Responsibility)",
+            "Stakeholderanalyse und -management"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "teter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur 90 Minuten (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-FBK08-S-VL-0507.20161.001",
+        "modultitel": "Geldpolitik",
+        "modultitel_englisch": "Monetary Policy",
+        "details": {
+            "Modulnummer": "82-021-FBK08-S-VL-0507.20161.001",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Professor für VWL",
+            "Modulverantwortlich": "Prof. Dr. Reinhard Weber",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studenten erwerben Kompetenzen unter anderem in folgenden Bereichen:",
+            "Die Studierenden erfassen die fundamentale Bedeutung der Geldpolitik für die Entwicklung einer",
+            "Volkswirtschaft aus theoretischer und empirischer Sicht.",
+            "Sie erkennen die mittel- und langfristigen Folgen einer geldpolitischen Strategie.",
+            "Sie können die Folgen der geldpolitischen Entscheidungen auf aktuelle Fragestellungen anwenden.",
+            "Sie verstehen die institutionelle Ausgestaltung der Europäischen Zentralbank und ihrer Instru-",
+            "mente.",
+            "Sie sind in der Lage, die Folgen des Einsatzes geldpolitischer Instrumente zu beurteilen und sind",
+            "somit befähigt, eine kritische Begutachtung der Geldpolitik von Zentralbanken vorzunehmen",
+            "Sie können die Wirkungen einer Geldpolitik auf internationale Finanzmärkte beurteilen und sind",
+            "in der Lage theoretisch fundierte Aussagen zur Geldpolitik zu tätigen.",
+            "Sie hinterfragen kritisch die durch die Modelle vorgegebenen Wirkungsmechanismen."
+        ],
+        "inhalte_und_themen": [
+            "Geldangebot und –nachfrage",
+            "Transmission geldpolitischer Impulse",
+            "Strategien der Geldpolitik",
+            "Erwartungen und Geldpolitik",
+            "Geldpolitik in der Wirtschafts- und Finanzkrise",
+            "Geldpolitik und Koordination unter alternativen Wechselkursregimes",
+            "Grundlagen des Europäischen Systems der Zentralbanken"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Makroökonomie"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-MD06-H-0914",
+        "modultitel": "Global Marketing Management",
+        "modultitel_englisch": "Global Marketing Management",
+        "details": {
+            "Modulnummer": "82-021-MD06-H-0914",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Wirtschaftswissenschaftliche Fakultät Ingolstadt",
+            "Modulverantwortlich": "Prof. Dr. Katja Gelbrich",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "ketingproblemen, denen Unternehmen auf globalen Absatzmärkten begegnen müssen. Sie verstehen,",
+            "wie sich das wirtschaftspolitische und soziokulturelle Umfeld im Gastland auf den Handlungsrah-",
+            "men des international agierenden Unternehmens auswirkt. Die Studierenden sind in der Lage, für",
+            "global tätige Unternehmen eine Marketingstrategie in Hinblick auf die Produkt-, Preis-, Distributions-",
+            "und Kommunikationspolitik zu formulieren. Zum Beispiel verstehen die Teilnehmer und Teilnehme-",
+            "rinnen, welche Faktoren die internationale Preiskalkulation beeinflussen (z.B. Zölle, unterschiedliche",
+            "Preisbereitschaften) und sind daraufhin in der Lage, den Preis für ein Produkt auf ausländischen Ab-",
+            "satzmärkten zu kalkulieren. Nach Abschluss des Kurses verfügen die Studierenden über einen um-",
+            "fassenden Überblick über die Betrachtungsobjekte des internationalen Marketings und deren Zusam-",
+            "menhänge.",
+            "Die begleitende Übung trägt zur Erarbeitung dieser Lernziele/Kompetenzen bei. Die Studierenden wis-",
+            "sen, sich kritisch mit ausgewählten Aspekten der Vorlesung sowie mit neuen Themengebieten vertieft",
+            "auseinander zu setzen. Die Studierenden entwickeln weiterhin die Fähigkeit, mit einschlägiger wissen-",
+            "schaftlicher Fachliteratur (z.B. Journal of International Marketing) umzugehen. Dadurch sind sie in",
+            "der Lage, sich eigenes Fachwissen anzueignen. Durch die Anwendung an Praxisbeispielen erwerben sie",
+            "ebenso die Fähigkeit, das gewonnene theoretische Wissen auf Praxisprobleme zu übertragen."
+        ],
+        "inhalte_und_themen": [
+            "Teil A: Grundlagen des globalen Marketingmanagements",
+            "Worum geht es beim globalen Marketingmanagement?",
+            "Strategische Marketingentscheidung",
+            "Teil B: Internationale Produktpolitik",
+            "Produktmanagement",
+            "Markenmanagement",
+            "Teil C: Internationale Preispolitik",
+            "Marktgetriebene Preismechanismen",
+            "Verhaltensgetriebene Preismechanismen",
+            "Teil D: Internationale Kommunikationspolitik",
+            "Werbung",
+            "Andere Kommunikationsinstrumente",
+            "Teil E: Internationale Distributionspolitik",
+            "Beschaffung, Logistik & Distribution",
+            "E-Commerce"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Modul \"Grundlagen des Marketingmanagements\""
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-105-DS07-H-0822",
+        "modultitel": "Hands-on Machine Learning and Data Science",
+        "modultitel_englisch": "Hands-on Machine Learning and Data Science",
+        "details": {
+            "Modulnummer": "82-105-DS07-H-0822",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Beteiligte Fachgebiete",
+            "Modulverantwortlich": "Prof. Dr. Felix Voigtlaender",
+            "ECTS": "10 ECTS"
+        },
+        "kompetenzen": [
+            "Maschinellen Lernens. Selbständiges Lösen von Anwendungsproblemen mit Methoden des Maschinellen",
+            "Lernens. Fähigkeit, für ein gegebenes Problem zu entscheiden, welche Machine-Learning-Algorithmen",
+            "(lineare Regression, Ridge regression, logistic regression, decision trees, SVMs, neuronale Netze) für",
+            "das Problem geeignet sind. Fähigkeit, anhand verschiedener Metriken kritisch einzuschätzen, ob das",
+            "erhaltende Modell die gewünschte Leistung erbringt. Fähigkeit, die Leistung eines trainierten Modells",
+            "mittels üblicher Techniken (z.B. Regularisierung, Data augmentation) zu verbessern."
+        ],
+        "inhalte_und_themen": [
+            "Grundlegendes intuitives Verständnis für Fragestellungen, Begriffe und Methoden des überwachten",
+            "und unüberwachten maschinellen Lernens, sowie der relevanten Softwarebibliotheken, um dieses",
+            "Wissen praktisch umsetzen zu können.",
+            "Der Fokus liegt auf intuitivem Verständnis und Anwendungen sowie Beispielen am Computer.",
+            "Mathematische Beschreibungen werden in späteren Vorlesungen besprochen.",
+            "Fragestellungen und Begriffe: Overfitting, Empirical risk minimization, Data splitting (training,",
+            "validation, test set), Modellklassen, Loss-Funktionen, Feature normalization, Performancemaße",
+            "(Precision, Recall, F1 score), Regularisierung",
+            "Sofwarebibliotheken z.B.: NumPy, Matplotlib, scikit-learn, pandas",
+            "Algorithmen z.B.: k-means, PCA, lineare Regression, Ridge regression, logistic regression, Naive",
+            "Bayes, decision trees, SGD, SVMs, neuronale Netze"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Grundlagen von Informationssystemen, Software Engineering – Programming"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Prüfung oder Portfolio-Prüfung.)",
+            "Notenrelevanz": "Klausur oder mündliche Prüfung oder Portfolio (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-AC04-H-0507",
+        "modultitel": "Kapitalmarkttheorie",
+        "modultitel_englisch": "Capital Market Theory",
+        "details": {
+            "Modulnummer": "82-021-AC04-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, Finanzierung und Banken",
+            "Modulverantwortlich": "Prof. Dr. Thomas Mählmann",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "In diesem Modul erlernen Studenten grundlegende Techniken zur Bewer-tung von Zahlungsströmen",
+            "vor dem Hintergrund der modernen Finanz-marktforschung.",
+            "Insbesondere werden die Studenten mit gängigen derivativen Finanzin-strumenten sowie den we-",
+            "sentlichen Aussagen der Portfoliotheorie vertraut gemacht.",
+            "Die Studierenden werden außerdem in die Lage versetzt, die Auswirkungen von Informations-",
+            "asymmetrien und Steuern bei Investitions- und Finanzie-rungsentscheidungen zu erkennen und",
+            "kritisch zu würdigen.",
+            "Zur Erarbeitung dieser Kompetenzen soll die begleitende Übung wesentlich beitragen."
+        ],
+        "inhalte_und_themen": [
+            "1. Einführung: Der Zusammenhang zwischen Unternehmensfinanzierung und Finanzmärkten",
+            "2. Präferenzfreie Bewertung unter Sicherheit",
+            "2.1. Grundlagen der präferenzfreien Bewertung unter Sicherheit",
+            "2.2. Yield-to-maturity, spot rates, forward rates",
+            "2.3. Zinsstrukturtheorien",
+            "3. Präferenzfreie Bewertung unter Unsicherheit",
+            "3.1. Grundlagen",
+            "3.2. Forwards und Futures",
+            "3.3. Swaps",
+            "3.4. Optionen",
+            "3.5. Linearfaktoren-Modell",
+            "4. Portfoliooptimierung und CAPM",
+            "5. Corporate Finance",
+            "5.1. Unternehmensfinanzierung und Risikoallokation auf vollkommenen Märkten",
+            "5.2. Finanzierungsentscheidungen bei Marktunvollkommenheiten"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-AC01-H-0507",
+        "modultitel": "Grundlagen der internationalen Rechnungslegung",
+        "modultitel_englisch": "Basic Principles of Financial Accounting according to IFRS",
+        "details": {
+            "Modulnummer": "82-021-AC01-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, Controlling und Wirtschaftsprüfung",
+            "Modulverantwortlich": "Prof. Dr. Max Göttsche",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden sind mit den Grundzügen der Rechnungslegung nach IAS/IFRS für den Jahres-",
+            "abschluss vertraut.",
+            "Sie entwickeln ein Verständnis der verschiedenen Rechnungslegungskonzepte und sind in der Lage",
+            "diese kritisch zu hinterfragen.",
+            "Die Studierenden erwerben die Fähigkeit, grundlegende betriebswirtschaftliche Sachverhalte in zu",
+            "erfassen und entsprechend der vorgesehenen Regelungen der IAS/IFRS zu bilanzieren.",
+            "Dabei erlernen sie den Umgang mit den einschlägigen IAS/IFRS-Normen sowie -Interpretationen.",
+            "Nach Abschluss des Moduls sind die Studierenden mit den Ziele und Grundsätzen derinternatio-",
+            "nalen Rechnungslegung vertraut und können die wichtigsten IAS/IFRS-Einzelstandards auf reale",
+            "Bilanzierungsprobleme anwenden."
+        ],
+        "inhalte_und_themen": [
+            "Theorie der Rechnungslegung",
+            "Institutioneller Rahmen der internationalen Rechnungslegung",
+            "Rahmenkonzept",
+            "Grundlegende Standards"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Jahresabschluss und Unternehmensbesteuerung"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82_021_BU01_H_0123",
+        "modultitel": "Global and Local Organizations",
+        "modultitel_englisch": "Global and Local Organizations",
+        "details": {
+            "Modulnummer": "82 021 BU01 H 0123",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Innovation and Creativity",
+            "Modulverantwortlich": "Prof. Dr. Shashi Matta",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Der Kurs Innovating for Sustainability soll den Studierenden Rahmenbedingungen und Prozesse vermit-",
+            "teln, die darauf abzielen, nachhaltigkeitsorientierte Innovationen in globalen und lokalen Organisatio-",
+            "nen zu etablieren und zu fördern. Durch einen Fokus auf nachhaltige Innovation können Unternehmen",
+            "nachhaltigere Produkte, Prozesse und Praktiken entwickeln, die dem Unternehmen und der Gesellschaft",
+            "zugutekommen.",
+            "Als übergeordnete Ziele dieses Kurses sollen Studenten:",
+            "das Konzept der nachhaltigkeitsorientierten Innovation verstehen und wie es sich von konventio-",
+            "neller Innovation in Organisationen unterscheidet",
+            "die wichtigsten Stakeholder einer nachhaltigkeitsorientierten Innovation identifizieren und unter-",
+            "suchen, einschließlich traditioneller Stakeholder wie Mitarbeiter und Verbraucher sowie sozialer,",
+            "staatlicher und ökologischer Stakeholder",
+            "die Rahmenbedingungen und Prozesse zu verstehen, die für nachhaltigkeitsorientierte Innovation",
+            "entwickelt wurden",
+            "die verschiedenen Arten von nachhaltigkeitsorientierten Innovationsaktivitäten innerhalb der ein-",
+            "zelnen Stufen - Optimierung, Transformation und Systemaufbau - kennenzulernen",
+            "Wissen zu erwerben, wie nachhaltigkeitsorientierte Innovationen in Organisationen gemessen",
+            "werden können, und ein Verständnis für die betriebswirtschaftlichen und gesellschaftlichen Im-",
+            "plikationen von Nachhaltigkeitsinnovationen zu entwickeln",
+            "Die Studenten werden während des Kurses auch mit mehreren Geschäftsmanagern und Führungskräften",
+            "aus globalen und lokalen Organisationen in Kontakt kommen, die für Innovationen für Nachhaltigkeit",
+            "verantwortlich sind. Neben dem Wissen über die Kernkonzepte der Innovation für Nachhaltigkeit, wer-",
+            "den die Studenten Soft Skills wie Teamarbeit und Kommunikation während der praktischen Übungen in",
+            "den Tutorien erwerben. Da die Vorlesungen und Tutorien in englischer Sprache gehalten werden, haben",
+            "die Studenten die Möglichkeit, ihre Sprachkenntnisse in einem professionellen Umfeld zu verbessern."
+        ],
+        "inhalte_und_themen": [
+            "Teil I: Traditionelle Innovation und nachhaltigkeitsorientierte Innovation",
+            "Grundlagen der Innovation bei Produkten, Prozessen und Systemen",
+            "Nachhaltigkeitsorientierte Innovation: Im Vergleich zur traditionellen Innovation",
+            "Teil II: Stakeholder-Identifikation und Integration in die Innovationsstrategie für Nachhaltigkeit",
+            "Ein erweitertes Set von Stakeholdern bei nachhaltigkeitsorientierter Innovation und die Heraus-",
+            "forderungen Management von Zielkonflikten",
+            "Aufbau von Netzwerken und Zusammenarbeit mit Stakeholdern zur Innovation für Nachhaltigkeit",
+            "Teil III: Rahmenbedingungen (or Rahmenkonzepte) und Modelle für nachhaltigkeitsorientierte Innova-",
+            "tion",
+            "Das \"Pathways to ZeroModell zur Innovation für Nachhaltigkeit",
+            "Das Drei-Stufen-Modell der Optimierung, Transformation und Systembildung für nachhaltigkeit-",
+            "sorientierte Innovation",
+            "Teil IV: Aktivitäten, die den Stufen der nachhaltigkeitsorientierten Innovation zugrunde liegen",
+            "Produktinnovation und Prozessinnovation mit zusätzlichen Randbedingungen",
+            "Dematerialisierung, Shared-Use-Konzept, Innovation mit schadstoffarmen Materialien, Reduktion",
+            "der Reduzierung der Auswirkungen bei der Nutzung durch den Verbraucher, Optimierung des End-",
+            "of-Life-Systems (Reuse, Refurbish, Recycle in der Innovation)",
+            "Teil V: Messung der Effektivität nachhaltigkeitsorientierter Innovationen",
+            "Verschiedene Ansätze zur Messung der Effektivität nachhaltigkeitsorientierter Innovationen in Or-",
+            "ganisationen und Best Practices",
+            "Kombination von Innovationsindizes und Nachhaltigkeitsratings von Organisationen",
+            "Teil VI: Betriebliche- und gesellschaftliche Implikationen nachhaltigkeitsorientierter Innovationen",
+            "Die vielfältigen Auswirkungen nachhaltigkeitsorientierter Innovationen",
+            "Fallstudien zu nachhaltigkeitsorientierten Innovationen aus For-Profit- und Non-Profit-Organisationen",
+            "weltweit und lokal"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "mehrere Mini Essays, die sich auf das nachhaltige Innovationsprojekt beziehen.)",
+            "Notenrelevanz": "Mini Essays (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-IM02-H-0507",
+        "modultitel": "International Business",
+        "modultitel_englisch": "International Business",
+        "details": {
+            "Modulnummer": "82-021-IM02-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Internationales Management",
+            "Modulverantwortlich": "Prof. Dr. Katja Gelbrich",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Nach erfolgreicher Beendigung der Veranstaltung können die Studierenden verstehen, wie Unter-",
+            "nehmen erfolgreich auf internationalen Märkten agieren. Studierende können die Globalisierung",
+            "von Märkten und die Gründe für die Internationalisierung der Geschäftstätigkeit von Firmen be-",
+            "schreiben. Darüber hinaus erlangen die Teilnehmer die Kompetenz, die Rahmenbedingungen zu be-",
+            "urteilen, welche multinationale Unternehmen auf Auslandsmärkten vorfinden. Dazu gehören das",
+            "ökonomische, finanzielle, rechtliche, politische und kulturelle Umfeld der jeweiligen Zielmärkte.",
+            "Die Studierenden erwerben dann Techniken, um Auslandsmärkte systematisch zu evaluieren und",
+            "eine angemessene Markteintrittsstrategie zu wählen. Schließlich erlangen sie Kenntnisse darüber,",
+            "wie multinationale Unternehmen ihre Wertschöpfungsaktivitäten auf Auslandsmärkten ausgestal-",
+            "ten. Dazu gehören Strategie und Organisation, Personalmanagement und Finanzmanagement.",
+            "In der begleitenden Übung entwickeln die Studierenden mit Hilfe von Fallstudien die Fähigkeit,",
+            "das internationale Umfeld strukturiert zu analysieren und geeignete Handlungsempfehlungen für",
+            "die Praxis abzuleiten. Darüber hinaus werden sie in die Lage versetzt, ihre Präsentations- und Dis-",
+            "kussionsfähigkeiten zu verbessern. Nach Abschluss des Kurses verfügen sie somit über die fachli-",
+            "che und soziale Kompetenz, Entscheidungen zur Internationalisierung in der Unternehmenspraxis",
+            "souverän zu meistern."
+        ],
+        "inhalte_und_themen": [
+            "Globalisierung von Märkten",
+            "Internationalisierung der Geschäftstätigkeit von Firmen",
+            "Ökonomische und finanzielle Rahmenbedingungen",
+            "Rechtliche, politische und kulturelle Rahmenbedingungen",
+            "Bewertung von Auslandsmärkten",
+            "Markteintrittsstrategien",
+            "Internationale Strategie und Organisation",
+            "Internationales Personalmanagement",
+            "Internationales Finanzmanagement"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Grundkenntnisse auf dem Gebiet der Unternehmensführung und des Marketings."
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Leistungsnachweis Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-MD02-H-0507",
+        "modultitel": "Konsumentenverhalten und Marktforschung",
+        "modultitel_englisch": "Consumer Behavior and Market Research",
+        "details": {
+            "Modulnummer": "82-021-MD02-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Beteiligte Fachgebiete",
+            "Modulverantwortlich": "Prof. Dr. Joachim Büschken",
+            "ECTS": "Nicht angegeben"
+        },
+        "kompetenzen": [
+            "Studierende verfügen nach Abschluss des Moduls über grundlegende Kenntnisse der Methoden der",
+            "Marktforschung sowie über theoretische Grundlagen des Konsumentenverhaltens.",
+            "Sie sind in der Lage, kaufverhaltenstheoretische Modelle und Konstrukte zu entwickeln, Verhal-",
+            "tensaspekte von Konsumenten zu modellieren und zu messen, auch unter Nutzung Generativer",
+            "KI.",
+            "Die Studierenden beherrschen den vollständigen marktforscherischen Prozess von der theoriegelei-",
+            "teten Datenerhebung bis zur Datenanalyse, einschließlich des Einsatzes Generativer KI bei Design",
+            "und Durchführung empirischer Studien.",
+            "Sie verfügen über Kenntnisse wesentlicher multivariater Analyseverfahren und können Datensätze",
+            "selbstständig auswerten sowie Ergebnisse sachgerecht interpretieren.",
+            "Durch die Durchführung eines eigenen Marktforschungsprojekts sind die Studierenden befähigt,",
+            "konzeptionelle Inhalte praxisorientiert und zielgerichtet anzuwenden."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen der Marktforschung sowie Modelle zur Analyse des Konsumentenverhaltens.",
+            "Einsatz Generativer KI als unterstützendes Instrument bei der Entwicklung relevanter Konstrukte",
+            "und Modelle des Konsumentenverhaltens.",
+            "Grundlagen empirischer Marktforschungsmethoden und deren praktische Anwendung.",
+            "Design und Durchführung einer empirischen Marktforschungsstudie einschließlich Datenanalyse,",
+            "auch unter Nutzung Generativer KI."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Teilnahme an der Veranstaltung \"Grundlagen des Marketingmanagements\""
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis (Portfolio)",
+            "Notenrelevanz": "Portfolio (100 %)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-AC12-H-0507",
+        "modultitel": "Konzernrechnungslegung",
+        "modultitel_englisch": "Consolidated Accounting",
+        "details": {
+            "Modulnummer": "82-021-AC12-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, Controlling und Wirtschaftsprüfung",
+            "Modulverantwortlich": "Prof. Dr. Max Göttsche",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Studierenden entwickeln ein breites und integriertes Wissen und Verstehen die Grundlagen der",
+            "Konzernrechnungslegung nachgewiesen.",
+            "Die Studierenden erkennen komplexe Fragestellungen der Konzernrechnungslegung und erarbei-",
+            "ten Problemlösungen zu anwendungsorientierten Fragestellungen",
+            "Die Studierenden entwickeln ein kritisches Verständnis für einzelne Spezialthemen."
+        ],
+        "inhalte_und_themen": [
+            "Rechtliche und wirtschaftliche Grundlagen",
+            "Aufstellungspflicht und Konsolidierungskreis",
+            "Grundsätze der Konzernrechnungslegung",
+            "Kapitalkonsolidierung",
+            "Schuldenkonsolidierung",
+            "Erfolgskonsolidierung",
+            "Latente Steuern",
+            "Quoten- und Equity – Konsolidierung",
+            "Währungsumrechnung",
+            "Kapitalflussrechnung",
+            "Segmentberichterstattung",
+            "Eigenkapitalveränderungsrechnung",
+            "Abhängigkeitsbericht",
+            "Sonderthemen, z.B. Konzernzugehörigkeit von Objektgesellschaften, IFRS-Themen usw."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Kenntnisse der Bilanzierung"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-VWL07-H-0218",
+        "modultitel": "Makroökonomie",
+        "modultitel_englisch": "Macroeconomics",
+        "details": {
+            "Modulnummer": "82-021-VWL07-H-0218",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Professor für VWL",
+            "Modulverantwortlich": "Prof. Dr. Reinhard Weber",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Studierende erlernen einen sachgerechten und kritischen Umgang mit grundlegenden Begriffen",
+            "und Konzepten der gesamtwirtschaftlich ausgerichteten Volkswirtschaftslehre.",
+            "Sie erwerben Techniken zur Analyse von kurzfristigen Effekten von Nachfrageänderungen auf",
+            "Geld- und Gütermärkten und entwickeln ein Verständnis für die Zusammenhänge von Geld- und",
+            "Gütermärkten",
+            "Sie entwickeln die Fähigkeit, grundlegende Anpassungsprozesse auf den Arbeitsmärkten zu ver-",
+            "stehen und verstehen die Bedeutung von Institutionen (Gewerkschaften, Staat, Unternehmen) für",
+            "die Höhe von Beschäftigung und Lohn.",
+            "Die Studierenden erfassen die Bedeutung von Erwartungen für makroökonomische Entwicklungen",
+            "Studierende erkennen die Bedeutung der mittleren Frist für makroökonomische Prozesse.",
+            "Sie erwerben die Fähigkeit, Implikationen von offenen Güter- und Finanzmärkten nachvollziehen.",
+            "Nach Absolvierung des Kurses sind die Studierenden in der Lage, wirtschaftspolitische Positionen",
+            "vor dem Hintergrund der makroökonomischen Theorie kritisch zu hinterfragen."
+        ],
+        "inhalte_und_themen": [
+            "1. Makroökonomische Analyse in der kurzen Frist",
+            "IS-LM-Modell",
+            "Analyse von Wirtschaftspolitik in der kurzen Frist",
+            "2. Makroökonomische Analyse in der mittleren Frist",
+            "Der Arbeitsmarkt",
+            "Das AS-AD-Modell",
+            "Wirtschaftspolitik in der mittleren Frist: Nachfrage- und Angebotsschocks",
+            "Phillipskurve",
+            "3. Makroökonomische Analyse in der langen Frist: Das Solow-Modell",
+            "4. Erwartungen",
+            "Finanzmärkte und Erwartungen",
+            "Erwartungen und Konsumnachfrage",
+            "Erwartungen und Wirtschaftspolitik",
+            "Die Bedeutung von Erwartungen in Wirtschafts- und Finanzkrisen",
+            "5. Offene Volkswirtschaft",
+            "Zinssätze und Wechselkurs",
+            "Unterschiedliche Wechselkursregimes",
+            "Reale Wechselkurse und Analyse in der mittleren Frist"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Mathematik, Einführung in die Volkswirtschaftslehre"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "teter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (90 Minuten) 100%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-BWL10-H-0507",
+        "modultitel": "Marketing & Management",
+        "modultitel_englisch": "Principles of Marketing Management",
+        "details": {
+            "Modulnummer": "82-021-BWL10-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, Dienstleistungsmanagement",
+            "Modulverantwortlich": "Prof. Dr. Robin-Christopher Ruhnau",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Dieses Modul bietet einen Überblick über die Grundlagen des Marketingmanage-",
+            "ments:",
+            "Nach Abschluss des Kurses verfügen die Studierenden über grundlegendes Marketingwissen. Neue-",
+            "re Entwicklungen des Marketingmanagements wie der Einsatz des Internets, das umfassendere",
+            "Controlling von Marketingprozessen oder das systematische Erschließen von Innovationspotenzia-",
+            "len ergänzen die Lerninhalte sinnvoll.",
+            "Studierende entwickeln neben Fakten- und Methodenwissen in erster Linie ein breites Verständnis",
+            "für die grundlegenden Prinzipien des Marketingmanagements.",
+            "Die Studierenden erwerben Kenntnisse, um die volkswirtschaftliche Bedeutung des Dienstleistungs-",
+            "sektors richtig einzuschätzen zu können und die Besonderheiten von Dienstleistungen zu erkennen.",
+            "Außerdem erhalten die Studenten einen Überblick über die aus den Besonderheiten resultieren-",
+            "den Herausforderungen für das Marketingmanagement und erlernen ausgewählte Methoden zur",
+            "Problemlösung.",
+            "Zusätzlich erhalten die Studierenden in dieser Lehrveranstaltung die Kompetenz, das in der Vorle-",
+            "sung erhaltene Wissen praktisch in der Übung anzuwenden. Durch die zielgerichtete Übertragung",
+            "von theoretischem Wissen auf praktische Anwendungsfälle findet ein Wissenstransfer statt."
+        ],
+        "inhalte_und_themen": [
+            "1. Das Verhalten des Konsumenten",
+            "2. Grundlagen der Prozess- und Marktforschung",
+            "3. Datenanalyse und -interpretation",
+            "4. Strategisches Marketingmanagement",
+            "5. Produktpolitik",
+            "6. Preispolitik",
+            "7. Kommunikationspolitik",
+            "8. Distributionspolitik",
+            "9. Branding",
+            "10. Integrative analytische Betrachtung des Marketingmix",
+            "11. Einsatz des Marketingmix im Kundenbeziehungsmanagement",
+            "12. Handelsmarketing",
+            "13. Business-to-Business Marketing",
+            "14. Dienstleistungsmarketing"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Leistungsnachweis Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-MM04-H-0625",
+        "modultitel": "Marketing in the Digital Age",
+        "modultitel_englisch": "Marketing in the Digital Age",
+        "details": {
+            "Modulnummer": "82-021-MM04-H-0625",
+            "Niveau": "Bachelor",
+            "Turnus": "BWL, insb. Digitales Marketing",
+            "Modulverantwortlich": "Prof. Dr. Robin-Christopher Ruhnau",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "auseinander, die die Digitalisierung für das Marketingmanagement und die Marketingstrategie mit",
+            "sich bringt. Die Studierenden sollen dabei sowohl technologische als auch analytische Kompetenzen",
+            "erwerben.",
+            "Im Rahmen des Moduls",
+            "lernen die Studierenden verschiedene technologische Entwicklungen, Technologiebegriffe und Phänomene",
+            "der Digitalisierung kennen.",
+            "entwickeln die Studierenden ein Verständnis dafür, wie sich das operative Marketing mit der Di-",
+            "gitalisierung verändert und wie Digitalisierung aus einer operativen Marketingperspektive gema-",
+            "nagt werden kann.",
+            "lernen die Studierenden, welche strategischen Einflüsse die Digitalisierung auf das Marketing hat,",
+            "welche digitalen Marketing- und Marktstrategien es gibt und wie Unternehmen diese umsetzen",
+            "können.",
+            "Am Ende des Moduls kennen und verstehen die Studierenden die wichtigsten technologischen Entwick-",
+            "lungen und Einflüsse der Digitalisierung. Außerdem sind sie mit den wichtigsten operativen und stra-",
+            "tegischen Managementmethoden des digitalen Marketings vertraut. Die Studierenden verfügen dabei",
+            "über methodisch-analytische Kenntnisse, diese Methoden auf unterschiedliche Unternehmen und Markt-",
+            "gegebenheiten zu übertragen und das Ergebnis zu interpretieren. Im Rahmen der zugehörigen Übung",
+            "wenden die Studierenden das erlernte Vorlesungswissen an. Einerseits werden dabei erlernte Methoden",
+            "und Berechnungen selbstständig durchgeführt. Hierbei werden die methodisch-analytischen Kenntnisse",
+            "gefördert. Andererseits erarbeiten die Studierenden im Team Fallstudien zu praxisnahen Fällen aus dem",
+            "Bereich des digitalen Marketings. Die Studierenden präsentieren und reflektieren ihre Lösung gegenüber",
+            "alternativen Lösungen. Dies trägt zu einer Verbesserung der Team- und Konfliktlösungsfähigkeit bei.",
+            "Außerdem trainieren und verbessern die Teilnehmenden ihre Präsentationsfähigkeiten. Dabei lernen",
+            "die Studierenden auch, das in der Vorlesung erlernte Wissen zu reflektieren, es zu bewerten und das",
+            "Wissen auszuwählen, welches für die Beantwortung der Frage wichtig ist, um konkrete, anwendbare",
+            "Empfehlungen für Manager*innen zu geben."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen und Phänomene der Digitalisierung",
+            "Ausgewählte Digitale Technologien",
+            "Konnektivität",
+            "Datenverfügbarkeit",
+            "Digitale Markt- und Marketingstrategien",
+            "Wesentliche Veränderungen und Trends des operativen und strategischen Marketings im digitalen",
+            "Zeitalter",
+            "Digitales Produktmanagement",
+            "Digitales Preismanagement",
+            "Digitales Kommunikationsmanagement",
+            "Digitales Vertriebsmanagement"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "keting"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "tungsnachweis).",
+            "Notenrelevanz": "Ergebnisse 50%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-VWL08-H-0821",
+        "modultitel": "Öffentliche Finanzen und Nachhaltige Wirtschaftspolitik",
+        "modultitel_englisch": "Public Finance and Sustainable Economic Policy",
+        "details": {
+            "Modulnummer": "82-021-VWL08-H-0821",
+            "Niveau": "Bachelormodul",
+            "Turnus": "VWL, insb. Finanzwissenschaft",
+            "Modulverantwortlich": "Prof. Dr. Dominika Langenmayr",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Nach Abschluss des Kurses sind die Studierenden in der Lage, sich eine eigene, informierte Meinung",
+            "zur Steuer- und Sozialpolitik, zur Staatsverschuldung und zu Staatseingriffen in die Wirtschaft",
+            "und deren Auswirkungen auf Nachhaltigkeitsaspekte zu bilden.",
+            "Die Studierenden verstehen, wie Staatseingriffe unsere Wirtschaft prägen und welche Auswirkun-",
+            "gen wirtschafts- und steuerpolitische Entscheidungen auf alle Marktteilnehmer haben.",
+            "Die Studierenden entwickeln ein Verständnis dafür, wann der Staat in das Marktgeschehen ein-",
+            "greifen sollte und wie er durch wirtschafts- und steuerpolitische Eingriffe Nachhaltigkeit fördern",
+            "kann.",
+            "Die Studierenden können Methoden der ökonomischen Analyse auf die Problemfelder der Finan-",
+            "zwissenschaft anwenden. Sie sind nach Abschluss des Kurses mit den grundlegenden Konzepten",
+            "und Argumenten der Finanzwissenschaft vertraut."
+        ],
+        "inhalte_und_themen": [
+            "Historische Einordnung",
+            "Ideengeschichte der Finanzwissenschaft",
+            "Entwicklung der Staatsquote",
+            "Allokationstheorie",
+            "Effizienz des Marktes",
+            "Öffentliche Güter",
+            "Umweltschäden und andere externe Effekte",
+            "Einführung in die Sozialversicherung",
+            "Moral Hazard",
+            "Adverse Selection",
+            "Steuer- und Sozialpolitik, Regulierung",
+            "Wirkung von Steuern",
+            "Optimalsteuertheorie",
+            "Ungleichheit und Verteilungspolitik",
+            "Rentenversicherung",
+            "Umweltpolitische Regulierung",
+            "Nachhaltige Staatsfinanzen und Staatsverschuldung",
+            "Staatshaushalt",
+            "Staatsverschuldung in der mittleren und langen Frist"
+        ],
+        "voraussetzungen": {
+            "Formale": "Mathematik für Wirtschaftswissenschaftler",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "teter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur 90 Minuten (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-SCM21-H-0218",
+        "modultitel": "Operations Analytics",
+        "modultitel_englisch": "Operations Analytics",
+        "details": {
+            "Modulnummer": "82-021-SCM21-H-0218",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Lehrstuhl für ABWL, Logistik und Operations Analytics",
+            "Modulverantwortlich": "Prof. Dr. Pirmin Fontaine",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden erlernen ein grundsätzliches Verständnis über die aktuellen Methoden und Kon-",
+            "zepte im Operationsmanagement und deren Einbindung in das Supply Chain Management.",
+            "Die Studierenden lernen die relevanten Aspekte der Entscheidungsfindung in der industriellen und",
+            "Dienstleistungsproduktion (Service Operations) aus einer ganzheitlichen Unternehmensperspekti-",
+            "ve kennen.",
+            "Die Studierenden erlangen die Fähigkeit, das erlernte Wissen im Zuge von Analyse- und Entschei-",
+            "dungssituationen in der betrieblichen Praxis umzusetzen.",
+            "Die Studierenden erfahren die Relevanz eines nachhaltigen Operationsmanagement und erlernen,",
+            "dieses adäquat umzusetzen."
+        ],
+        "inhalte_und_themen": [
+            "Begriffliche Grundlagen",
+            "Netzwerkplanung: Bewertung und Auswahl von Standortalternativen, Multiples diskretes Stand-",
+            "ortproblem, Steiner-Weber-Problem",
+            "Gestaltung von Produktions- und Dienstleistungssystemen: Layoutplanung, Konfigurierung von",
+            "Produktionszentren und Arbeitsgruppen",
+            "Nachfrageprognose: Auswahl und Anwendung von Prognose-Modellen, Prognose bei konstantem,",
+            "trendförmigen und saisonalem Nachfrageverlauf",
+            "Mittelfristige und operative Planung: Beschäftigungsglättung, Hauptproduktionsprogrammpla-",
+            "nung",
+            "Losgrößenplanung in der Produktion und im Handel: Dynamische Losgrößenplanung, Losgrößen-",
+            "und Reihenfolgeplanung (ELSP)",
+            "Ressourceneinsatzplanung: Grobterminplanung, Feinplanung und Steuerung"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Digital Systems und Operationsmanagement"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-VWLECO15-H-0822",
+        "modultitel": "Political Institutions, the Economy, and Financial Markets",
+        "modultitel_englisch": "Political Institutions, the Economy, and Financial Markets",
+        "details": {
+            "Modulnummer": "82-021-VWLECO15-H-0822",
+            "Niveau": "Bachelormodul",
+            "Turnus": "VWL, insb. Finanzwissenschaft",
+            "Modulverantwortlich": "Prof. Dr. Dominika Langenmayr",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Studierende erlernen, wie das individuelle und kollektive Handeln politischer Akteure mit wirt-",
+            "schaftswissenschaftlichen Konzepten erklärt werden kann. Studierende können Erlerntes dies-",
+            "bezüglich reproduzieren.",
+            "Studierende lernen Probleme der Regulierung und kollektiver Entscheidungsprozesse (z.B. Wahlen)",
+            "zu reflektieren und zu beurteilen. Sie verstehen die Auswirkungen politischer Ereignisse auf Fi-",
+            "nanzmärkte.",
+            "Nach Abschluss des Kurses verstehen die Studierenden die Hintergründe politischer Entscheidun-",
+            "gen",
+            "Die Studierenden können Methoden der ökonomischen Analyse im politischen Kontext anwenden.",
+            "Die Studierenden können wirtschaftswissenschaftliche Denkweisen (z.B. Efficient Market Hypo-",
+            "thesis) auf andere Themenstellungen anwenden."
+        ],
+        "inhalte_und_themen": [
+            "Politik aus der Perspektive der Ökonomik",
+            "Direkte Demokratie und Mehrheitswahl",
+            "* Arrow’s Unmöglichkeitstheorem",
+            "* Medianwählermodell",
+            "* Alternative Wahlsysteme",
+            "Konkurrenz der Parteien",
+            "Paradox der Stimmabgabe",
+            "Politische Institutionen und staatliche Regulierung",
+            "Wie beeinflusst Regulierung die Wirtschaft?",
+            "Gesellschaftlichen Kosten-Nutzen-Abwägungen bei der politischen Formulierung von Regulie-",
+            "rungszielen",
+            "Akteure im politischen Prozess",
+            "Wähler und Parteien",
+            "Lobbies und Interessengruppen",
+            "Bürokratie",
+            "Rent-Seeking",
+            "Politik als Prinzipal-Agenten-Beziehung",
+            "Ökonomische Theorie des Föderalismus",
+            "Subsidiaritätsprinzip",
+            "Wettbewerb zwischen Staatseinheiten",
+            "Finanzausgleich",
+            "Einfluss politischer Ereignisse auf Finanzmärkte",
+            "Staatsanleihen",
+            "Aktienmärkte",
+            "Politische Risiken",
+            "Einfluss auf Aktienmärkte und Unternehmensbewertung",
+            "Volatilität",
+            "Wechselkursrisiken"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Mathematische Grundkenntnisse (Ableitungen, Lösen von Gleichungen)"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "teter Leistungsnachweis: Klausur (90 Minuten), Klausur findet vor Weihnachten statt",
+            "Notenrelevanz": "Klausur 90 Minuten (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-IFM08-H-0507",
+        "modultitel": "Rechnergestützte Statistik mit R",
+        "modultitel_englisch": "Computational Statistics with R",
+        "details": {
+            "Modulnummer": "82-021-IFM08-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Statistik und Quantitative Methoden",
+            "Modulverantwortlich": "Prof. Dr. Thomas Setzer",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden erwerben sowohl Grundlagenkenntnisse als auch die Kenntnis ausgewählter Pro-",
+            "grammiertechniken im Umgang mit der Statistik-Softwareumgebung R.",
+            "Bei der statistischen Datenanalyse mit R erlernen die Studierenden den sachgerechten Umgang",
+            "mit empirischen Daten sowie der Aufbereitung und Darstellung.",
+            "Bei der Bearbeitung von betriebswirtschaftlichen und volkswirtschaftlichen statistischen Fragestel-",
+            "lungen verschiedenster Art (z.B. statistische Hypothesentests, lineare Regression etc.) entwickeln",
+            "die Studierenden die Handlungskompetenz zur Durchführung eigenständiger und zielorientierter",
+            "Analysen unter Verwendung von R."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen",
+            "Objekte bzw. Datenstrukturen in R und deren Behandlung",
+            "* Vektoren",
+            "* Matrizen",
+            "* Arrays",
+            "* Listen",
+            "* Data Frames",
+            "Logik und fehlende Werte",
+            "Konstrukte zur Programmsteuerung",
+            "* Bedingte Anweisungen (if . . . else u.ä.)",
+            "* Schleifen",
+            "Zeichenketten",
+            "Ein- und Ausgabe von Daten",
+            "Zugriff auf Excel und CSV-Daten",
+            "R-Objekte lesen und schreiben",
+            "Die Sprache im Detail",
+            "Funktionen",
+            "Nutzung von S3-Klassen",
+            "Verzögerte Auswertung – Lazy Evaluation",
+            "Grafiken mit R",
+            "Statistik mit R",
+            "Grundlegende Funktionen",
+            "Zufallszahlen",
+            "Verteilungen und Stichproben",
+            "Lineare Regression"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Induktive und Multivariate Statistik"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch oder Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-SCM26-H-0418",
+        "modultitel": "Retail Management Grundlagen",
+        "modultitel_englisch": "Retail Management Fundamentals",
+        "details": {
+            "Modulnummer": "82-021-SCM26-H-0418",
+            "Niveau": "Bachelormodul",
+            "Turnus": "für Digitales Marketing",
+            "Modulverantwortlich": "Prof. Dr. Pirmin Fontaine",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "erhalten ein grundsätzliches Verständnis über die aktuellen Fragen des Retail Management. Darin",
+            "beinhaltet sind handelslogistische sowie absatzbezogene Fragen.",
+            "verstehen die Zusammenhänge zwischen absatz-, marketing- und vertriebsbezogenen (z. B. Sorti-",
+            "mentsgestaltung) und logistikbezogenen Perspektiven (z. B. Beschaffung, Kommissionierung und",
+            "Distribution) des Handels.",
+            "erfahren die Ebenen der Zusammenarbeit verschiedener Akteure (z. B. Hersteller, Handelspartner,",
+            "Logistikunternehmen) im Handel und deren Auswirkungen auf Unternehmen und Kunden.",
+            "lernen, wie die Digitalisierung den Handel verändert (z. B. Multi- und Omnichannel Management)"
+        ],
+        "inhalte_und_themen": [
+            "Teil A: Einführung - Grundfragen des Retail Management",
+            "Begriffliche Grundlagen",
+            "Planungsmatrix im Handel",
+            "Teil B: Gestaltung von Handelssystemen",
+            "Teil C: Taktische Planungen im Handel",
+            "Teil D: Operative Planung im Handel",
+            "Lagerhausplanung",
+            "Transportplanung",
+            "Operatives Filialmanagement",
+            "Teil E: Aktuelle Entwicklungen",
+            "Online- und Omni-Channel-Handel",
+            "Sharing Economy: Crowdsourcing"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Empfohlene Voraussetzung: Grundlagen in der Betriebswirtschaftslehre"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "",
+        "modultitel": "Ringvorlesung Nachhaltige Wirtschaft",
+        "modultitel_englisch": "Lecture Series Sustainable Economy",
+        "details": {
+            "Modulnummer": "Nicht angegeben",
+            "Niveau": "Bachelormodul",
+            "Turnus": "VWL, insb. Finanzwissenschaft",
+            "Modulverantwortlich": "Prof. Dr. Dominika Langenmayr",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Studierenden erlangen ein breites und integriertes Wissen über nachhaltiges Wirtschaften.",
+            "Sie verstehen die wissenschaftlichen Grundlagen und deren Anwendungen an der Schnittstelle",
+            "aus Nachhaltigkeit und Wirtschaft. Das Modul verbindet somit Kompetenzen aus den Bereichen",
+            "Nachhaltigkeit und Wirtschaftswissenschaften.",
+            "Studierende können Herausforderungen im Nachhaltigkeitsbereich reflektieren und verstehen die",
+            "Tradeoffs zwischen wirtschaftlicher Leistungsfähigkeit, ökologischer Verantwortung und sozialer",
+            "Gerechtigkeit. Sie können unterschiedliche Sichtweisen und Interessen anderer Stakeholder nach-",
+            "vollziehen und berücksichtigen.",
+            "Studierende werden dazu befähigt, ihr späteres berufliches Handeln in Bezug auf Nachhaltigkeit-",
+            "saspekte kritisch zu reflektieren. Sie berücksichtigen dabei neben wirtschaftswissenschaftlichen",
+            "auch geographische, philosophische oder theologische Konzepte."
+        ],
+        "inhalte_und_themen": [
+            "Nachhaltige Wirtschaft als Abwägung zwischen wirtschaftliche Leistungsfähigkeit, ökologischer",
+            "Verantwortung und sozialer Gerechtigkeit",
+            "Bedeutung von Nachhaltigkeit in den verschiedenen Teilgebieten der Wirtschaftswissenschaften",
+            "(BWL, dort z.B. Finanzierung, Logistik, Controlling; VWL, dort z.B. Umweltökonomik, Entwick-",
+            "lungsökonomik; Wirtschaftsethik)",
+            "Interdisziplinäre Sicht auf nachhaltige Wirtschaft (z.B. Geographie, Philosophie, Theologie, Um-",
+            "weltwissenschaften)",
+            "Nachhaltige Wirtschaft aus Sicht der Praxis"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "teter Leistungsnachweis: Klausur (90 Minuten) oder Hausarbeit mit Präsentation oder Portfolio",
+            "Notenrelevanz": "oder Portfolio (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-SCM02-H-0507",
+        "modultitel": "SCM Projektstudium",
+        "modultitel_englisch": "SCM Case Studies",
+        "details": {
+            "Modulnummer": "82-021-SCM02-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Lehrstuhl für ABWL, Logistik und Operations Analytics",
+            "Modulverantwortlich": "Prof. Dr. Pirmin Fontaine",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Studierenden erlernen, eine praktische Themenstellung des Supply Chain Management wis-",
+            "senschaftlich zu bearbeiten sowie das Thema strukturiert und verständlich zu präsentieren. In",
+            "diesem Zusammenhang erfahren die Studierenden die Grundzüge des Projektmanagements, der",
+            "Teamarbeit und der Präsentationstechnik.",
+            "Die Studierenden erlernen den konzeptionellen Aufbau des Funktionsbereichs Supply Chain Ma-",
+            "nagement in der Praxis. Sie erfahren die grundlegenden Modelle und Methoden, die in diesem",
+            "Zusammenhang zum Einsatz kommen. Dabei geht es auch darum, die Möglichkeiten und Grenzen",
+            "des Supply Chain Management in der Praxis kennenzulernen sowie die in der Praxis eingesetzten",
+            "Konzepte und Methoden sachgerecht und kritisch zu beurteilen.",
+            "Die Studierenden entwickeln ein Verständnis für die funktionsübergreifenden Zusammenhänge",
+            "des Supply Chain Management und erlernen dessen Interaktion und Verflechtung mit den übrigen",
+            "Funktionsbereichen des Unternehmens kennen.",
+            "Zur Erarbeitung dieser Kompetenzen tragen die Arbeitssitzungen wesentlich bei, in denen die stu-",
+            "dentischen Teams ihre Fallstudie vorstellen und zur Diskussion stellen. In diesen Sitzungen besteht",
+            "deshalb Anwesenheitspflicht."
+        ],
+        "inhalte_und_themen": [
+            "Der Kurs befasst sich mit den planungsorientierten Aspekten des Supply Chain Management im",
+            "Einzelhandel und thematisiert konzeptionelle Grundlagen, Modelle und Methoden zur Planung in",
+            "der Supply Chain und Logistik.",
+            "Im Mittelpunkt steht das Kennenlernen aktueller praktischer Probleme und Trends in der Supply",
+            "Chain Management-Praxis im Bereich Konsumgüterindustrie und Handel."
+        ],
+        "voraussetzungen": {
+            "Formale": "Produktionsmanagement oder Supply Chain Analytics",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Kritische Würdigung der Ergebnisse",
+            "Notenrelevanz": "Klausur zu den Theorieinhalten des Kurses 15%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-MD24-S-VLUE-0507",
+        "modultitel": "Service and Technology Marketing",
+        "modultitel_englisch": "Service and Technology Marketing",
+        "details": {
+            "Modulnummer": "82-021-MD24-S-VLUE-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Dienstleistungsmanagement",
+            "Modulverantwortlich": "Prof. Dr. Jens Hogreve",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Studierende erwerben Kenntnisse darüber, welchen besonderen Herausforderungen (digitale) Dienst-",
+            "leistungsunternehmen gegenüberstehen und wie diese gemeistert werden können.",
+            "Zusätzlich erwerben die Studierenden Kenntnisse über die spezifischen Dienstleistungsbesonder-",
+            "heiten und die Notwendigkeit der Integration externer Faktoren bei der Dienstleistungserstellung,",
+            "und deren Einfluss auf das Marketing. Studierende erwerben Fähigkeiten, wie sie das Konzept der",
+            "7P‘s des Marketings als eine Erweiterung des traditionellen 4P-Ansatzes anwenden können und",
+            "welche Besonderheiten bei der Vermarktung von Dienstleistungen zu beachten sind. Darüber hin-",
+            "aus wird im Rahmen des Kurses die Auswirkung technologischer Entwicklungen auf die 7 P‘s des",
+            "Marketings diskutiert, wodurch die Studierende auf das Management von technologiebasierten",
+            "Dienstleistungsunternehmen vorbereitet werden.",
+            "Die Studierenden lernen des Potenzial neuer Technologien für Dienstleistungsunternehmen ken-",
+            "nen und erwerben Kenntnisse über technologiebasierte Geschäftsmodelle wie \"Apps\", die \"Gig\"-",
+            "Economy, die Sharing-Economy und das Internet der Dinge.",
+            "In diesem Kurs erwerben die Studierenden Kenntnisse über die Implementierung von Qualitätsstandards",
+            "und Dienstleistungsstrategien. Die Kursteilnehmenden lernen die Rahmenbedingungen für kunde-",
+            "norientiertes Marketing kennen und erfahren, wie sich Kundenzufriedenheit und Kundenbindung",
+            "durch (digitale) Dienstleistungsstrategien verbessern lassen.",
+            "Die Studierenden lernen, wie man große Datenmengen als Entscheidungsgrundlage für kunden-",
+            "zentrierte Managementaktivitäten nutzen kann und bekommen eine Einführung in digitale und",
+            "soziale Marketingkommunikationsaktivitäten.",
+            "Neben den fachlichen Kompetenzen verbessern die Studierenden bei der Diskussion von Fallbei-",
+            "spielen, mit einer großen Bandbreite an Beispielen aus der New Economy wie AirBnB, Uber oder",
+            "OpenTable, ihre analytischen Fähigkeiten. Die Studierenden erlernen das Analysieren und kri-",
+            "tische Bewerten praktischer Fallbeispiele aus unterschiedlichen Dienstleistungsbranchen. Da das",
+            "Modul auf Englisch stattfindet, findet eine zusätzliche Förderung der sprachlichen Fähigkeiten der",
+            "Studierenden statt."
+        ],
+        "inhalte_und_themen": [
+            "Der Inhalt der Vorlesung untergliedert sich u.a. in folgende Bereiche:",
+            "Einführung und Relevanz von Dienstleistungen",
+            "Technologie- & Dienstleistungsmanagement",
+            "Akzeptanz & Vermarktung technologiebasierter Dienstleistungen",
+            "Big Data Management und Data Analytics as a Service",
+            "(Digital) Service Design",
+            "Gestaltung des tangiblen (digitalen) Umfelds"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Teilnahme an der Veranstaltung \"Grundlagen des Marketingmanagements\""
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-MD03-H-0507",
+        "modultitel": "Service Performance Management",
+        "modultitel_englisch": "Service Performance Management",
+        "details": {
+            "Modulnummer": "82-021-MD03-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Dienstleistungsmanagement",
+            "Modulverantwortlich": "Prof. Dr. Jens Hogreve",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Nach Abschluss des Moduls verfügen die Studierenden über grundlegendes Wissen des Qualitäts-",
+            "und Prozessmanagements von Dienstleistungen. Dazu setzen sie sich mit den begrifflichen und",
+            "konzeptionellen Grundlagen sowie den verschiedenen Dimensionen des Service Performance Ma-",
+            "nagements auseinander. Die Studierenden erhalten dabei u.a. Einblicke in das Prozessmanage-",
+            "ment, in die Konzepte der Dienstleistungsqualität und deren Management.",
+            "Studierende entwickeln neben Fakten- und Methodenwissen in erster Linie ein breites Verständnis",
+            "für die grundlegenden Besonderheiten eines Performance Managements bei Dienstleistungen.",
+            "In Fallstudien werden zentrale Inhalte des Moduls vertieft, um einerseits die Problemlösungsfähigkeit",
+            "der Studierenden zu erhöhen. Andererseits lernen die Studierenden die Konzepte und Modelle des",
+            "Service Performance Managements auf",
+            "Akademische und alltägliche Probleme anzuwenden. Durch die zielgerichtete Übertragung von",
+            "theoretischem Wissen auf praktische Anwendungsfälle findet ein Wissenstransfer statt."
+        ],
+        "inhalte_und_themen": [
+            "mance Managements bei Dienstleistungen:",
+            "1. Kundenerwartungen und Kundenwahrnehmung",
+            "2. Begriffliche Grundlagen der Dienstleistungsqualität",
+            "3. Modelle der Dienstleistungsqualität",
+            "4. Kundenorientierte Messung der Dienstleistungsqualität",
+            "5. Unternehmensorientierte Messung der Dienstleistungsqualität",
+            "6. Operative Gestaltung des Qualitätsmanagements",
+            "7. Kosten-Nutzen-Controlling des Qualitätsmanagements",
+            "8. Prozess- und Qualitätsmanagement in Dienstleistungsunternehmen",
+            "9. Kundenbezogene und Anbieterbezogene Organisation des Dienstleistungsprozesses"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-MML01-H-0725",
+        "modultitel": "Social Marketing",
+        "modultitel_englisch": "Nicht angegeben",
+        "details": {
+            "Modulnummer": "82-021-MML01-H-0725",
+            "Niveau": "Bachelor",
+            "Turnus": "ABWL und Marktpsychologie",
+            "Modulverantwortlich": "Prof. Dr. Victoria-Sophie Osburg",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "des Social Marketings und sind in der Lage, dieses klar von kommerziellen Marketinginitiativen und",
+            "verwandten Bereichen (z. B. Non-Profit-Marketing, Nachhaltigkeitsmarketing) zu unterscheiden. Sie",
+            "sind in der Lage, Social Marketing Kampagnen kritisch zu beurteilen, Schlüsselstrategien zu identi-",
+            "fizieren und deren Wirksamkeit zu bewerten. Sie lernen zudem, eine solche Analyse auf der Grund-",
+            "lage der im Unterricht erworbenen theoretischen Kenntnisse durchzuführen. Darüber hinaus haben",
+            "die Studierenden praktische Erfahrungen mit der Konzeption und Durchführung einer kleinen Social-",
+            "Marketing-Kampagne gesammelt und sind in der Lage, deren Ergebnisse kritisch zu analysieren und",
+            "Verbesserungsmöglichkeiten zu identifizieren."
+        ],
+        "inhalte_und_themen": [
+            "bietet den Studierenden einen umfassenden Einblick in das Social Marketing. Durch eine Kombination",
+            "aus Vorlesungen, Fallstudien und projektbasiertem Lernen werden die Studierenden die einzigartigen",
+            "Merkmale und strategischen Überlegungen dieses Bereichs untersuchen. Es werden Schlüsselfaktoren",
+            "für die Gestaltung und Durchführung effektiver Kampagnen erörtert, unterstützt durch eine eingehen-",
+            "de Analyse von Beispielen aus der Praxis. Während des gesamten Kurses werden die Studierenden in",
+            "kleinen Gruppen arbeiten, um ihre eigene Social-Marketing-Kampagne zu einem Thema ihrer Wahl",
+            "zu entwickeln und umzusetzen, wobei sie die im Unterricht gewonnenen theoretischen Erkenntnisse",
+            "anwenden, um ihre Strategien auszuarbeiten und ihre Ergebnisse kritisch zu bewerten."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Beginn der Lehrveranstaltung bekannt gegeben.",
+            "Notenrelevanz": "Or oral exam (15 min) – 100%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-AC16-H-0507",
+        "modultitel": "Sozialpolitik",
+        "modultitel_englisch": "Social Policy",
+        "details": {
+            "Modulnummer": "82-021-AC16-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Wirtschafts- und Unternehmensethik",
+            "Modulverantwortlich": "Prof. Dr. Jörg Althammer",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden erhalten einen Überblick über die Ziele und die institutionelle Struktur staatli-",
+            "cher Sozialpolitik in Deutschland und Europa.",
+            "Ihnen werden die Fähigkeiten vermittelt, die Wirkungen sozialpolitischer Maßnahmen auf der",
+            "Grundlage der ökonomischen Theorie zu analysieren."
+        ],
+        "inhalte_und_themen": [
+            "Der Inhalt der Vorlesung untergliedert sich u.a. in folgende Bereiche:",
+            "Geschichte der Sozialpolitik in Deutschland",
+            "Entstehungs- und Entwicklungsbedingungen staatlicher Sozialpolitik",
+            "Ziele, Prinzipien und Träger staatlicher Sozialpolitik",
+            "Das System der Sozialversicherung",
+            "Armut und soziale Grundsicherung",
+            "Familienpolitik",
+            "Bilanz und Perspektive"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Grundlegende Kenntnisse der mikro- und makroökonomischen Theorie"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-TA03-H-0507",
+        "modultitel": "Steuerbilanzen und Rechtsformwahl",
+        "modultitel_englisch": "Tax Accounts and Choice of Legal Forms",
+        "details": {
+            "Modulnummer": "82-021-TA03-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Betriebswirtschaftliche Steuerlehre",
+            "Modulverantwortlich": "Prof. Dr. Reinald Koch",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Studierende des Kurses erhalten mit dieser Veranstaltung einen vertieften Einblick in die Vorschrif-",
+            "ten des deutschen Bilanzsteuerrechts. Dabei wird ihnen u.a. die Fähigkeit vermittelt wirtschaftliche",
+            "Sachverhalte in steuerbilanzielle Auswirkungen zu übersetzen und entsprechend darzustellen.",
+            "Studierende erwerben Techniken zur Lösung von bilanzrechtlichen Sachverhalten. Dabei erler-",
+            "nen Sie den Umgang mit den einschlägigen Rechtsquellen und entwickeln ein Verständnis für die",
+            "Grundlagen, Grundsätze und Wertbegriffe der Bilanzierung.",
+            "Nach Abschluss des Moduls verfügen die Studierenden über das notwendige Wissen zur Abbildung",
+            "auch komplexer steuerbilanzieller Sachverhalte."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen der Bilanzierung",
+            "Die Bilanzierung des Anlagevermögens",
+            "Die Bilanzierung des Umlaufvermögens",
+            "Steuerfreie Rücklagen",
+            "Die Bilanzierung des Fremdkapitals",
+            "Personengesellschaften"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Unternehmensbesteuerung"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (100%)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-SCM01-H-0621",
+        "modultitel": "Supply Chain Analytics",
+        "modultitel_englisch": "Supply Chain Analytics",
+        "details": {
+            "Modulnummer": "82-021-SCM01-H-0621",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL, insb. Logistik und Operations Analytics",
+            "Modulverantwortlich": "Prof. Dr. Pirmin Fontaine",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Studierenden erhalten ein grundsätzliches Verständnis über die aktuellen Methoden im Logistik-",
+            "Management.",
+            "Die Studierenden lernen die relevanten Aspekte des Bestands- und Transportmanagements kennen.",
+            "Die Studierenden erlangen die Fähigkeit, das erlernte Wissen im Zuge von Analyse- und Entschei-",
+            "dungssituationen in der betrieblichen Praxis umzusetzen und die damit verbundenen Auswirkun-",
+            "gen auf Menschen, Natur und Umwelt zu beurteilen.",
+            "Die Studierenden erfahren die Relevanz nachhaltiger Supply Chain Management-Konzepte und",
+            "erlenen, dieses adäquat umzusetzen."
+        ],
+        "inhalte_und_themen": [
+            "Teil A: Einführung - Grundfragen der Logistik und des Supply Chain Management",
+            "Begriffliche Grundlagen",
+            "Gestaltungsprinzipien der Logistik",
+            "Nachhaltigkeit in der Logistik und im Supply Chain Management",
+            "Teil B: Bestandsmanagement",
+            "Grundlagen des Bestandsmanagements",
+            "Losgrößenbestände",
+            "Systembestände",
+            "Sicherheitsbestände",
+            "Teil C: Transportmanagement",
+            "Methodische Grundlagen der Transportoptimierung",
+            "Transportplanung",
+            "Packprobleme",
+            "Problem des kürzesten Weges",
+            "Rundreise- und Tourenplanung"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Grundlagen im Operations Management und der Statistik"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-MD10-H-0507",
+        "modultitel": "Sustainable Entrepreneurship",
+        "modultitel_englisch": "Sustainable Entrepreneurship",
+        "details": {
+            "Modulnummer": "82-021-MD10-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Tourismus / Zentrum für Entrepreneurship",
+            "Modulverantwortlich": "Prof. Dr. Harald Pechlaner",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Die Studierenden sollen an die Idee des Unternehmertums herangeführt werden und sich mit den",
+            "grundlegenden Fragestellungen des Entrepreneurships im Kontext eines verantwortungsvollen und",
+            "nachhaltigen Wirtschaftens, praktisch auseinandersetzen können.",
+            "Wissensvermittlung zu Theorien und Konzepten des Unternehmertums mit spezifischem Fokus auf",
+            "ökonomischer Nachhaltigkeit.",
+            "Charakterisierung der Unternehmerpersönlichkeit im Hinblick auf verantwortungsvolles Handeln",
+            "Erlernen von Methoden der Empirischen Sozialforschung",
+            "Anwendung der Methoden der Empirischen Sozialforschung im Praxisbezug anhand einer eigenen",
+            "Geschäftsidee",
+            "Organisation im Team zur gemeinsamen Bearbeitung der Geschäftsidee",
+            "Nach Abschluss des Moduls haben die Studierenden einen Überblick über die Charakteristiken des",
+            "Unternehmertums und dessen Wirkung auf die Gesellschaft und haben anhand einer praktischen",
+            "Problemstellung wesentliche Herausforderungen des Entrepreneurship im Dialog mit der Praxis",
+            "kennengelernt."
+        ],
+        "inhalte_und_themen": [
+            "Teilnehmende erhalten eine Einführung in die grundlegende theoretische Auseinandersetzung mit",
+            "dem Konzept des Sustainable Entrepreneurships.",
+            "Im Verlauf der Veranstaltung werden die Teilnehmenden an verschiedene Aspekte des Entrepre-",
+            "neurships herangeführt, wobei nach allgemeinen Grundlagen des Unternehmertums, spezifisch",
+            "nachhaltige Themenspektren fokussiert werden.",
+            "Im Seminar entwickeln die Studierenden unter Hilfestellung des Dozierenden eigene Geschäftsideen",
+            "und präsentieren diese am Ende des Semesters in Form eines Kurzreferats."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Grundlagen des wissenschaftlichen Arbeitens"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "teter Leistungsnachweis: Klausur",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-SBE02-H-0823",
+        "modultitel": "Sustainable Development",
+        "modultitel_englisch": "Sustainable Development",
+        "details": {
+            "Modulnummer": "82-021-SBE02-H-0823",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Economics, esp. Microeconomics",
+            "Modulverantwortlich": "Prof. Dr. Alexander M. Danzer",
+            "ECTS": "5 ECTS-Point"
+        },
+        "kompetenzen": [
+            "Students of the course acquire substantial knowledge about sustainable development and the",
+            "trade-offs in economic growth.",
+            "They are able to apply simple theoretical and empirical analyses to the study of sustainable deve-",
+            "lopment and development policies.",
+            "Students develop reflected views on fundamental determinants of sustainable growth, human de-",
+            "velopment and structural imbalances, e.g., the quality and design of institutions or the importance",
+            "of political leadership.",
+            "Students acquire knowledge about the global development agenda (e.g., Sustainable Development",
+            "Goals) and specific development policies.",
+            "Students learn to assume different roles in simulation games to solve simulated real world chal-",
+            "lenges in smaller groups; they learn to search for suitable data to understand and present their",
+            "assigned role (e.g., different agents, such as politicians, households, farmers, CEOs of internatio-",
+            "nal companies, NGOs) and express their policy preferences. They are able to analyse, interpret,",
+            "critically assess, and present the data."
+        ],
+        "inhalte_und_themen": [
+            "Introduction to basic methods and empirical strategies in sustainable development",
+            "Correlation vs. causality",
+            "Experiments and Randomized Controlled Trials (RCTs)",
+            "Observational data and quasi experiments",
+            "Measurement of growth, poverty, inequality and social exclusion",
+            "Fundamental determinants of economic development",
+            "History and institutions",
+            "Good and bad policies, good and bad politicians",
+            "Market vs. plan",
+            "Human development",
+            "The demographic transition, fertility and population ageing",
+            "Education, knowledge and skills",
+            "Health and quality of life",
+            "Structural imbalances",
+            "Risk and insurance",
+            "The urban-rural division and migration",
+            "Climate change",
+            "Stakeholders and agents",
+            "Individuals",
+            "Households",
+            "Business",
+            "Lobby groups",
+            "Government",
+            "Supranational institutions"
+        ],
+        "voraussetzungen": {
+            "Formale": "None",
+            "Empfohlene": "Mathematics, Descriptive statistics, Microeconomics, Macroeconomics"
+        },
+        "pruefung": {
+            "Sprache": "English",
+            "Anforderung": "tion or Portfolio",
+            "Notenrelevanz": "or Portfolio (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-IFM01-H-0507",
+        "modultitel": "Systementwicklung",
+        "modultitel_englisch": "Systems Development",
+        "details": {
+            "Modulnummer": "82-021-IFM01-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Wirtschaftsinformatik",
+            "Modulverantwortlich": "Prof. Dr. Thomas Setzer",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "Studierende dieses Moduls erwerben Kompetenzen zur selbstständigen Planung und Bearbeitung",
+            "umfassender fachlicher Aufgabenstellungen auf dem Gebiet der IT-Systementwicklung.",
+            "Sie entwickeln ein Verständnis für übergreifende Zusammenhänge der Methoden und Vorgehens-",
+            "weisen bei der Entwicklung und Einführung neuer IT-Anwendungssysteme.",
+            "Sie werden im Rahmen der Übung mit dem ARIS Toolset angehalten eigene und fremdgesetzte",
+            "Lern- und Arbeitsziele zu strukturieren sowie daraus Konsequenzen für die Arbeitsprozesse im",
+            "Team zu ziehen.",
+            "Nach Abschluss des Moduls verfügen die Studierenden über ein integriertes Fachwissen und können",
+            "umfangreiche Transferleistungen erbringen."
+        ],
+        "inhalte_und_themen": [
+            "Systementwicklung: Grundlagen",
+            "Informationsmanagement",
+            "Grundprinzipien der Modellierung von Informationssystemen",
+            "Vorgehensmodelle der Systementwicklung",
+            "Strukturierte Systementwicklung mit ARIS, insbesondere Prozess- und Datenmodellierung",
+            "Objektorientierte Systementwicklung mit ARIS und UML",
+            "Phasenübergreifende Aufgaben in der Systementwicklung",
+            "Systementwicklung: ARIS Toolset",
+            "Übersicht zu den Methoden der Gestaltung von Geschäftsprozessen und der Erstellung von IT-",
+            "Unternehmensarchitekturen",
+            "Einführung in die ARIS-Methodik",
+            "Konkretes Arbeiten mit dem ARIS Toolset"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Grundlegende Kenntnisse im Bereich der Wirtschaftsinformatik werden erwartet."
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Antworten können sowohl auf Englisch als auch auf Deutsch gegeben werden.",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-ES02-H-0223",
+        "modultitel": "Umweltökonomik & Umweltpolitik",
+        "modultitel_englisch": "Environmental Economics & Environmental Policy",
+        "details": {
+            "Modulnummer": "82-021-ES02-H-0223",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Professur für VWL",
+            "Modulverantwortlich": "Prof. Dr. Reinhard Weber",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studenten erwerben Kompetenzen unter anderem in folgenden Bereichen:",
+            "Sie kennen die Grundlagen der ökonomischen Theorien zur Umweltpolitik",
+            "Sie verfügen über ein grundlegendes Verständnis der grundlegenden Themen der Umweltökonomie",
+            "Sie verfügen über Kenntnisse zur ökonomischen Interpretation von Umweltproblemen",
+            "Sie kennen umweltpolitische Instrumente und können die Anwendung dieser Instrumente beurtei-",
+            "len",
+            "Sie können aktuelle Umweltprobleme aus ökonomischer Sicht analysieren und mögliche Lösungswege",
+            "zentraler umweltökonomischer Problemstellungen erarbeiten."
+        ],
+        "inhalte_und_themen": [
+            "Die Grundlagen des Nachhaltigkeitsproblems",
+            "Eine theoretische und empirische Analyse von umweltpolitischen Instrumenten",
+            "Ressourcenökonomie",
+            "Zentrale Themen der Umweltökonomie: Energie, Klimawandel, \"Grüne Transformation\""
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Mikroökonomie, Finanzwissenschaften"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "der alternativen Prüfungsformen werden die Bedingungen vor Semesterbeginn bekannt gegeben.",
+            "Notenrelevanz": "oder Portfolio (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-FM04-H-0221",
+        "modultitel": "Unternehmensplanung & -steuerung",
+        "modultitel_englisch": "Corporate Planning & Management Control",
+        "details": {
+            "Modulnummer": "82-021-FM04-H-0221",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Unternehmensrechnung",
+            "Modulverantwortlich": "Prof. mult. Anton Burger",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Studierende des Kurses lernen die zukünftige Entwicklung von Unternehmen auf verschiedenen",
+            "Detailebenen zu planen und anhand der geplanten Ziele zu steuern.",
+            "Im Rahmen des Fachs Unternehmensplanung & -steuerung werden die analytischen und strategi-",
+            "schen Fähigkeiten der Studierenden geschult und mathematisch logisches Denken trainiert.",
+            "Darüber hinaus wenden die Studierenden die erlernten Fähigkeiten anhand von Fallbeispielen in",
+            "Excel an und erarbeiten sich dadurch praxisrelevante Methodenkenntnisse."
+        ],
+        "inhalte_und_themen": [
+            "Liquiditätsplanung und -steuerung",
+            "Strategische Planung",
+            "Mittelfristplanung (Integrierte Unternehmensplanung)",
+            "Operative Planung und Unternehmenssteuerung"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-BWL14-H-0507",
+        "modultitel": "Unternehmensbesteuerung",
+        "modultitel_englisch": "Company Taxation",
+        "details": {
+            "Modulnummer": "82-021-BWL14-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "ABWL und Betriebswirtschaftliche Steuerlehre",
+            "Modulverantwortlich": "Prof. Dr. Reinald Koch",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Studierende des Kurses lernen grundlegende Vorschriften des deutschen Ertragsteuerrechts kennen.",
+            "Im Zusammenhang mit der Ermittlung des Einkommens werden auch relevante Vorschriften der",
+            "handels- und steuerrechtlichen Bilanzierung behandelt.",
+            "Studierende erwerben Techniken zur Lösung von ertragsteuerlichen Sacherhalten und deren ei-",
+            "genständige Übertragung auf neue Sachverhalte. Dabei erlernen sie auch den Umgang mit den",
+            "einschlägigen Rechtsquellen.",
+            "Den Studierenden wird vermittelt, die steuerlichen Vorschriften kritisch zu reflektieren und aufge-",
+            "zeigte Steuerplanungsansätze vor dem Hintergrund ethischmoralischer Werte einzuordnen.",
+            "Nach Abschluss des Kurses verfügen die Studierenden über einen umfassenden Überblick über",
+            "die Vorschriften zur Ermittlung der Einkommensteuer, Körperschaftsteuer und Gewerbesteuer und",
+            "kennen die Zusammenhänge zwischen den genannten Steuerarten."
+        ],
+        "inhalte_und_themen": [
+            "Grundlagen der handelsrechtlichen und steuerlichen Bilanzierung",
+            "Grundlagen der Einkommensteuer",
+            "Grundlagen der Körperschaftsteuer",
+            "Grundlagen der Gewerbesteuer"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Betriebswirtschaftliches Rechnungswesen"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (100%)",
+            "Notenrelevanz": "Klausur (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-KUG03-H-0507",
+        "modultitel": "Current Business Topics",
+        "modultitel_englisch": "Current Business Topics",
+        "details": {
+            "Modulnummer": "82-021-KUG03-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "erweitern Studierende den bereits vorhandene Fachvokabelschatz in der Zielsprache",
+            "üben Studierende sprachliche Mittel für Diskussionen auf Niveau B2+/C1",
+            "erwerben Studierende Interaktionskompetenzen durch regelmäßige Gruppenarbeit"
+        ],
+        "inhalte_und_themen": [
+            "an der Gestaltung des Inhaltes aktiv beteiligt. Folgende Themen können z.B. angesprochen werden:",
+            "International trade",
+            "Outsourcing and offshoring",
+            "The business of business schools",
+            "Mergers and Acquisitions",
+            "Men & women in the workplace",
+            "The automotive industry"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Wirtschaftsenglisch I & II; Niveau B2+"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Schriftliche Prüfung 50%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-KUG17-H-0119",
+        "modultitel": "Kulturen und Gesellschaften Lateinamerikas",
+        "modultitel_englisch": "Latin American Cultures and Societies",
+        "details": {
+            "Modulnummer": "82-021-KUG17-H-0119",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "Die Studierenden können Interdependenzen zwischen Kultur und Gesellschaft aus interdisziplinärer",
+            "Sicht (Linguistik, Literatur- und Kulturwissenschaft, Geschichte, Humangeographie und Politik-",
+            "wissenschaft) identifizieren, diskutieren und analysieren.",
+            "Die Studierenden erhalten einen Überblick über die lateinamerikanische Geschichte und Politik",
+            "Die Studierenden erwerben ein profunderes Wissen über die Kulturen, Medien und Gesellschaften",
+            "des heutigen Lateinamerikas",
+            "Die Studierenden lernen die Rolle Lateinamerikas in einer globalisierten Welt einzuordnen",
+            "Die Studierenden können grundlegende Eigenschaften des lateinamerikanischen Spanischen und",
+            "des brasilianischen Portugiesischen erkennen",
+            "Die Studierenden entwickeln interkulturelle Kompetenzen mit Fokus auf Lateinamerika"
+        ],
+        "inhalte_und_themen": [
+            "Schlüsselereignisse der lateinameirkanischen Geschichte",
+            "Sozioökonomische und kulturelle Kontexte der lateinamerikanischen Politik",
+            "Strategien und Ideologien der regionalen Entwicklung",
+            "Quellen, Umstände und Methoden zur Messung von Ungleichheiten in Lateinamerika",
+            "Linguistische und mediale Landschaften Lateinamerikas",
+            "Lateinamerikanische Literaturkonzepte und ihre literarische Gestaltung",
+            "Grundbegriffe der deskriptiven Sprachwissenschaft und der lateinamerikanischen Anthropologie",
+            "Schlüsselkonzepte interkultureller Kommunikation im universitären Kontext"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Spanisch",
+            "Anforderung": "Mit mindestens \"ausreichend\" bewerteter Leistungsnachweis: Klausur (90 Minuten)",
+            "Notenrelevanz": "Klausur 100%"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-WM01-H-0816",
+        "modultitel": "Th`emes ´economiques actuels",
+        "modultitel_englisch": "Current Business Topics in French",
+        "details": {
+            "Modulnummer": "82-021-WM01-H-0816",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "In diesem Modul erwerben Studierende",
+            "erweiterte Kommunikationskompetenzen in der Fachfremdsprache",
+            "umfassendes wirtschaftliches Fachvokabular und sprachliche Strukturen auf Niveau B2+",
+            "sprachliche Fähigkeiten für das Verstehen von Wirtschaftstexten in der Zielsprache",
+            "Argumentations- und Präsentationskompetenz in der Zielsprache",
+            "Reflektionskompetenz durch umfangreiches Diskussionsfeedback",
+            "Sozialkompetenz durch regelmäßige Gruppenarbeit mit Kommilitonen"
+        ],
+        "inhalte_und_themen": [
+            "Aktuelle Themen aus dem Bereich Wirtschaft.",
+            "Erweiterte Lexik in der Fachfremdsprache"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Wirtschaftsfranzösisch I & II o.ä,; mindestens Niveau B2"
+        },
+        "pruefung": {
+            "Sprache": "Französisch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Schriftliche Prüfung (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-KUG01-H-0507",
+        "modultitel": "Business Fiction",
+        "modultitel_englisch": "Business Fiction",
+        "details": {
+            "Modulnummer": "82-021-KUG01-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "einen kritischen und interdisziplinären Umgang mit fiktionalen Texten zum Thema Wirtschaft",
+            "den sicheren Umgang mit relevanten Vokabeln und sprachlichen Strukturen",
+            "einen fairen Umgang mit konstruktiver Kritik mittels systematischer Selbstreflektion"
+        ],
+        "inhalte_und_themen": [
+            "Unterschied gibt zwischen einem objektiven wissenschaftlichen Text und einem subjektiven literarischen",
+            "Text. Entsprechend kann letzterer dazu dienen, das Wesen wirtschaftlichen Handelns zu reflektieren.",
+            "Studierenden lesen 6 Kurzgeschichten und zwei Romane (Niveau C1)."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Wirtschaftsenglisch I & II; Niveau B2+"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Term Paper 30%"
+        }
+    },
+    {
+        "chunk_id": "modul_88-021-WLM02-H-0408",
+        "modultitel": "Effective Meetings and Negotiations",
+        "modultitel_englisch": "Effective Meetings and Negotiations",
+        "details": {
+            "Modulnummer": "88-021-WLM02-H-0408",
+            "Niveau": "Mastermodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "die nötigen sprachlichen Mittel für verhandlungssicheres Englisch auf Niveau C1.",
+            "die kontextspezifische Verwendung relevanter Vokabeln und sprachlicher Strukturen",
+            "Grundlagenwissen bezüglich professioneller Sitzungsleitung und Verhandlungsführung",
+            "einen fairen Umgang mit konstruktiver Kritik mittels systematischer Selbstreflektion",
+            "eine situativ und interkulturell adäquate Kommunikation im gegenseitigen Austausch"
+        ],
+        "inhalte_und_themen": [
+            "Sprachliche Mittel für verhandlungssicheres Englisch werden in praxisrelevanten Simulationen",
+            "geübt und angewandt.",
+            "Themen aus den Bereichen networking, writing reports, emails, and summaries, negotiating, pre-",
+            "paring agendas, social media management, decision-making, brainstorming, and teleconferen-",
+            "cing."
+        ],
+        "voraussetzungen": {
+            "Formale": "Niveau B2",
+            "Empfohlene": "Wirtschaftsenglisch I & II"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Mündlich (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-WM06-H-0719",
+        "modultitel": "Interkulturelle Kommunikation in der hispanischen Welt",
+        "modultitel_englisch": "Interculturalidad en el mundo hispano",
+        "details": {
+            "Modulnummer": "82-021-WM06-H-0719",
+            "Niveau": "Bachelor- und Mastermodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "rien und Konzepte zu analysieren und zu verstehen unterschiedliche kulturelle Werte, Erwartungen und",
+            "Verhaltensweisen von Menschen aus dem hispanistischen und deutschen Kulturraum im Wirtschafts-",
+            "kontext zu analysieren und zu verstehen. Studierende erwerben Reflektionskompetenz im Umgang mit",
+            "konstruktiver Kritik mittels systematischer Selbstreflektion und interkulturelle Kompetenz durch situa-",
+            "tiv adäquate Kommunikation im gegenseitigen Austausch"
+        ],
+        "inhalte_und_themen": [
+            "Kultur",
+            "Stereotypen",
+            "Vorurteile",
+            "Kulturschock",
+            "Konfliktlösungen",
+            "Ethnozentrismus & Migration",
+            "Deutsche und spanische Wertestrukturen",
+            "Werte am Arbeitsplatz",
+            "Deutsch-spanische Verhandlungen und Besprechungen."
+        ],
+        "voraussetzungen": {
+            "Formale": "Niveau B2+",
+            "Empfohlene": "Wirtschaftsspanisch I & II"
+        },
+        "pruefung": {
+            "Sprache": "Spanisch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Mündlich (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-BWL13-H-0507",
+        "modultitel": "N´egociation professionnelle",
+        "modultitel_englisch": "N´egociation professionnelle",
+        "details": {
+            "Modulnummer": "82-021-BWL13-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Center for Business Languages",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS-Point"
+        },
+        "kompetenzen": [
+            "learn and practice advanced business vocabulary at level B2+",
+            "practice meetings and negotiation skills",
+            "enhance overall communicative competence",
+            "improve self-reflection competence due to substantial feedback",
+            "develop social skills during group work with fellow students."
+        ],
+        "inhalte_und_themen": [
+            "Various subject areas related to business and economics",
+            "Advanced lexis for meetings and negotiations"
+        ],
+        "voraussetzungen": {
+            "Formale": "minimum skill level B2 (CEFR)",
+            "Empfohlene": "Business French I & II"
+        },
+        "pruefung": {
+            "Sprache": "German",
+            "Anforderung": "a written exam including vocabulary test and essay",
+            "Notenrelevanz": "Final exam (100%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-WSprachen07-H-0507",
+        "modultitel": "Wirtschaftsdeutsch I",
+        "modultitel_englisch": "Business German I",
+        "details": {
+            "Modulnummer": "82-021-WSprachen07-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "In diesem Modul erwerben Studierende",
+            "erweiterte Kommunikationskompetenzen in der Fachfremdsprache",
+            "umfassendes wirtschaftliches Fachvokabular und sprachliche Strukturen auf Niveau B2",
+            "sprachliche Fähigkeiten für das Beschreiben und Interpretieren von Diagrammen",
+            "grundlegende professionelle Präsentationskompetenz in der Zielsprache",
+            "Sozialkompetenz und interkulturelle Sensibilität durch regelmäßige Gruppenarbeit mit Kommili-",
+            "tonen unterschiedlicher Herkunftsländer"
+        ],
+        "inhalte_und_themen": [
+            "Diverse Themen aus dem Bereich Wirtschaft, z.B. Marketing, Personal, Bankwesen, Bewerbung."
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Mindestens Niveau B2 (CEFR)"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Schriftliche Prüfung (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-WSprachen08-H-0507",
+        "modultitel": "Wirtschaftsdeutsch II",
+        "modultitel_englisch": "Business German II",
+        "details": {
+            "Modulnummer": "82-021-WSprachen08-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "Nicht angegeben"
+        },
+        "kompetenzen": [
+            "In diesem Modul erwerben Studierende",
+            "umfassendes wirtschaftliches Fachvokabular und sprachliche Strukturen auf Niveau B2+",
+            "grundlegende professionelle Präsentationstechniken in der Zielsprache",
+            "sprachliche Fähigkeiten für das Beschreiben und Interpretieren von Diagrammen"
+        ],
+        "inhalte_und_themen": [
+            "Diverse Themen aus dem Bereich Wirtschaft, z.B. Marketing, Personal, Bankwesen, Bewerbung."
+        ],
+        "voraussetzungen": {
+            "Formale": "Wirtschaftsdeutsch I",
+            "Empfohlene": "Mindestens Niveau B2 (CEFR)/Wirtschaftsdeutsch I"
+        },
+        "pruefung": {
+            "Sprache": "Deutsch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Schriftliche Prüfung (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-WSprachen01-H-0507",
+        "modultitel": "Wirtschaftsenglisch I",
+        "modultitel_englisch": "Business English I",
+        "details": {
+            "Modulnummer": "82-021-WSprachen01-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "In diesem Modul erwerben Studierende",
+            "erweiterte Kommunikationskompetenzen in der Fachfremdsprache",
+            "umfassendes wirtschaftliches Fachvokabular und sprachliche Strukturen auf Niveau B2",
+            "sprachliche Fähigkeiten für das Beschreiben und Interpretieren von Diagrammen",
+            "grundlegende professionelle Präsentationskompetenz in der Zielsprache",
+            "Reflektionskompetenz durch umfangreiches Präsentationsfeedback",
+            "Sozialkompetenz durch regelmäßige Gruppenarbeit mit Kommilitonen"
+        ],
+        "inhalte_und_themen": [
+            "Management",
+            "Company Structure",
+            "Work and motivation",
+            "Management and cultural diversity",
+            "Recruitment",
+            "Labor Relations",
+            "Production",
+            "Products",
+            "Marketing",
+            "Advertising",
+            "Promotional Tools"
+        ],
+        "voraussetzungen": {
+            "Formale": "Mindestens Niveau B2 (CEFR)/Einstufungstest am Semesterbeginn",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "wendig",
+            "Notenrelevanz": "Schriftliche Prüfung (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-WSprachen02-H-0507",
+        "modultitel": "Wirtschaftsenglisch II",
+        "modultitel_englisch": "Business English II",
+        "details": {
+            "Modulnummer": "82-021-WSprachen02-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS"
+        },
+        "kompetenzen": [
+            "In diesem Modul erwerben Studierende",
+            "erweiterte Kommunikationskompetenzen in der Fachfremdsprache",
+            "umfassendes wirtschaftliches Fachvokabular und sprachliche Strukturen auf Niveau B2+",
+            "grundlegende professionelle Diskussionskompetenz in der Zielsprache",
+            "Reflektionskompetenz durch umfangreiches Diskussionsfeedback",
+            "Sozialkompetenz durch regelmäßige Gruppenarbeit mit Kommilitonen"
+        ],
+        "inhalte_und_themen": [
+            "Accounting",
+            "Banking",
+            "Stocks and shares",
+            "Market structure",
+            "Takeovers & mergers",
+            "Efficiency and employment",
+            "Business ethics",
+            "The role of government",
+            "Exchange rates",
+            "The business cycle",
+            "International trade",
+            "Economics and ecology"
+        ],
+        "voraussetzungen": {
+            "Formale": "Business English I",
+            "Empfohlene": "Keine"
+        },
+        "pruefung": {
+            "Sprache": "Englisch",
+            "Anforderung": "notwendig.",
+            "Notenrelevanz": "Schriftliche Prüfung (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-WSprachen03-H-0507",
+        "modultitel": "Wirtschaftsfranzösisch I",
+        "modultitel_englisch": "Business French I",
+        "details": {
+            "Modulnummer": "82-021-WSprachen03-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "5 ECTS-Punkte"
+        },
+        "kompetenzen": [
+            "In diesem Modul erwerben Studierende",
+            "erweiterte Kommunikationskompetenzen in der Fachfremdsprache",
+            "umfassendes wirtschaftliches Fachvokabular und sprachliche Strukturen auf Niveau B2",
+            "sprachliche Fähigkeiten für das Beschreiben und Interpretieren von Diagrammen",
+            "grundlegende professionelle Präsentationskompetenz in der Zielsprache",
+            "Reflektionskompetenz durch umfangreiches Präsentationsfeedback",
+            "Sozialkompetenz durch regelmäßige Gruppenarbeit mit Kommilitonen"
+        ],
+        "inhalte_und_themen": [
+            "Diverse Themen aus dem Bereich Wirtschaft, z.B. Firmenstruktur, Produktion, Vertrieb.",
+            "Lexik für professionelle Präsentationen in der Fachfremdsprache"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Mindestens Niveau B2 (CEFR)/Einstufungstest am Semesterbeginn"
+        },
+        "pruefung": {
+            "Sprache": "Französisch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Schriftliche Prüfung (50%)"
+        }
+    },
+    {
+        "chunk_id": "modul_82-021-WSprachen04-H-0507",
+        "modultitel": "Wirtschaftsfranzösisch II",
+        "modultitel_englisch": "Business French II",
+        "details": {
+            "Modulnummer": "82-021-WSprachen04-H-0507",
+            "Niveau": "Bachelormodul",
+            "Turnus": "Zentrum für Wirtschaftssprachen",
+            "Modulverantwortlich": "Lawrence Diederich",
+            "ECTS": "Nicht angegeben"
+        },
+        "kompetenzen": [
+            "In diesem Modul erwerben Studierende",
+            "erweiterte Kommunikationskompetenzen in der Fachfremdsprache",
+            "umfassendes wirtschaftliches Fachvokabular und sprachliche Strukturen auf Niveau B2+",
+            "grundlegende professionelle Diskussionskompetenz in der Zielsprache",
+            "Reflektionskompetenz durch umfangreiches Diskussionsfeedback",
+            "Sozialkompetenz durch regelmäßige Gruppenarbeit mit Kommilitonen"
+        ],
+        "inhalte_und_themen": [
+            "Diverse Themen aus dem Bereich Wirtschaft, z.B. Firmenstruktur, Produktion, Vertrieb.",
+            "Lexik für professionelle Diskussionen in der Fachfremdsprache"
+        ],
+        "voraussetzungen": {
+            "Formale": "Keine",
+            "Empfohlene": "Wirtschaftsfranzösisch I"
+        },
+        "pruefung": {
+            "Sprache": "Französisch",
+            "Anforderung": "wendig.",
+            "Notenrelevanz": "Schriftliche Prüfung (50%)"
+        }
+    }
+]

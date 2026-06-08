@@ -1,0 +1,271 @@
+{
+  "DigitalizationAndAnalytics": [
+    {
+      "module": "Digital Seminar in Data Science & Quantitative Applications",
+      "exam": "Projektarbeit und Präsentation",
+      "ects": 10,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Applied Machine Learning",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Computational Statistics",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Angewandte Statistische Methoden",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Algorithmen und Datenstrukturen",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Systementwicklung",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Data Science in Finance mit Python",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Data Processing in Accounting, Auditing and Taxation",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "offen",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Taxation of Digital Businesses",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "offen",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Digital Techn. Mgmt. - Service and Technology Management and Marketing",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "offen",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Marketing Analytics mit R",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Innovation through Design for Digital Customer Experience and Sustainable Solutions",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Operations Analytics",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Supply Chain Analytics",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Econometrics",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Decision Theory",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Digitales Recht",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "offen",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Bilanzsteuerrecht und DATEV",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    }
+  ],
+  "DataCompetence": [
+    {
+      "module": "Algorithmen und Datenstrukturen",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Computational Statistics",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Decision Theory",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Applied Machine Learning",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    }
+  ],
+  "ApplicationCompetence": [
+    {
+      "module": "Bilanzsteuerrecht und DATEV",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Grundlagen des Marketingmanagement",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Operations Analytics",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Kapitalmarkttheorie",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "-"
+    }
+  ],
+  "BusinessLanguageAndManagementSkills": [
+    {
+      "module": "Business English I",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Business English II",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "Business English I"
+    },
+    {
+      "module": "Business French I",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Business French II",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "Business French I"
+    },
+    {
+      "module": "Business Spanish I",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Business Spanish II",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "Business Spanish I"
+    },
+    {
+      "module": "Business Chinese I",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Business Chinese II",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "Business Chinese I"
+    },
+    {
+      "module": "Business German I",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    },
+    {
+      "module": "Business German II",
+      "exam": "Klausur + mündl. Prüfung",
+      "ects": 5,
+      "semester": "SS",
+      "prerequisite": "Business German I"
+    }
+  ],
+  "BusinessEthics": [
+    {
+      "module": "Wirtschafts- und Unternehmensethik",
+      "exam": "Klausur",
+      "ects": 5,
+      "semester": "WS",
+      "prerequisite": "-"
+    }
+  ]
+}

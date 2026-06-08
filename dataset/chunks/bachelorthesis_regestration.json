@@ -1,0 +1,50 @@
+{
+  "formType": "BachelorThesisRegistration",
+  "degreeProgram": "Digital and Data-Driven Business",
+  "university": "Katholische Universität Eichstätt-Ingolstadt",
+
+  "student": {
+    "lastName": "",
+    "birthName": "",
+    "firstName": "",
+    "dateOfBirth": "",
+    "matriculationNumber": "",
+    "semester": ""
+  },
+
+  "libraryPublication": {
+    "allowed": null
+  },
+
+  "declarations": {
+    "requirementsFulfilled": true,
+    "notFinallyFailed": true,
+    "enrolledDuringProcessingPeriod": true,
+    "notOnLeave": true
+  },
+
+  "thesis": {
+    "titleGerman": "",
+    "titleEnglish": "",
+    "language": "",
+    "processingTimeMonths": 2,
+    "issueDate": "",
+    "submission": {
+      "printedCopies": 2,
+      "digitalCopies": 1,
+      "preferredFormat": "PDF via Email",
+      "email": "pruefungsamt-in@ku.de"
+    }
+  },
+
+  "supervisor": {
+    "name": "",
+    "isAuthorizedExaminer": true,
+    "signatureDate": ""
+  },
+
+  "examinationOffice": {
+    "submissionDeadline": "",
+    "processedBy": ""
+  }
+}

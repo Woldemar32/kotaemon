@@ -1,0 +1,67 @@
+{
+  "formType": "BachelorDegreeCertificateApplication",
+  "degreeProgram": "Digital and Data-Driven Business",
+
+  "student": {
+    "lastName": "",
+    "birthName": "",
+    "firstNames": "",
+    "dateOfBirth": "",
+    "placeOfBirth": "",
+    "matriculationNumber": "",
+    "numberOfSemesters": "",
+    "privateEmail": "",
+    "correspondenceAddress": {
+      "street": "",
+      "postalCode": "",
+      "city": ""
+    }
+  },
+
+  "studyInformation": {
+    "examRegulation": "",
+    "businessLanguage": "",
+    "lastExaminationDate": ""
+  },
+
+  "declarations": {
+    "allRequiredCreditsCompleted": true,
+    "totalEcts": 180,
+    "noFurtherExaminationsPlanned": true,
+    "allGradesRecordedInCampusSystem": true,
+    "gradeRecordVerified": true
+  },
+
+  "compensationRule": {
+    "requested": false,
+    "attachmentIncluded": false,
+    "legalReference": "§ 7 Abs. 2 PO"
+  },
+
+  "studyProfile": {
+    "requested": false,
+    "profileName": "",
+    "modules": []
+  },
+
+  "moduleDeletions": {
+    "requested": false,
+    "modules": [
+      {
+        "moduleNumber": "",
+        "moduleName": ""
+      }
+    ],
+    "requestAdditionalTranscript": false
+  },
+
+  "bachelorThesis": {
+    "grade": "",
+    "supervisor": ""
+  },
+
+  "signatures": {
+    "applicationDate": "",
+    "studentSignature": false
+  }
+}
