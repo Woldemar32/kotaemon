@@ -28,7 +28,7 @@ from llama_index.core.vector_stores import (
     MetadataFilters,
 )
 from llama_index.core.vector_stores.types import VectorStoreQueryMode
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from theflow.settings import settings
 from theflow.utils.modules import import_dotted_string
@@ -48,6 +48,16 @@ from kotaemon.indices.rankings import BaseReranking, LLMReranking, LLMTrulensSco
 from kotaemon.indices.splitters import BaseSplitter, TokenSplitter
 
 from .base import BaseFileIndexIndexing, BaseFileIndexRetriever
+from .contextual import (
+    enrich_chunks,
+    expand_blind_neighbor_chunks,
+    expand_neighbor_chunks,
+    metadata_rerank,
+    log_retrieval_debug,
+    retrieval_debug_payload,
+    use_contextual_text,
+)
+from .deletion import delete_file_sources
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +122,16 @@ class DocumentRetrievalPipeline(BaseFileIndexRetriever):
     top_k: int = 5
     retrieval_mode: str = "hybrid"
     doc_ids: Optional[list[str]] = None
+    contextual_retrieval_enrichment: bool = False
+    enable_blind_neighbor_expansion: bool = False
+    enable_section_aware_expansion: bool = True
+    section_expansion_previous: int = 0
+    section_expansion_next: int = 0
+    max_expanded_context_chars: int = 5000
+    allow_neighbor_cross_section: bool = False
+    enable_metadata_rerank: bool = False
+    enable_document_routing: bool = False
+    rag_debug_retrieval: bool = False
 
     @Node.auto(depends_on=["embedding", "VS", "DS"])
     def vector_retrieval(self) -> VectorRetrieval:
@@ -191,41 +211,97 @@ class DocumentRetrievalPipeline(BaseFileIndexRetriever):
         docs = self.vector_retrieval.run(
             text=text, top_k=self.top_k, **retrieval_kwargs
         )
+        self._last_retrieval_trace = getattr(
+            self.vector_retrieval, "_last_retrieval_trace", {}
+        )
+        before_contextual_processing = deepcopy(docs)
         _index_log(f"Retrieval step took {time.time() - s_time:.2f}s")
 
-        if not self.get_extra_table:
-            return docs
-
-        # retrieve extra nodes relate to table
-        table_pages = defaultdict(list)
-        retrieved_id = set([doc.doc_id for doc in docs])
-        for doc in docs:
-            if "page_label" not in doc.metadata:
-                continue
-            if "file_name" not in doc.metadata:
-                warnings.warn(
-                    "file_name not in metadata while page_label is in metadata: "
-                    f"{doc.metadata}"
+        if self.get_extra_table:
+            # retrieve extra nodes related to tables before contextual expansion so
+            # the final budget applies to every document sent to the LLM.
+            table_pages = defaultdict(list)
+            retrieved_id = set([doc.doc_id for doc in docs])
+            for doc in docs:
+                if "page_label" not in doc.metadata:
+                    continue
+                if "file_name" not in doc.metadata:
+                    warnings.warn(
+                        "file_name not in metadata while page_label is in metadata: "
+                        f"{doc.metadata}"
+                    )
+                table_pages[doc.metadata["file_name"]].append(
+                    doc.metadata["page_label"]
                 )
-            table_pages[doc.metadata["file_name"]].append(doc.metadata["page_label"])
 
-        queries: list[dict] = [
-            {"$and": [{"file_name": {"$eq": fn}}, {"page_label": {"$in": pls}}]}
-            for fn, pls in table_pages.items()
-        ]
-        if queries:
-            try:
-                extra_docs = self.vector_retrieval.run(
-                    text="",
-                    top_k=50,
-                    where=queries[0] if len(queries) == 1 else {"$or": queries},
-                )
-                for doc in extra_docs:
-                    if doc.doc_id not in retrieved_id:
-                        docs.append(doc)
-            except Exception:
-                print("Error retrieving additional tables")
+            queries: list[dict] = [
+                {
+                    "$and": [
+                        {"file_name": {"$eq": fn}},
+                        {"page_label": {"$in": pls}},
+                    ]
+                }
+                for fn, pls in table_pages.items()
+            ]
+            if queries:
+                try:
+                    extra_docs = self.vector_retrieval.run(
+                        text="",
+                        top_k=50,
+                        where=queries[0] if len(queries) == 1 else {"$or": queries},
+                    )
+                    for doc in extra_docs:
+                        if doc.doc_id not in retrieved_id:
+                            docs.append(doc)
+                except Exception:
+                    print("Error retrieving additional tables")
 
+        # Include table additions in the diagnostic snapshot taken before any
+        # deterministic score changes.
+        before_contextual_processing = deepcopy(docs)
+        if self.enable_metadata_rerank or self.enable_document_routing:
+            docs = metadata_rerank(
+                docs, text, enable_document_routing=self.enable_document_routing
+            )
+        skipped_expansion: list[dict[str, str]] = []
+        if self.enable_blind_neighbor_expansion:
+            docs = expand_blind_neighbor_chunks(
+                docs,
+                self.DS,
+                previous=self.section_expansion_previous,
+                next_=self.section_expansion_next,
+                max_chars=self.max_expanded_context_chars,
+                use_enriched_text=self.contextual_retrieval_enrichment,
+            )
+        elif self.enable_section_aware_expansion:
+            docs = expand_neighbor_chunks(
+                docs,
+                self.DS,
+                previous=self.section_expansion_previous,
+                next_=self.section_expansion_next,
+                max_chars=self.max_expanded_context_chars,
+                allow_cross_section=self.allow_neighbor_cross_section,
+                use_enriched_text=self.contextual_retrieval_enrichment,
+                skipped_reasons=skipped_expansion,
+            )
+        elif self.contextual_retrieval_enrichment:
+            docs = use_contextual_text(docs)
+
+        contextual_debug = retrieval_debug_payload(
+            text,
+            before_contextual_processing,
+            docs,
+            used_enriched_text=self.contextual_retrieval_enrichment,
+            skipped_reasons=skipped_expansion,
+        )
+        self._last_retrieval_trace["contextual_retrieval"] = contextual_debug
+        if self.rag_debug_retrieval:
+            log_retrieval_debug(contextual_debug)
+
+        if self._last_retrieval_trace:
+            self._last_retrieval_trace["returned_documents"] = (
+                self.vector_retrieval._diagnostic_snapshot(docs, "returned")
+            )
         return docs
 
     def generate_relevant_scores(
@@ -306,6 +382,34 @@ class DocumentRetrievalPipeline(BaseFileIndexRetriever):
                     )
                 ]
             ],
+            contextual_retrieval_enrichment=getattr(
+                settings, "ENABLE_CONTEXTUAL_RETRIEVAL", False
+            ),
+            enable_blind_neighbor_expansion=getattr(
+                settings, "ENABLE_BLIND_NEIGHBOR_EXPANSION", False
+            ),
+            enable_section_aware_expansion=getattr(
+                settings, "ENABLE_SECTION_AWARE_EXPANSION", True
+            ),
+            section_expansion_previous=getattr(
+                settings, "SECTION_EXPANSION_PREVIOUS", 0
+            ),
+            section_expansion_next=getattr(
+                settings, "SECTION_EXPANSION_NEXT", 0
+            ),
+            max_expanded_context_chars=getattr(
+                settings, "MAX_EXPANDED_CONTEXT_CHARS", 5000
+            ),
+            allow_neighbor_cross_section=getattr(
+                settings, "ALLOW_CROSS_SECTION_EXPANSION", False
+            ),
+            enable_metadata_rerank=getattr(
+                settings, "ENABLE_METADATA_RERANK", False
+            ),
+            enable_document_routing=getattr(
+                settings, "ENABLE_DOCUMENT_ROUTING", False
+            ),
+            rag_debug_retrieval=getattr(settings, "RAG_DEBUG_RETRIEVAL", False),
         )
         if not user_settings["use_reranking"]:
             retriever.rerankers = []  # type: ignore
@@ -345,11 +449,17 @@ class IndexPipeline(BaseComponent):
     private: bool = False
     run_embedding_in_thread: bool = False
     embedding: BaseEmbeddings
+    contextual_retrieval_enrichment: bool = False
+    use_enriched_text_for_embedding: bool = False
+    enable_table_row_fact_chunks: bool = False
 
     @Node.auto(depends_on=["Source", "Index", "embedding"])
     def vector_indexing(self) -> VectorIndexing:
         return VectorIndexing(
-            vector_store=self.VS, doc_store=self.DS, embedding=self.embedding
+            vector_store=self.VS,
+            doc_store=self.DS,
+            embedding=self.embedding,
+            use_enriched_text_for_embedding=self.use_enriched_text_for_embedding,
         )
 
     def handle_docs(self, docs, file_id, file_name) -> Generator[Document, None, int]:
@@ -406,6 +516,32 @@ class IndexPipeline(BaseComponent):
         else:
             _index_log(f"[{file_name}] No splitter configured; using text docs as chunks")
             all_chunks = text_docs
+
+        if self.contextual_retrieval_enrichment:
+            structural_chunks = all_chunks + non_text_docs
+            enriched_order = enrich_chunks(
+                structural_chunks,
+                str(file_name),
+                enable_table_row_fact_chunks=self.enable_table_row_fact_chunks,
+            )
+            # Structural splitting may create new text chunks, while row facts are
+            # deliberately independent text retrieval units. Keep only actual
+            # Docling tables/images in the non-text bucket.
+            all_chunks = [
+                chunk
+                for chunk in enriched_order
+                if (chunk.metadata or {}).get("document_type")
+                in {"text", "table_row_fact"}
+            ]
+            non_text_docs = [
+                chunk
+                for chunk in enriched_order
+                if (chunk.metadata or {}).get("document_type")
+                not in {"text", "table_row_fact"}
+            ]
+            _index_log(
+                f"[{file_name}] Contextually enriched {len(enriched_order)} chunks"
+            )
 
         # add the thumbnails doc_id to the chunks
         _index_log(f"[{file_name}] Linking chunks to page thumbnails")
@@ -622,24 +758,14 @@ class IndexPipeline(BaseComponent):
         Args:
             file_id: the file id
         """
-        with Session(engine) as session:
-            session.execute(delete(self.Source).where(self.Source.id == file_id))
-            vs_ids, ds_ids = [], []
-            index = session.execute(
-                select(self.Index).where(self.Index.source_id == file_id)
-            ).all()
-            for each in index:
-                if each[0].relation_type == "vector":
-                    vs_ids.append(each[0].target_id)
-                elif each[0].relation_type == "document":
-                    ds_ids.append(each[0].target_id)
-                session.delete(each[0])
-            session.commit()
-
-        if vs_ids and self.VS:
-            self.VS.delete(vs_ids)
-        if ds_ids:
-            self.DS.delete(ds_ids)
+        delete_file_sources(
+            source_model=self.Source,
+            index_model=self.Index,
+            vector_store=self.VS,
+            doc_store=self.DS,
+            file_storage_path=self.FSPath,
+            file_ids=[file_id],
+        )
 
     def run(
         self, file_path: str | Path, reindex: bool, **kwargs
@@ -820,6 +946,15 @@ class IndexDocumentPipeline(BaseFileIndexIndexing):
             user_id=self.user_id,
             private=self.private,
             embedding=self.embedding,
+            contextual_retrieval_enrichment=getattr(
+                settings, "ENABLE_CONTEXTUAL_RETRIEVAL", False
+            ),
+            use_enriched_text_for_embedding=getattr(
+                settings, "USE_ENRICHED_TEXT_FOR_EMBEDDING", False
+            ),
+            enable_table_row_fact_chunks=getattr(
+                settings, "ENABLE_TABLE_ROW_FACT_CHUNKS", False
+            ),
         )
 
         return pipeline

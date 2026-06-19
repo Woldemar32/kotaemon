@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 import time
 import traceback
 from copy import deepcopy
@@ -28,7 +29,11 @@ class EvalRunResult:
 
     samples: pd.DataFrame
     ragas_scores: pd.DataFrame
+    retrieval_metrics: pd.DataFrame
+    retrieval_candidates: pd.DataFrame
     summary: dict[str, float | int | str]
+    runtime_config: dict[str, Any]
+    failure_report: str
     warnings: list[str]
 
 
@@ -132,7 +137,7 @@ def find_default_dataset_path(start: Path | None = None) -> Path | None:
 
 
 
-def load_eval_dataset(path: str | Path) -> list[dict[str, str]]:
+def load_eval_dataset(path: str | Path) -> list[dict[str, Any]]:
     """Load JSON/JSONL dataset and normalize fields used by RAGAS."""
 
     dataset_path = Path(path).expanduser().resolve()
@@ -149,7 +154,7 @@ def load_eval_dataset(path: str | Path) -> list[dict[str, str]]:
     if not isinstance(raw, list):
         raise ValueError("Dataset must be a list or a dict with data/samples/questions.")
 
-    normalized: list[dict[str, str]] = []
+    normalized: list[dict[str, Any]] = []
     for idx, item in enumerate(raw, start=1):
         if not isinstance(item, dict):
             raise ValueError(f"Dataset item #{idx} is not an object.")
@@ -162,11 +167,18 @@ def load_eval_dataset(path: str | Path) -> list[dict[str, str]]:
             or item.get("expected_answer")
         )
         source_file = item.get("source_file") or item.get("file") or item.get("document")
+        expected_pages = item.get("expected_pages") or []
+        required_phrases = item.get("required_phrases") or []
 
         if not question or not reference:
             raise ValueError(
                 f"Dataset item #{idx} must contain question and ground_truth/reference."
             )
+
+        if not isinstance(expected_pages, list):
+            expected_pages = [expected_pages]
+        if not isinstance(required_phrases, list):
+            required_phrases = [required_phrases]
 
         normalized.append(
             {
@@ -174,6 +186,17 @@ def load_eval_dataset(path: str | Path) -> list[dict[str, str]]:
                 "question": str(question),
                 "reference": str(reference),
                 "source_file": str(source_file or ""),
+                "expected_pages": [
+                    str(page).strip() for page in expected_pages if str(page).strip()
+                ],
+                "required_phrases": [
+                    str(phrase).strip()
+                    for phrase in required_phrases
+                    if str(phrase).strip()
+                ],
+                "has_manual_relevance_annotations": bool(
+                    expected_pages or required_phrases
+                ),
             }
         )
 
@@ -230,6 +253,251 @@ def _doc_score(doc: Any) -> float | None:
     if score == -1.0:
         return None
     return round(score, 4) if score is not None else None
+
+
+def _normalize_match_text(value: Any) -> str:
+    return " ".join(re.findall(r"[\wÄÖÜäöüß]+", str(value).lower()))
+
+
+def _source_matches(actual: str, expected: str) -> bool:
+    if not expected:
+        return True
+    return Path(actual).name.lower() == Path(expected).name.lower()
+
+
+def _candidate_relevance(
+    sample: dict[str, Any], source: str, page: Any, text: str
+) -> tuple[bool, str, float, list[str]]:
+    """Classify a candidate using optional labels or a conservative inference."""
+
+    expected_source = sample.get("source_file", "")
+    source_match = _source_matches(source, expected_source)
+    normalized_text = _normalize_match_text(text)
+    expected_pages = {str(value).strip() for value in sample.get("expected_pages", [])}
+    required_phrases = sample.get("required_phrases", [])
+    matched_phrases = [
+        phrase
+        for phrase in required_phrases
+        if _normalize_match_text(phrase) in normalized_text
+    ]
+
+    if sample.get("has_manual_relevance_annotations"):
+        page_match = bool(expected_pages) and str(page).strip() in expected_pages
+        phrase_match = bool(matched_phrases)
+        return (
+            source_match and (page_match or phrase_match),
+            "manual",
+            1.0 if source_match and (page_match or phrase_match) else 0.0,
+            matched_phrases,
+        )
+
+    reference_tokens = _token_set(sample.get("reference", ""))
+    candidate_tokens = _token_set(text)
+    keyword_recall = (
+        len(reference_tokens & candidate_tokens) / len(reference_tokens)
+        if reference_tokens
+        else 0.0
+    )
+    # This is intentionally conservative and explicitly labelled as inferred.
+    relevant = source_match and keyword_recall >= 0.2
+    return relevant, "inferred_keyword", round(keyword_recall, 4), []
+
+
+def _context_diagnostics_by_id(pipeline: Any) -> tuple[dict[str, dict], dict]:
+    diagnostics = getattr(pipeline.evidence_pipeline, "_last_run_diagnostics", {}) or {}
+    by_id: dict[str, dict] = {}
+    for item in diagnostics.get("contributions", []):
+        if not item.get("doc_id"):
+            continue
+        doc_id = str(item["doc_id"])
+        existing = by_id.get(doc_id)
+        if existing is None or item.get("included_chars", 0) > existing.get(
+            "included_chars", 0
+        ):
+            by_id[doc_id] = item
+    return by_id, diagnostics
+
+
+def _retrieval_traces(retrievers: list[Any]) -> list[dict[str, Any]]:
+    traces = []
+    for index, retriever in enumerate(retrievers):
+        trace = getattr(retriever, "_last_retrieval_trace", {}) or {}
+        traces.append({"retriever_index": index, **trace})
+    return traces
+
+
+def _candidate_rows(
+    sample: dict[str, Any],
+    traces: list[dict[str, Any]],
+    final_docs: list[Any],
+    context_by_id: dict[str, dict],
+) -> list[dict[str, Any]]:
+    final_rank = {str(doc.doc_id): rank for rank, doc in enumerate(final_docs, start=1)}
+    rows: list[dict[str, Any]] = []
+
+    for trace in traces:
+        retriever_index = trace.get("retriever_index", 0)
+        stages = trace.get("stages") or []
+        if not stages:
+            fallback_documents = [
+                {
+                    "rank": rank,
+                    "doc_id": doc.doc_id,
+                    "source": _doc_source_name(doc),
+                    "page": (doc.metadata or {}).get("page_label"),
+                    "document_type": (doc.metadata or {}).get("type", "text"),
+                    "score": _doc_score(doc),
+                    "reranking_score": (doc.metadata or {}).get(
+                        "reranking_score"
+                    ),
+                    "text": doc.text or "",
+                }
+                for rank, doc in enumerate(final_docs, start=1)
+            ]
+            stages = [
+                {"name": "initial", "documents": fallback_documents},
+                {"name": "final", "documents": fallback_documents},
+            ]
+
+        for stage in stages:
+            stage_name = stage.get("name", "unknown")
+            for candidate in stage.get("documents", []):
+                doc_id = str(candidate.get("doc_id", ""))
+                source = str(candidate.get("source", ""))
+                text = str(candidate.get("text", ""))
+                relevant, method, relevance_score, matched_phrases = (
+                    _candidate_relevance(
+                        sample, source, candidate.get("page"), text
+                    )
+                )
+                context_item = context_by_id.get(doc_id, {})
+                rows.append(
+                    {
+                        "id": sample["id"],
+                        "question": sample["question"],
+                        "retriever_index": retriever_index,
+                        "retrieval_mode": trace.get("mode", ""),
+                        "stage": stage_name,
+                        "rank": candidate.get("rank"),
+                        "final_rank": final_rank.get(doc_id),
+                        "doc_id": doc_id,
+                        "source": source,
+                        "page": candidate.get("page"),
+                        "document_type": candidate.get("document_type", "text"),
+                        "vector_score": candidate.get("score"),
+                        "reranker_score": candidate.get("reranking_score"),
+                        "llm_relevance_score": candidate.get(
+                            "llm_relevance_score"
+                        ),
+                        "relevant": relevant,
+                        "relevance_method": method,
+                        "relevance_score": relevance_score,
+                        "matched_required_phrases": matched_phrases,
+                        "included_in_context": bool(
+                            context_item.get("included_chars", 0)
+                        ),
+                        "fully_included_in_context": bool(
+                            context_item.get("fully_included", False)
+                        ),
+                        "context_exclusion_reason": context_item.get(
+                            "exclusion_reason", ""
+                        ),
+                        "text_chars": len(text),
+                        "preview": text[:500],
+                        "text": text,
+                    }
+                )
+    return rows
+
+
+def _retrieval_metric_row(
+    sample: dict[str, Any],
+    final_docs: list[Any],
+    candidate_rows: list[dict[str, Any]],
+    context_by_id: dict[str, dict],
+    context_diagnostics: dict[str, Any],
+    retrieval_scope: str,
+) -> dict[str, Any]:
+    candidates = []
+    for rank, doc in enumerate(final_docs, start=1):
+        relevant, method, score, _ = _candidate_relevance(
+            sample,
+            _doc_source_name(doc),
+            (doc.metadata or {}).get("page_label"),
+            doc.text or "",
+        )
+        candidates.append((rank, doc, relevant, method, score))
+
+    relevant_ranks = [rank for rank, _, relevant, _, _ in candidates if relevant]
+    final_first_relevant_rank = min(relevant_ranks) if relevant_ranks else None
+    relevant_doc_ids = {
+        str(doc.doc_id) for _, doc, relevant, _, _ in candidates if relevant
+    }
+    included_relevant = [
+        doc_id
+        for doc_id in relevant_doc_ids
+        if context_by_id.get(doc_id, {}).get("included_chars", 0)
+    ]
+    source_ranks = [
+        rank
+        for rank, doc, _, _, _ in candidates
+        if _source_matches(_doc_source_name(doc), sample.get("source_file", ""))
+    ]
+    initial_rows = [row for row in candidate_rows if row["stage"] == "initial"]
+    initial_doc_ids = [row["doc_id"] for row in initial_rows]
+    initial_relevant_ranks = [
+        int(row["rank"])
+        for row in initial_rows
+        if row.get("relevant") and row.get("rank") is not None
+    ]
+    first_relevant_rank = (
+        min(initial_relevant_ranks) if initial_relevant_ranks else None
+    )
+    duplicate_ratio = (
+        1 - len(set(initial_doc_ids)) / len(initial_doc_ids)
+        if initial_doc_ids
+        else 0.0
+    )
+
+    return {
+        "id": sample["id"],
+        "source_file": sample.get("source_file", ""),
+        "retrieval_scope": retrieval_scope,
+        "relevance_method": "manual"
+        if sample.get("has_manual_relevance_annotations")
+        else "inferred_keyword",
+        "retrieved_count": len(final_docs),
+        "source_hit_at_1": bool(source_ranks and min(source_ranks) <= 1),
+        "source_hit_at_3": bool(source_ranks and min(source_ranks) <= 3),
+        "source_hit_at_5": bool(source_ranks and min(source_ranks) <= 5),
+        "answer_recall_at_1": bool(first_relevant_rank and first_relevant_rank <= 1),
+        "answer_recall_at_3": bool(first_relevant_rank and first_relevant_rank <= 3),
+        "answer_recall_at_5": bool(first_relevant_rank and first_relevant_rank <= 5),
+        "answer_recall_at_10": bool(first_relevant_rank and first_relevant_rank <= 10),
+        "first_relevant_rank": first_relevant_rank,
+        "final_first_relevant_rank": final_first_relevant_rank,
+        "reciprocal_rank": round(1 / first_relevant_rank, 4)
+        if first_relevant_rank
+        else 0.0,
+        "answer_chunk_candidate_found": bool(initial_relevant_ranks),
+        "answer_chunk_retrieved": bool(relevant_doc_ids),
+        "answer_chunk_included": bool(included_relevant),
+        "answer_chunk_dropped": bool(relevant_doc_ids and not included_relevant),
+        "duplicate_ratio": round(duplicate_ratio, 4),
+        "context_limit_tokens": context_diagnostics.get("max_context_tokens"),
+        "context_original_chars": context_diagnostics.get(
+            "original_evidence_chars", 0
+        ),
+        "context_final_chars": context_diagnostics.get("final_evidence_chars", 0),
+        "context_trimmed": bool(context_diagnostics.get("trimmed", False)),
+        "chunks_included": sum(
+            bool(item.get("included_chars", 0)) for item in context_by_id.values()
+        ),
+        "chunks_dropped": sum(
+            not bool(item.get("included_chars", 0))
+            for item in context_by_id.values()
+        ),
+    }
 
 
 
@@ -291,7 +559,29 @@ def _find_source_ids(app: Any, source_file: str, user_id: Any) -> list[tuple[Any
 
 
 
-def _build_retrievers(app: Any, settings: dict[str, Any], user_id: Any, source_file: str):
+def _build_retrievers(
+    app: Any,
+    settings: dict[str, Any],
+    user_id: Any,
+    source_file: str,
+    retrieval_scope: str = "expected-source",
+):
+    if retrieval_scope == "all":
+        retrievers = []
+        used_sources: list[str] = []
+        for index in app.index_manager.indices:
+            if getattr(index, "_selector_ui", None) is None:
+                index.get_selector_component_ui()
+            retrievers.extend(
+                index.get_retriever_pipelines(
+                    settings, user_id, ["all", [], user_id]
+                )
+            )
+            used_sources.append(f"{index.name}: all visible documents")
+        if not retrievers:
+            raise ValueError("No retriever pipelines available for all-document scope")
+        return retrievers, used_sources
+
     source_matches = _find_source_ids(app, source_file, user_id)
     if not source_matches:
         raise ValueError(f"Source file is not indexed or not visible: {source_file}")
@@ -313,12 +603,20 @@ def _build_retrievers(app: Any, settings: dict[str, Any], user_id: Any, source_f
 
 
 
-def _answer_with_pipeline(app: Any, settings: dict[str, Any], user_id: Any, sample: dict[str, str]) -> dict[str, Any]:
+def _answer_with_pipeline(
+    app: Any,
+    settings: dict[str, Any],
+    user_id: Any,
+    sample: dict[str, Any],
+    retrieval_scope: str = "expected-source",
+) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
     question = sample["question"]
     source_file = sample.get("source_file", "")
     started = time.time()
 
-    retrievers, used_sources = _build_retrievers(app, settings, user_id, source_file)
+    retrievers, used_sources = _build_retrievers(
+        app, settings, user_id, source_file, retrieval_scope
+    )
     reasoning_id = settings.get("reasoning.use")
     if reasoning_id not in reasonings:
         reasoning_id = "simple" if "simple" in reasonings else next(iter(reasonings))
@@ -330,6 +628,17 @@ def _answer_with_pipeline(app: Any, settings: dict[str, Any], user_id: Any, samp
 
     docs, _ = pipeline.retrieve(question, [])
     evidence_mode, evidence, images = pipeline.evidence_pipeline.run(docs).content
+    context_by_id, context_diagnostics = _context_diagnostics_by_id(pipeline)
+    traces = _retrieval_traces(retrievers)
+    candidates = _candidate_rows(sample, traces, docs, context_by_id)
+    retrieval_metrics = _retrieval_metric_row(
+        sample,
+        docs,
+        candidates,
+        context_by_id,
+        context_diagnostics,
+        retrieval_scope,
+    )
 
     answer_chunks: list[str] = []
     for response in pipeline.answering_pipeline.stream(
@@ -356,7 +665,7 @@ def _answer_with_pipeline(app: Any, settings: dict[str, Any], user_id: Any, samp
     if top_score is None and docs:
         top_score = 0.0
 
-    return {
+    row = {
         "id": sample["id"],
         "question": question,
         "reference": sample["reference"],
@@ -372,6 +681,7 @@ def _answer_with_pipeline(app: Any, settings: dict[str, Any], user_id: Any, samp
         "status": "ok",
         "error": "",
     }
+    return row, candidates, retrieval_metrics
 
 
 
@@ -872,7 +1182,89 @@ def _run_ragas(
 
 
 
-def _summarize(samples_df: pd.DataFrame, ragas_df: pd.DataFrame) -> dict[str, Any]:
+def _effective_runtime_config(
+    settings: dict[str, Any], retrieval_scope: str
+) -> dict[str, Any]:
+    config: dict[str, Any] = {
+        "retrieval_scope": retrieval_scope,
+        "retrieval_mode": settings.get("index.options.1.retrieval_mode"),
+        "retrieval_count": settings.get("index.options.1.num_retrieval"),
+        "reranking_enabled": settings.get("index.options.1.use_reranking"),
+        "llm_reranking_enabled": settings.get(
+            "index.options.1.use_llm_reranking"
+        ),
+        "table_priority": settings.get("index.options.1.prioritize_table"),
+        "context_limit": settings.get("reasoning.max_context_length"),
+        "reader_mode": settings.get("index.options.1.reader_mode"),
+    }
+    try:
+        from ktem.embeddings.manager import embedding_models_manager
+        from ktem.llms.manager import llms
+
+        config["llm"] = llms.get_default_name()
+        config["embedding"] = embedding_models_manager.get_default_name()
+    except Exception as exc:
+        config["model_resolution_warning"] = str(exc)
+    return config
+
+
+def _build_failure_report(
+    samples_df: pd.DataFrame, retrieval_df: pd.DataFrame
+) -> str:
+    lines = ["# RAG retrieval failures", ""]
+    if retrieval_df.empty:
+        return "\n".join(lines + ["No retrieval diagnostics were produced.", ""])
+
+    sample_by_id = {
+        str(row["id"]): row for _, row in samples_df.iterrows()
+    }
+    failure_count = 0
+    for _, metric in retrieval_df.iterrows():
+        if bool(metric.get("answer_chunk_included", False)):
+            continue
+        failure_count += 1
+        sample = sample_by_id.get(str(metric["id"]), {})
+        if not bool(metric.get("answer_chunk_candidate_found", False)):
+            failure_type = "RETRIEVAL FAILURE"
+            detail = "No answer-bearing chunk was detected in initial candidates."
+        elif not bool(metric.get("answer_chunk_retrieved", False)):
+            failure_type = "RANKING/FILTERING FAILURE"
+            detail = (
+                "An answer-bearing candidate was found but not returned to the "
+                "evidence stage."
+            )
+        elif bool(metric.get("answer_chunk_dropped", False)):
+            failure_type = "PACKING FAILURE"
+            detail = "An answer-bearing chunk was retrieved but omitted from evidence."
+        else:
+            failure_type = "UNCLASSIFIED CONTEXT FAILURE"
+            detail = "No answer-bearing chunk reached the final evidence."
+
+        lines.extend(
+            [
+                f"## {metric['id']}: {failure_type}",
+                "",
+                f"- Question: {sample.get('question', '')}",
+                f"- Expected source: {metric.get('source_file', '')}",
+                f"- Relevance labels: {metric.get('relevance_method', '')}",
+                f"- First relevant rank: {metric.get('first_relevant_rank', '')}",
+                f"- Context trimmed: {bool(metric.get('context_trimmed', False))}",
+                f"- Detail: {detail}",
+                "",
+            ]
+        )
+
+    if not failure_count:
+        lines.append("No retrieval or packing failures were detected.")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def _summarize(
+    samples_df: pd.DataFrame,
+    ragas_df: pd.DataFrame,
+    retrieval_df: pd.DataFrame,
+) -> dict[str, Any]:
     summary: dict[str, Any] = {
         "samples_total": int(len(samples_df)),
         "samples_ok": int((samples_df["status"] == "ok").sum()) if len(samples_df) else 0,
@@ -891,6 +1283,29 @@ def _summarize(samples_df: pd.DataFrame, ragas_df: pd.DataFrame) -> dict[str, An
             if pd.notna(value):
                 summary[column] = round(float(value), 4)
 
+    retrieval_summary_columns = (
+        "source_hit_at_5",
+        "answer_recall_at_1",
+        "answer_recall_at_3",
+        "answer_recall_at_5",
+        "answer_recall_at_10",
+        "reciprocal_rank",
+        "answer_chunk_retrieved",
+        "answer_chunk_candidate_found",
+        "answer_chunk_included",
+        "answer_chunk_dropped",
+        "duplicate_ratio",
+        "context_trimmed",
+    )
+    for column in retrieval_summary_columns:
+        if column not in retrieval_df or retrieval_df.empty:
+            continue
+        numeric_values = pd.to_numeric(retrieval_df[column], errors="coerce")
+        if numeric_values.notna().any():
+            summary[f"retrieval_{column}"] = round(
+                float(numeric_values.mean(skipna=True)), 4
+            )
+
     return summary
 
 
@@ -902,9 +1317,13 @@ def run_evaluation(
     dataset_path: str | Path,
     question_limit: int,
     run_ragas_metrics: bool = True,
+    retrieval_scope: str = "expected-source",
     progress: ProgressFn | None = None,
 ) -> EvalRunResult:
     """Run Kotaemon RAG over a dataset subset and optionally score it with RAGAS."""
+
+    if retrieval_scope not in {"expected-source", "all"}:
+        raise ValueError("retrieval_scope must be 'expected-source' or 'all'")
 
     samples = load_eval_dataset(dataset_path)
     limit = max(1, min(int(question_limit), len(samples)))
@@ -912,13 +1331,24 @@ def run_evaluation(
 
     eval_settings = _ensure_simple_reasoning_settings(settings)
     rows: list[dict[str, Any]] = []
+    candidate_rows: list[dict[str, Any]] = []
+    retrieval_rows: list[dict[str, Any]] = []
     warnings: list[str] = []
 
     for idx, sample in enumerate(samples, start=1):
         if progress:
             progress(idx - 1, limit, f"Question {idx}/{limit}: {sample['id']}")
         try:
-            rows.append(_answer_with_pipeline(app, eval_settings, user_id, sample))
+            row, candidates, retrieval_metrics = _answer_with_pipeline(
+                app,
+                eval_settings,
+                user_id,
+                sample,
+                retrieval_scope=retrieval_scope,
+            )
+            rows.append(row)
+            candidate_rows.extend(candidates)
+            retrieval_rows.append(retrieval_metrics)
         except Exception as exc:  # keep the run useful even when one sample fails
             warnings.append(f"{sample['id']}: {exc}")
             rows.append(
@@ -939,6 +1369,22 @@ def run_evaluation(
                     "error": f"{exc}\n{traceback.format_exc(limit=2)}",
                 }
             )
+            retrieval_rows.append(
+                {
+                    "id": sample["id"],
+                    "source_file": sample.get("source_file", ""),
+                    "retrieval_scope": retrieval_scope,
+                    "relevance_method": "manual"
+                    if sample.get("has_manual_relevance_annotations")
+                    else "inferred_keyword",
+                    "retrieved_count": 0,
+                    "answer_chunk_candidate_found": False,
+                    "answer_chunk_retrieved": False,
+                    "answer_chunk_included": False,
+                    "answer_chunk_dropped": False,
+                    "error": str(exc),
+                }
+            )
 
     if progress:
         progress(limit, limit, "RAG answers collected")
@@ -957,10 +1403,18 @@ def run_evaluation(
             warnings.append(f"RAGAS scoring failed: {exc}")
 
     samples_df = pd.DataFrame(rows)
-    summary = _summarize(samples_df, ragas_df)
+    retrieval_df = pd.DataFrame(retrieval_rows)
+    candidates_df = pd.DataFrame(candidate_rows)
+    summary = _summarize(samples_df, ragas_df, retrieval_df)
+    runtime_config = _effective_runtime_config(eval_settings, retrieval_scope)
+    failure_report = _build_failure_report(samples_df, retrieval_df)
     return EvalRunResult(
         samples=samples_df,
         ragas_scores=ragas_df,
+        retrieval_metrics=retrieval_df,
+        retrieval_candidates=candidates_df,
         summary=summary,
+        runtime_config=runtime_config,
+        failure_report=failure_report,
         warnings=warnings,
     )

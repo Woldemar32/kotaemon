@@ -22,6 +22,7 @@ from theflow.settings import settings as flowsettings
 from ...utils.commands import WEB_SEARCH_COMMAND
 from ...utils.rate_limit import check_rate_limit
 from .utils import download_arxiv_pdf, is_arxiv_url
+from .deletion import delete_file_sources
 
 KH_DEMO_MODE = getattr(flowsettings, "KH_DEMO_MODE", False)
 KH_SSO_ENABLED = getattr(flowsettings, "KH_SSO_ENABLED", False)
@@ -445,38 +446,25 @@ class FileIndexPage(BasePage):
         )
 
     def delete_event(self, file_id):
-        file_name = ""
-        with Session(engine) as session:
-            source = session.execute(
-                select(self._index._resources["Source"]).where(
-                    self._index._resources["Source"].id == file_id
-                )
-            ).first()
-            if source:
-                file_name = source[0].name
-                session.delete(source[0])
-
-            vs_ids, ds_ids = [], []
-            index = session.execute(
-                select(self._index._resources["Index"]).where(
-                    self._index._resources["Index"].source_id == file_id
-                )
-            ).all()
-            for each in index:
-                if each[0].relation_type == "vector":
-                    vs_ids.append(each[0].target_id)
-                elif each[0].relation_type == "document":
-                    ds_ids.append(each[0].target_id)
-                session.delete(each[0])
-            session.commit()
-
-        if vs_ids:
-            self._index._vs.delete(vs_ids)
-        self._index._docstore.delete(ds_ids)
-
-        gr.Info(f"File {file_name} has been deleted")
+        result = self._delete_file_ids([file_id])
+        file_name = result.source_names[0] if result.source_names else "the document"
+        gr.Info(
+            f"File {file_name} has been deleted with "
+            f"{result.document_chunks} chunks."
+        )
 
         return None, self.selected_panel_false
+
+    def _delete_file_ids(self, file_ids):
+        return delete_file_sources(
+            source_model=self._index._resources["Source"],
+            index_model=self._index._resources["Index"],
+            group_model=self._index._resources.get("FileGroup"),
+            vector_store=self._index._vs,
+            doc_store=self._index._docstore,
+            file_storage_path=self._index._fs_path,
+            file_ids=file_ids,
+        )
 
     def delete_no_event(self):
         return (
@@ -567,8 +555,19 @@ class FileIndexPage(BasePage):
         return gr.DownloadButton(label=DOWNLOAD_MESSAGE, value=f"{zip_file_path}.zip")
 
     def delete_all_files(self, file_list):
-        for file_id in file_list.id.values:
-            self.delete_event(file_id)
+        if hasattr(file_list, "id"):
+            file_ids = list(file_list.id.values)
+        elif isinstance(file_list, pd.DataFrame) and "id" in file_list:
+            file_ids = list(file_list["id"].values)
+        else:
+            file_ids = []
+        result = self._delete_file_ids(
+            file_id for file_id in file_ids if file_id and file_id != "-"
+        )
+        gr.Info(
+            f"Deleted {len(result.source_names)} files and "
+            f"{result.document_chunks} chunks."
+        )
 
     def set_file_id_selector(self, selected_file_id):
         return [selected_file_id, "select", gr.Tabs(selected="chat-tab")]
@@ -734,13 +733,8 @@ class FileIndexPage(BasePage):
             self.delete_button.click(
                 fn=self.delete_event,
                 inputs=[self.selected_file_id],
-                outputs=None,
-            )
-            .then(
-                fn=lambda: (None, self.selected_panel_false),
-                inputs=[],
                 outputs=[self.selected_file_id, self.selected_panel],
-                show_progress="hidden",
+                concurrency_limit=1,
             )
             .then(
                 fn=self.list_file,

@@ -4,6 +4,7 @@ import html
 import json
 import math
 import re
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +12,7 @@ import gradio as gr
 import pandas as pd
 from ktem.app import BasePage
 from ktem.evaluation import find_default_dataset_path, load_eval_dataset, run_evaluation
+from theflow.settings import settings as flowsettings
 
 
 CARD_STYLE = """
@@ -190,6 +192,10 @@ _RAGAS_METRIC_ORDER = [
     "context_keyword_recall",
 ]
 
+EVALUATION_OUTPUT_DIR = Path(
+    getattr(flowsettings, "KH_APP_DATA_DIR", Path.cwd() / "ktem_app_data")
+) / "evaluations"
+
 
 class EvaluationPage(BasePage):
     """UI for evaluating the Kotaemon RAG chatbot on a curated dataset."""
@@ -250,6 +256,11 @@ class EvaluationPage(BasePage):
         with gr.Row():
             self.run_btn = gr.Button("Run evaluation", variant="primary", size="lg")
             self.clear_btn = gr.Button("Clear results", variant="secondary")
+            self.download_csv = gr.DownloadButton(
+                "Download results CSV",
+                value=None,
+                visible=False,
+            )
 
         self.run_status = gr.Markdown()
         self.summary_html = gr.HTML()
@@ -712,6 +723,52 @@ class EvaluationPage(BasePage):
                 )
         return preview.where(pd.notna(preview), "")
 
+    @staticmethod
+    def _merge_export_frame(
+        base: pd.DataFrame,
+        extra: pd.DataFrame,
+        prefix: str,
+    ) -> pd.DataFrame:
+        """Add per-sample diagnostics without ambiguous duplicate columns."""
+
+        if extra.empty or "id" not in extra.columns:
+            return base
+
+        addition = extra.copy()
+        rename = {
+            column: f"{prefix}_{column}"
+            for column in addition.columns
+            if column != "id" and column in base.columns
+        }
+        addition = addition.rename(columns=rename)
+        # Evaluation IDs are expected to be unique. Keeping the final record avoids
+        # multiplying rows if a malformed dataset contains a duplicate diagnostic.
+        addition = addition.drop_duplicates(subset=["id"], keep="last")
+        return base.merge(addition, on="id", how="left")
+
+    @classmethod
+    def _export_results_csv(cls, result: Any) -> Path:
+        """Persist one self-contained, per-question evaluation CSV."""
+
+        export = result.samples.copy()
+        export = cls._merge_export_frame(export, result.ragas_scores, "ragas")
+        export = cls._merge_export_frame(
+            export, result.retrieval_metrics, "retrieval"
+        )
+
+        for column in export.columns:
+            export[column] = export[column].map(
+                lambda value: json.dumps(value, ensure_ascii=False)
+                if isinstance(value, (list, tuple, dict))
+                else value
+            )
+
+        EVALUATION_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        output_path = EVALUATION_OUTPUT_DIR / f"rag_evaluation_{timestamp}.csv"
+        export.to_csv(output_path, index=False)
+        return output_path
+
     def run_evaluation_ui(
         self,
         dataset_path: str,
@@ -750,10 +807,12 @@ class EvaluationPage(BasePage):
             ragas_html, ragas_dropdown, ragas_detail, ragas_records = self._build_ragas_ui(
                 result.ragas_scores
             )
+            csv_path = self._export_results_csv(result)
 
             return (
                 f"{status_icon} Evaluation finished: "
-                f"{result.summary.get('samples_ok', 0)}/{result.summary.get('samples_total', 0)} samples OK.",
+                f"{result.summary.get('samples_ok', 0)}/{result.summary.get('samples_total', 0)} samples OK. "
+                f"Saved to `{csv_path}`.",
                 self._summary_cards(result.summary),
                 ragas_html,
                 ragas_dropdown,
@@ -761,6 +820,7 @@ class EvaluationPage(BasePage):
                 ragas_records,
                 self._display_samples(result.samples),
                 warnings_text,
+                gr.update(value=str(csv_path), visible=True),
             )
         except Exception as exc:
             empty_ragas = self._empty_ragas_outputs()
@@ -770,12 +830,20 @@ class EvaluationPage(BasePage):
                 *empty_ragas,
                 pd.DataFrame(),
                 str(exc),
+                gr.update(value=None, visible=False),
             )
 
     @staticmethod
     def clear_results():
         empty_ragas = EvaluationPage._empty_ragas_outputs()
-        return ("", "", *empty_ragas, pd.DataFrame(), "")
+        return (
+            "",
+            "",
+            *empty_ragas,
+            pd.DataFrame(),
+            "",
+            gr.update(value=None, visible=False),
+        )
 
     def on_register_events(self):
         self.reload_btn.click(
@@ -808,6 +876,7 @@ class EvaluationPage(BasePage):
                 self.ragas_state,
                 self.samples_table,
                 self.warnings_box,
+                self.download_csv,
             ],
         )
         self.clear_btn.click(
@@ -822,6 +891,7 @@ class EvaluationPage(BasePage):
                 self.ragas_state,
                 self.samples_table,
                 self.warnings_box,
+                self.download_csv,
             ],
             show_progress="hidden",
         )
