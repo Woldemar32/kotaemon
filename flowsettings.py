@@ -156,39 +156,10 @@ KH_RERANKINGS = {
     },
 }
 
-# Optional deterministic contextual retrieval. The master switch remains off for
-# existing installations; expansion is section-aware and zero-neighbor by default.
-ENABLE_CONTEXTUAL_RETRIEVAL = config(
-    "ENABLE_CONTEXTUAL_RETRIEVAL", default=False, cast=bool
-)
-USE_ENRICHED_TEXT_FOR_EMBEDDING = config(
-    "USE_ENRICHED_TEXT_FOR_EMBEDDING", default=False, cast=bool
-)
-ENABLE_BLIND_NEIGHBOR_EXPANSION = config(
-    "ENABLE_BLIND_NEIGHBOR_EXPANSION", default=False, cast=bool
-)
-ENABLE_SECTION_AWARE_EXPANSION = config(
-    "ENABLE_SECTION_AWARE_EXPANSION", default=True, cast=bool
-)
-SECTION_EXPANSION_PREVIOUS = config(
-    "SECTION_EXPANSION_PREVIOUS", default=0, cast=int
-)
-SECTION_EXPANSION_NEXT = config("SECTION_EXPANSION_NEXT", default=0, cast=int)
-MAX_EXPANDED_CONTEXT_CHARS = config(
-    "MAX_EXPANDED_CONTEXT_CHARS", default=5000, cast=int
-)
-ENABLE_TABLE_ROW_FACT_CHUNKS = config(
-    "ENABLE_TABLE_ROW_FACT_CHUNKS", default=False, cast=bool
-)
-ENABLE_METADATA_RERANK = config(
-    "ENABLE_METADATA_RERANK", default=False, cast=bool
-)
-ENABLE_DOCUMENT_ROUTING = config(
-    "ENABLE_DOCUMENT_ROUTING", default=False, cast=bool
-)
-RAG_DEBUG_RETRIEVAL = config("RAG_DEBUG_RETRIEVAL", default=False, cast=bool)
-ALLOW_CROSS_SECTION_EXPANSION = config(
-    "ALLOW_CROSS_SECTION_EXPANSION", default=False, cast=bool
+# The v2 ingestion path uses this single limit; all other upload behaviour stays
+# identical to the original application.
+INGESTION_V2_MAX_CHUNK_CHARS = config(
+    "INGESTION_V2_MAX_CHUNK_CHARS", default=4200, cast=int
 )
 
 KH_REASONINGS = [
@@ -207,7 +178,7 @@ SETTINGS_APP: dict[str, dict] = {}
 SETTINGS_REASONING = {
     "use": {
         "name": "Reasoning options",
-        "value": None,
+        "value": "simple",
         "choices": [],
         "component": "radio",
     },
@@ -219,7 +190,7 @@ SETTINGS_REASONING = {
     },
     "max_context_length": {
         "name": "Max context length (LLM)",
-        "value": 32000,
+        "value": 5000,
         "component": "number",
     },
 }

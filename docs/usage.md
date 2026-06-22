@@ -85,35 +85,6 @@ The chat tab has three areas:
 
 Generally: `LLM relevant score` > `Reranking score` > vector score. Evidence is ordered by overall relevance and citation presence.
 
-### Contextual retrieval enrichment (optional)
-
-Structured Markdown/Docling documents can retain stable legal section, profile, and
-table context. Expansion is restricted to the same section/table; unknown sections
-are never expanded. Add the following to `.env` and restart Kotaemon:
-
-```dotenv
-ENABLE_CONTEXTUAL_RETRIEVAL=true
-USE_ENRICHED_TEXT_FOR_EMBEDDING=true
-ENABLE_BLIND_NEIGHBOR_EXPANSION=false
-ENABLE_SECTION_AWARE_EXPANSION=true
-ALLOW_CROSS_SECTION_EXPANSION=false
-SECTION_EXPANSION_PREVIOUS=0
-SECTION_EXPANSION_NEXT=0
-MAX_EXPANDED_CONTEXT_CHARS=5000
-ENABLE_TABLE_ROW_FACT_CHUNKS=true
-ENABLE_METADATA_RERANK=true
-ENABLE_DOCUMENT_ROUTING=true
-RAG_DEBUG_RETRIEVAL=false
-```
-
-The master switch, enriched embeddings, row facts, reranking, routing, blind
-expansion, and debug logging default to `false`. Section-aware expansion defaults to
-`true`, but both neighbor counts default to `0`, so it adds nothing unless explicitly
-requested. Enabling contextual metadata, row-fact chunks, or enriched embeddings
-requires deleting and re-indexing existing documents. Set
-`ENABLE_CONTEXTUAL_RETRIEVAL=false` (and the optional rerank/routing switches to
-`false`) to return to the vector baseline.
-
 ## 4. Reasoning pipelines
 
 In **Settings**, choose a **reasoning** option (registered in `flowsettings.py` → `KH_REASONINGS`), for example:

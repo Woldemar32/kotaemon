@@ -49,28 +49,8 @@ class TeiFastReranking(BaseReranking):
                 "texts": truncated_texts,
                 "is_truncated": self.is_truncated,  # default is True
             },
-            timeout=60,
-        )
-        try:
-            response.raise_for_status()
-        except requests.HTTPError as exc:
-            body = response.text.strip()[:200]
-            raise RuntimeError(
-                f"TEI reranker endpoint {self.endpoint_url} returned "
-                f"HTTP {response.status_code}: {body}"
-            ) from exc
-        try:
-            payload = response.json()
-        except requests.exceptions.JSONDecodeError as exc:
-            raise RuntimeError(
-                f"TEI reranker endpoint {self.endpoint_url} returned non-JSON: "
-                f"{response.text.strip()[:200]}"
-            ) from exc
-        if not isinstance(payload, list):
-            raise RuntimeError(
-                "TEI reranker response must be a list of {index, score} objects"
-            )
-        return payload
+        ).json()
+        return response
 
     def run(self, documents: list[Document], query: str) -> list[Document]:
         """Use the deployed TEI rerankings service to re-order documents

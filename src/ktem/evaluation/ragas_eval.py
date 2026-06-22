@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import gc
 import json
 import math
 import os
 import re
 import time
 import traceback
+import unicodedata
+import urllib.request
+from contextlib import contextmanager
 from copy import deepcopy
 from dataclasses import dataclass
 from difflib import SequenceMatcher
@@ -13,6 +17,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 import pandas as pd
+from decouple import config as env_config
 from ktem.components import reasonings
 from ktem.db.engine import engine
 from kotaemon.base import Document
@@ -50,11 +55,121 @@ class RagasEvaluatorModels:
     notes: list[str]
 
 
+@dataclass
+class PreparedEvalSample:
+    """Retrieved and packed evidence waiting for answer generation."""
+
+    sample: dict[str, Any]
+    evidence: str
+    evidence_mode: int
+    images: list[str]
+    row: dict[str, Any]
+    candidates: list[dict[str, Any]]
+    retrieval_metrics: dict[str, Any]
+    started_at: float
+    retrieval_finished_at: float | None = None
+
+
 def _env_int(name: str, default: int, minimum: int = 1) -> int:
     try:
-        return max(minimum, int(os.environ.get(name, default)))
+        return max(minimum, int(env_config(name, default=default)))
     except (TypeError, ValueError):
         return default
+
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    return bool(env_config(name, default=default, cast=bool))
+
+
+def _env_float(name: str, default: float, minimum: float = 0.0) -> float:
+    try:
+        return max(minimum, float(env_config(name, default=default)))
+    except (TypeError, ValueError):
+        return default
+
+
+def _env_nonnegative_int(name: str, default: int) -> int:
+    return _env_int(name, default, minimum=0)
+
+
+def _env_optional_int(name: str, minimum: int = 1) -> int | None:
+    """Return an integer override only when the deployment configured one."""
+
+    raw = env_config(name, default=None)
+    if raw in (None, ""):
+        return None
+    try:
+        return max(minimum, int(raw))
+    except (TypeError, ValueError):
+        return None
+
+
+def _answer_output_limit(sample: dict[str, Any], default: int) -> int:
+    """Give enumeration questions headroom without inflating every KV cache."""
+
+    question = str(sample.get("question") or "").lower()
+    reference = str(sample.get("reference") or "")
+    enumeration = reference.count(";") >= 2 or bool(
+        re.search(
+            r"\b(?:welche|nenne|liste|what|which)\b.*\b"
+            r"(?:module|modules|bereiche|areas|profile|profiles|fächer|courses)\b",
+            question,
+        )
+    )
+    if not enumeration:
+        return default
+    return max(
+        default,
+        _env_nonnegative_int("RAG_EVAL_LIST_MAX_OUTPUT_TOKENS", 0),
+    )
+
+
+def _record_answer_timing(
+    prepared: PreparedEvalSample, answer_started: float, finished: float
+) -> None:
+    retrieval_latency = float(prepared.row.get("retrieval_latency_sec") or 0.0)
+    prepared.row["generation_latency_sec"] = round(finished - answer_started, 2)
+    prepared.row["answer_queue_wait_sec"] = round(
+        max(0.0, answer_started - (prepared.retrieval_finished_at or answer_started)),
+        2,
+    )
+    # Active latency deliberately excludes phased queue waiting.
+    prepared.row["latency_sec"] = round(
+        retrieval_latency + prepared.row["generation_latency_sec"], 2
+    )
+
+
+@contextmanager
+def _temporary_model_attribute(model: Any, name: str, value: Any):
+    """Temporarily tune a shared model object for the serialized evaluation job."""
+
+    if model is None or not hasattr(model, name):
+        yield
+        return
+    original = getattr(model, name)
+    setattr(model, name, value)
+    try:
+        yield
+    finally:
+        setattr(model, name, original)
+
+
+def _check_memory_guard(stage: str) -> None:
+    """Stop before swap pressure becomes dangerous when a guard is configured."""
+
+    minimum_gb = _env_float("RAG_EVAL_MIN_AVAILABLE_GB", 0.0)
+    if minimum_gb <= 0:
+        return
+    try:
+        import psutil
+    except ImportError:
+        return
+    available_gb = psutil.virtual_memory().available / (1024**3)
+    if available_gb < minimum_gb:
+        raise RuntimeError(
+            f"Evaluation stopped before {stage}: only {available_gb:.2f} GiB "
+            f"memory is available (configured minimum: {minimum_gb:.2f} GiB)."
+        )
 
 
 def _ragas_run_config() -> Any | None:
@@ -68,16 +183,22 @@ def _ragas_run_config() -> Any | None:
     timeout. Environment variables allow users to tune this without code changes.
     """
 
+    configured = {
+        "timeout": _env_optional_int("RAGAS_EVAL_TIMEOUT_SEC"),
+        "max_workers": _env_optional_int("RAGAS_EVAL_MAX_WORKERS"),
+        "max_retries": _env_optional_int("RAGAS_EVAL_MAX_RETRIES", minimum=0),
+        "max_wait": _env_optional_int("RAGAS_EVAL_MAX_WAIT_SEC", minimum=0),
+    }
+    if not any(value is not None for value in configured.values()):
+        return None
+
     try:
         from ragas.run_config import RunConfig  # type: ignore
     except Exception:
         return None
 
     return RunConfig(
-        timeout=_env_int("RAGAS_EVAL_TIMEOUT_SEC", 1800),
-        max_workers=_env_int("RAGAS_EVAL_MAX_WORKERS", 4),
-        max_retries=_env_int("RAGAS_EVAL_MAX_RETRIES", 2),
-        max_wait=_env_int("RAGAS_EVAL_MAX_WAIT_SEC", 10),
+        **{key: value for key, value in configured.items() if value is not None}
     )
 
 
@@ -88,6 +209,7 @@ def _run_config_note(run_config: Any | None) -> str:
         "RAGAS runtime: "
         f"timeout={getattr(run_config, 'timeout', 'default')}s, "
         f"max_workers={getattr(run_config, 'max_workers', 'default')}, "
+        f"batch_size={_env_optional_int('RAGAS_EVAL_BATCH_SIZE') or 'default'}, "
         f"max_retries={getattr(run_config, 'max_retries', 'default')}."
     )
 
@@ -136,7 +258,6 @@ def find_default_dataset_path(start: Path | None = None) -> Path | None:
     return None
 
 
-
 def load_eval_dataset(path: str | Path) -> list[dict[str, Any]]:
     """Load JSON/JSONL dataset and normalize fields used by RAGAS."""
 
@@ -145,14 +266,18 @@ def load_eval_dataset(path: str | Path) -> list[dict[str, Any]]:
         raise FileNotFoundError(f"Dataset not found: {dataset_path}")
 
     if dataset_path.suffix.lower() == ".jsonl":
-        raw = [json.loads(line) for line in dataset_path.read_text().splitlines() if line]
+        raw = [
+            json.loads(line) for line in dataset_path.read_text().splitlines() if line
+        ]
     else:
         raw = json.loads(dataset_path.read_text(encoding="utf-8"))
 
     if isinstance(raw, dict):
         raw = raw.get("data") or raw.get("samples") or raw.get("questions") or []
     if not isinstance(raw, list):
-        raise ValueError("Dataset must be a list or a dict with data/samples/questions.")
+        raise ValueError(
+            "Dataset must be a list or a dict with data/samples/questions."
+        )
 
     normalized: list[dict[str, Any]] = []
     for idx, item in enumerate(raw, start=1):
@@ -166,7 +291,9 @@ def load_eval_dataset(path: str | Path) -> list[dict[str, Any]]:
             or item.get("answer")
             or item.get("expected_answer")
         )
-        source_file = item.get("source_file") or item.get("file") or item.get("document")
+        source_file = (
+            item.get("source_file") or item.get("file") or item.get("document")
+        )
         expected_pages = item.get("expected_pages") or []
         required_phrases = item.get("required_phrases") or []
 
@@ -203,7 +330,6 @@ def load_eval_dataset(path: str | Path) -> list[dict[str, Any]]:
     return normalized
 
 
-
 def _safe_float(value: Any) -> float | None:
     try:
         if value is None:
@@ -216,14 +342,12 @@ def _safe_float(value: Any) -> float | None:
         return None
 
 
-
 def _doc_source_name(doc: Any) -> str:
     metadata = getattr(doc, "metadata", {}) or {}
     for key in ("file_name", "filename", "source", "Source", "document_name"):
         if metadata.get(key):
             return str(metadata[key])
     return ""
-
 
 
 def _doc_score(doc: Any) -> float | None:
@@ -284,10 +408,20 @@ def _candidate_relevance(
     if sample.get("has_manual_relevance_annotations"):
         page_match = bool(expected_pages) and str(page).strip() in expected_pages
         phrase_match = bool(matched_phrases)
+        # Required phrases are stronger annotations than a page number. A page
+        # can contain several unrelated chunks, especially in amendment statutes.
+        relevant = source_match and (
+            phrase_match if required_phrases else page_match
+        )
+        phrase_recall = (
+            len(matched_phrases) / len(required_phrases)
+            if required_phrases
+            else float(page_match)
+        )
         return (
-            source_match and (page_match or phrase_match),
+            relevant,
             "manual",
-            1.0 if source_match and (page_match or phrase_match) else 0.0,
+            round(phrase_recall, 4) if source_match else 0.0,
             matched_phrases,
         )
 
@@ -347,9 +481,7 @@ def _candidate_rows(
                     "page": (doc.metadata or {}).get("page_label"),
                     "document_type": (doc.metadata or {}).get("type", "text"),
                     "score": _doc_score(doc),
-                    "reranking_score": (doc.metadata or {}).get(
-                        "reranking_score"
-                    ),
+                    "reranking_score": (doc.metadata or {}).get("reranking_score"),
                     "text": doc.text or "",
                 }
                 for rank, doc in enumerate(final_docs, start=1)
@@ -366,47 +498,41 @@ def _candidate_rows(
                 source = str(candidate.get("source", ""))
                 text = str(candidate.get("text", ""))
                 relevant, method, relevance_score, matched_phrases = (
-                    _candidate_relevance(
-                        sample, source, candidate.get("page"), text
-                    )
+                    _candidate_relevance(sample, source, candidate.get("page"), text)
                 )
                 context_item = context_by_id.get(doc_id, {})
-                rows.append(
-                    {
-                        "id": sample["id"],
-                        "question": sample["question"],
-                        "retriever_index": retriever_index,
-                        "retrieval_mode": trace.get("mode", ""),
-                        "stage": stage_name,
-                        "rank": candidate.get("rank"),
-                        "final_rank": final_rank.get(doc_id),
-                        "doc_id": doc_id,
-                        "source": source,
-                        "page": candidate.get("page"),
-                        "document_type": candidate.get("document_type", "text"),
-                        "vector_score": candidate.get("score"),
-                        "reranker_score": candidate.get("reranking_score"),
-                        "llm_relevance_score": candidate.get(
-                            "llm_relevance_score"
-                        ),
-                        "relevant": relevant,
-                        "relevance_method": method,
-                        "relevance_score": relevance_score,
-                        "matched_required_phrases": matched_phrases,
-                        "included_in_context": bool(
-                            context_item.get("included_chars", 0)
-                        ),
-                        "fully_included_in_context": bool(
-                            context_item.get("fully_included", False)
-                        ),
-                        "context_exclusion_reason": context_item.get(
-                            "exclusion_reason", ""
-                        ),
-                        "text_chars": len(text),
-                        "preview": text[:500],
-                        "text": text,
-                    }
-                )
+                candidate_row = {
+                    "id": sample["id"],
+                    "question": sample["question"],
+                    "retriever_index": retriever_index,
+                    "retrieval_mode": trace.get("mode", ""),
+                    "stage": stage_name,
+                    "rank": candidate.get("rank"),
+                    "final_rank": final_rank.get(doc_id),
+                    "doc_id": doc_id,
+                    "source": source,
+                    "page": candidate.get("page"),
+                    "document_type": candidate.get("document_type", "text"),
+                    "vector_score": candidate.get("score"),
+                    "reranker_score": candidate.get("reranking_score"),
+                    "llm_relevance_score": candidate.get("llm_relevance_score"),
+                    "relevant": relevant,
+                    "relevance_method": method,
+                    "relevance_score": relevance_score,
+                    "matched_required_phrases": matched_phrases,
+                    "included_in_context": bool(context_item.get("included_chars", 0)),
+                    "fully_included_in_context": bool(
+                        context_item.get("fully_included", False)
+                    ),
+                    "context_exclusion_reason": context_item.get(
+                        "exclusion_reason", ""
+                    ),
+                    "text_chars": len(text),
+                    "preview": text[:500],
+                }
+                if _env_bool("RAG_EVAL_RETAIN_CANDIDATE_TEXT", False):
+                    candidate_row["text"] = text
+                rows.append(candidate_row)
     return rows
 
 
@@ -438,6 +564,31 @@ def _retrieval_metric_row(
         for doc_id in relevant_doc_ids
         if context_by_id.get(doc_id, {}).get("included_chars", 0)
     ]
+    required_phrases = sample.get("required_phrases", [])
+    retrieved_phrase_matches = {
+        phrase
+        for phrase in required_phrases
+        if any(
+            _normalize_match_text(phrase)
+            in _normalize_match_text(doc.text or "")
+            for _, doc, _, _, _ in candidates
+        )
+    }
+    included_documents = [
+        doc
+        for _, doc, _, _, _ in candidates
+        if context_by_id.get(str(doc.doc_id), {}).get("included_chars", 0)
+    ]
+    included_phrase_matches = {
+        phrase
+        for phrase in required_phrases
+        if any(
+            _normalize_match_text(phrase)
+            in _normalize_match_text(doc.text or "")
+            for doc in included_documents
+        )
+    }
+    phrase_count = len(required_phrases)
     source_ranks = [
         rank
         for rank, doc, _, _, _ in candidates
@@ -454,18 +605,18 @@ def _retrieval_metric_row(
         min(initial_relevant_ranks) if initial_relevant_ranks else None
     )
     duplicate_ratio = (
-        1 - len(set(initial_doc_ids)) / len(initial_doc_ids)
-        if initial_doc_ids
-        else 0.0
+        1 - len(set(initial_doc_ids)) / len(initial_doc_ids) if initial_doc_ids else 0.0
     )
 
     return {
         "id": sample["id"],
         "source_file": sample.get("source_file", ""),
         "retrieval_scope": retrieval_scope,
-        "relevance_method": "manual"
-        if sample.get("has_manual_relevance_annotations")
-        else "inferred_keyword",
+        "relevance_method": (
+            "manual"
+            if sample.get("has_manual_relevance_annotations")
+            else "inferred_keyword"
+        ),
         "retrieved_count": len(final_docs),
         "source_hit_at_1": bool(source_ranks and min(source_ranks) <= 1),
         "source_hit_at_3": bool(source_ranks and min(source_ranks) <= 3),
@@ -476,29 +627,44 @@ def _retrieval_metric_row(
         "answer_recall_at_10": bool(first_relevant_rank and first_relevant_rank <= 10),
         "first_relevant_rank": first_relevant_rank,
         "final_first_relevant_rank": final_first_relevant_rank,
-        "reciprocal_rank": round(1 / first_relevant_rank, 4)
-        if first_relevant_rank
-        else 0.0,
+        "reciprocal_rank": (
+            round(1 / first_relevant_rank, 4) if first_relevant_rank else 0.0
+        ),
         "answer_chunk_candidate_found": bool(initial_relevant_ranks),
         "answer_chunk_retrieved": bool(relevant_doc_ids),
         "answer_chunk_included": bool(included_relevant),
         "answer_chunk_dropped": bool(relevant_doc_ids and not included_relevant),
+        "required_phrase_count": phrase_count,
+        "required_phrases_retrieved": len(retrieved_phrase_matches),
+        "required_phrases_included": len(included_phrase_matches),
+        "required_phrase_recall_retrieved": round(
+            len(retrieved_phrase_matches) / phrase_count, 4
+        )
+        if phrase_count
+        else None,
+        "required_phrase_recall_included": round(
+            len(included_phrase_matches) / phrase_count, 4
+        )
+        if phrase_count
+        else None,
+        "exact_evidence_retrieved": bool(
+            phrase_count and len(retrieved_phrase_matches) == phrase_count
+        ),
+        "exact_evidence_included": bool(
+            phrase_count and len(included_phrase_matches) == phrase_count
+        ),
         "duplicate_ratio": round(duplicate_ratio, 4),
         "context_limit_tokens": context_diagnostics.get("max_context_tokens"),
-        "context_original_chars": context_diagnostics.get(
-            "original_evidence_chars", 0
-        ),
+        "context_original_chars": context_diagnostics.get("original_evidence_chars", 0),
         "context_final_chars": context_diagnostics.get("final_evidence_chars", 0),
         "context_trimmed": bool(context_diagnostics.get("trimmed", False)),
         "chunks_included": sum(
             bool(item.get("included_chars", 0)) for item in context_by_id.values()
         ),
         "chunks_dropped": sum(
-            not bool(item.get("included_chars", 0))
-            for item in context_by_id.values()
+            not bool(item.get("included_chars", 0)) for item in context_by_id.values()
         ),
     }
-
 
 
 def _ensure_simple_reasoning_settings(settings: dict[str, Any]) -> dict[str, Any]:
@@ -507,6 +673,12 @@ def _ensure_simple_reasoning_settings(settings: dict[str, Any]) -> dict[str, Any
     eval_settings = deepcopy(settings)
     if "simple" in reasonings:
         eval_settings["reasoning.use"] = "simple"
+
+    configured_context = int(eval_settings.get("reasoning.max_context_length", 5000))
+    context_cap = _env_optional_int("RAG_EVAL_MAX_CONTEXT_TOKENS")
+    eval_settings["reasoning.max_context_length"] = (
+        min(configured_context, context_cap) if context_cap else configured_context
+    )
 
     # Disable expensive UI-only artifacts; RAGAS evaluates answer + contexts instead.
     for key, value in {
@@ -519,8 +691,74 @@ def _ensure_simple_reasoning_settings(settings: dict[str, Any]) -> dict[str, Any
     return eval_settings
 
 
+def _resolve_evaluation_models(settings: dict[str, Any]) -> tuple[Any, Any]:
+    """Return the raw answer and retrieval models used by this evaluation."""
 
-def _find_source_ids(app: Any, source_file: str, user_id: Any) -> list[tuple[Any, str, str]]:
+    from ktem.embeddings.manager import embedding_models_manager
+    from ktem.llms.manager import llms
+
+    reasoning_id = settings.get("reasoning.use") or "simple"
+    llm_name = (
+        settings.get(f"reasoning.options.{reasoning_id}.llm")
+        or settings.get("reasoning.options.simple.llm")
+        or llms.get_default_name()
+    )
+    llm = llms.get(str(llm_name), None) or llms.get_default()
+
+    embedding_name = ""
+    for key, value in settings.items():
+        if key.startswith("index.options.") and key.endswith(".embedding") and value:
+            embedding_name = str(value)
+            break
+    if not embedding_name or embedding_name == "default":
+        embedding_name = embedding_models_manager.get_default_name()
+    embedding = (
+        embedding_models_manager.get(embedding_name, None)
+        or embedding_models_manager.get("default", None)
+        or embedding_models_manager.get_default()
+    )
+    return llm, embedding
+
+
+def _unload_ollama_resource(
+    resource: Any, warnings: list[str], purpose: str
+) -> bool:
+    """Best-effort unload that is a no-op for non-Ollama providers."""
+
+    if resource is None:
+        return False
+    model_name = str(getattr(resource, "model", "") or "")
+    base_url = str(getattr(resource, "base_url", "") or "")
+    resource_type = type(resource).__name__.lower()
+    if not model_name or (
+        "ollama" not in resource_type and "11434" not in base_url
+    ):
+        return False
+    try:
+        endpoint = base_url.rstrip("/")
+        if endpoint.endswith("/v1"):
+            endpoint = endpoint[:-3]
+        if not endpoint:
+            endpoint = "http://localhost:11434"
+        payload = json.dumps(
+            {"model": model_name, "prompt": "", "keep_alive": 0}
+        ).encode("utf-8")
+        request = urllib.request.Request(
+            f"{endpoint}/api/generate",
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=15):
+            return True
+    except Exception as exc:
+        warnings.append(f"Could not release Ollama {purpose} model: {exc}")
+        return False
+
+
+def _find_source_ids(
+    app: Any, source_file: str, user_id: Any
+) -> list[tuple[Any, str, str]]:
     """Return (index, source_id, source_name) tuples matching the dataset file name."""
 
     if not source_file:
@@ -558,7 +796,6 @@ def _find_source_ids(app: Any, source_file: str, user_id: Any) -> list[tuple[Any
     return matches
 
 
-
 def _build_retrievers(
     app: Any,
     settings: dict[str, Any],
@@ -573,9 +810,7 @@ def _build_retrievers(
             if getattr(index, "_selector_ui", None) is None:
                 index.get_selector_component_ui()
             retrievers.extend(
-                index.get_retriever_pipelines(
-                    settings, user_id, ["all", [], user_id]
-                )
+                index.get_retriever_pipelines(settings, user_id, ["all", [], user_id])
             )
             used_sources.append(f"{index.name}: all visible documents")
         if not retrievers:
@@ -592,7 +827,9 @@ def _build_retrievers(
         if getattr(index, "_selector_ui", None) is None:
             index.get_selector_component_ui()
         retrievers.extend(
-            index.get_retriever_pipelines(settings, user_id, ["select", [source_id], user_id])
+            index.get_retriever_pipelines(
+                settings, user_id, ["select", [source_id], user_id]
+            )
         )
         used_sources.append(f"{index.name}: {source_name}")
 
@@ -602,14 +839,13 @@ def _build_retrievers(
     return retrievers, used_sources
 
 
-
-def _answer_with_pipeline(
+def _retrieve_with_pipeline(
     app: Any,
     settings: dict[str, Any],
     user_id: Any,
     sample: dict[str, Any],
     retrieval_scope: str = "expected-source",
-) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+) -> PreparedEvalSample:
     question = sample["question"]
     source_file = sample.get("source_file", "")
     started = time.time()
@@ -640,22 +876,9 @@ def _answer_with_pipeline(
         retrieval_scope,
     )
 
-    answer_chunks: list[str] = []
-    for response in pipeline.answering_pipeline.stream(
-        question=question,
-        history=[],
-        evidence=evidence,
-        evidence_mode=evidence_mode,
-        images=images,
-        conv_id=f"rag-eval-{sample['id']}",
-    ):
-        if isinstance(response, Document) and response.channel == "chat":
-            if response.content is None:
-                answer_chunks = []
-            else:
-                answer_chunks.append(str(response.content))
-
-    contexts = [getattr(doc, "text", "") or getattr(doc, "content", "") or "" for doc in docs]
+    contexts = [
+        getattr(doc, "text", "") or getattr(doc, "content", "") or "" for doc in docs
+    ]
     top_doc = docs[0] if docs else None
     top_score = None
     for doc in docs:
@@ -671,18 +894,110 @@ def _answer_with_pipeline(
         "reference": sample["reference"],
         "source_file": source_file,
         "indexed_source": "; ".join(used_sources),
-        "answer": strip_think_tag("".join(answer_chunks)).strip(),
+        "answer": "",
         "contexts": contexts,
         "context_count": len(contexts),
         "top_context_preview": (contexts[0][:500] if contexts else ""),
         "top_source": _doc_source_name(top_doc) if top_doc is not None else "",
         "top_score": top_score,
-        "latency_sec": round(time.time() - started, 2),
-        "status": "ok",
+        "latency_sec": 0,
+        "retrieval_latency_sec": round(time.time() - started, 2),
+        "answer_queue_wait_sec": 0,
+        "generation_latency_sec": 0,
+        "answer_output_token_limit": 0,
+        "status": "retrieved",
         "error": "",
     }
-    return row, candidates, retrieval_metrics
+    finished = time.time()
+    row["retrieval_latency_sec"] = round(finished - started, 2)
+    return PreparedEvalSample(
+        sample=sample,
+        evidence=evidence,
+        evidence_mode=evidence_mode,
+        images=images,
+        row=row,
+        candidates=candidates,
+        retrieval_metrics=retrieval_metrics,
+        started_at=started,
+        retrieval_finished_at=finished,
+    )
 
+
+def _answer_prepared_sample(
+    settings: dict[str, Any], prepared: PreparedEvalSample
+) -> dict[str, Any]:
+    """Generate an answer without invoking the embedding/retrieval model again."""
+
+    answer_started = time.time()
+    reasoning_id = settings.get("reasoning.use")
+    if reasoning_id not in reasonings:
+        reasoning_id = "simple" if "simple" in reasonings else next(iter(reasonings))
+    pipeline = reasonings[reasoning_id].get_pipeline(
+        settings,
+        {"app": {}, "pipeline": {}},
+        [],
+    )
+
+    def collect_answer() -> str:
+        answer_chunks: list[str] = []
+        for response in pipeline.answering_pipeline.stream(
+            question=prepared.sample["question"],
+            history=[],
+            evidence=prepared.evidence,
+            evidence_mode=prepared.evidence_mode,
+            images=prepared.images,
+            conv_id=f"rag-eval-{prepared.sample['id']}",
+        ):
+            if isinstance(response, Document) and response.channel == "chat":
+                if response.content is None:
+                    answer_chunks = []
+                else:
+                    answer_chunks.append(str(response.content))
+        return strip_think_tag("".join(answer_chunks)).strip()
+
+    answer = collect_answer()
+    prepared.row["answer_retry_count"] = 0
+    if not answer:
+        # Reasoning models can consume a small completion allowance entirely with
+        # thinking tokens. Keep thinking enabled and retry once with bounded
+        # headroom; this is evaluation-only and does not alter the user's model.
+        answer_llm = getattr(pipeline.answering_pipeline, "llm", None)
+        retry_tokens = _env_nonnegative_int(
+            "RAG_EVAL_EMPTY_ANSWER_RETRY_TOKENS", 2048
+        )
+        current_tokens = int(getattr(answer_llm, "max_tokens", 0) or 0)
+        if answer_llm is not None and retry_tokens > current_tokens:
+            prepared.row["answer_retry_count"] = 1
+            with _temporary_model_attribute(answer_llm, "max_tokens", retry_tokens):
+                answer = collect_answer()
+
+    if not answer:
+        raise RuntimeError(
+            "The model completed without final answer content. It may have used "
+            "the output allowance for reasoning tokens."
+        )
+
+    finished = time.time()
+    prepared.row["answer"] = answer
+    _record_answer_timing(prepared, answer_started, finished)
+    prepared.row["status"] = "ok"
+    return prepared.row
+
+
+def _answer_with_pipeline(
+    app: Any,
+    settings: dict[str, Any],
+    user_id: Any,
+    sample: dict[str, Any],
+    retrieval_scope: str = "expected-source",
+) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+    """Backward-compatible one-sample path used when phased execution is disabled."""
+
+    prepared = _retrieve_with_pipeline(
+        app, settings, user_id, sample, retrieval_scope=retrieval_scope
+    )
+    row = _answer_prepared_sample(settings, prepared)
+    return row, prepared.candidates, prepared.retrieval_metrics
 
 
 def _ragas_metrics() -> list[Any]:
@@ -958,8 +1273,65 @@ def _is_finite_score(value: Any) -> bool:
         return False
 
 
+def _normalize_metric_text(text: str) -> str:
+    """Canonicalize equivalent numeric, degree, semester, and percent forms."""
+
+    value = unicodedata.normalize("NFKC", str(text or "")).lower()
+    value = re.sub(r"(?<=\w)-\s+(?=\w)", "", value)
+    value = re.sub(r"\bb\s*\.?\s*sc\s*\.?\b", " bachelor_science ", value)
+    value = value.replace("bachelor of science", "bachelor_science")
+    value = re.sub(r"\b(?:prozent|percent)\b|%", " percent ", value)
+    value = re.sub(r"\b(?:wise|ws|wintersemester)\b", " wintersemester ", value)
+    value = re.sub(r"\b(?:sose|ss|sommersemester)\b", " sommersemester ", value)
+    replacements = {
+        "eins": "1",
+        "erste": "1",
+        "ersten": "1",
+        "erstes": "1",
+        "zwei": "2",
+        "zweite": "2",
+        "zweiten": "2",
+        "zweimal": "2",
+        "drei": "3",
+        "dritte": "3",
+        "vier": "4",
+        "vierte": "4",
+        "fünf": "5",
+        "fünfte": "5",
+        "sechs": "6",
+        "sechste": "6",
+        "sechsten": "6",
+        "sechstes": "6",
+        "sieben": "7",
+        "siebte": "7",
+        "acht": "8",
+        "achte": "8",
+        "neun": "9",
+        "neunte": "9",
+        "zehn": "10",
+        "zehnte": "10",
+        "one": "1",
+        "first": "1",
+        "two": "2",
+        "second": "2",
+        "three": "3",
+        "third": "3",
+        "four": "4",
+        "fourth": "4",
+        "five": "5",
+        "fifth": "5",
+        "seven": "7",
+        "six": "6",
+        "sixth": "6",
+        "ten": "10",
+        "maximal": "höchstens",
+    }
+    for source, target in replacements.items():
+        value = re.sub(rf"\b{re.escape(source)}\b", target, value)
+    return " ".join(re.findall(r"[\wäöüß]+", value))
+
+
 def _token_set(text: str) -> set[str]:
-    import re
 
     stopwords = {
         "a",
@@ -985,8 +1357,8 @@ def _token_set(text: str) -> set[str]:
     }
     return {
         token
-        for token in re.findall(r"[\wÄÖÜäöüß]+", text.lower())
-        if len(token) > 2 and token not in stopwords
+        for token in _normalize_metric_text(text).split()
+        if (len(token) > 2 or token.isdigit()) and token not in stopwords
     }
 
 
@@ -1014,7 +1386,12 @@ def _embed_documents(embeddings: Any, texts: list[str]) -> list[list[float]]:
 
 
 def _local_defined_scores(
-    rows: list[dict[str, Any]], embeddings: Any
+    rows: list[dict[str, Any]],
+    embeddings: Any,
+    note: str = (
+        "LLM-judge RAGAS metrics were undefined, so the table shows local "
+        "always-defined RAGAS-style fallback metrics instead."
+    ),
 ) -> tuple[pd.DataFrame, list[str]]:
     """Always-defined local metrics used when LLM-judge RAGAS scores are NaN.
 
@@ -1037,7 +1414,14 @@ def _local_defined_scores(
             semantic_similarity = None
             notes.append(f"{row.get('id')}: semantic fallback failed: {exc}")
 
-        string_similarity = round(SequenceMatcher(None, reference, answer).ratio(), 4)
+        string_similarity = round(
+            SequenceMatcher(
+                None,
+                _normalize_metric_text(reference),
+                _normalize_metric_text(answer),
+            ).ratio(),
+            4,
+        )
         reference_tokens = _token_set(reference)
         answer_tokens = _token_set(answer)
         context_tokens = _token_set(contexts)
@@ -1071,16 +1455,15 @@ def _local_defined_scores(
                 "non_llm_string_similarity": string_similarity,
                 "answer_keyword_recall": answer_keyword_recall,
                 "context_keyword_recall": context_keyword_recall,
-                "ragas_local_score": round(sum(score_values) / len(score_values), 4)
-                if score_values
-                else None,
+                "ragas_local_score": (
+                    round(sum(score_values) / len(score_values), 4)
+                    if score_values
+                    else None
+                ),
             }
         )
 
-    notes.append(
-        "LLM-judge RAGAS metrics were undefined, so the table shows local "
-        "always-defined RAGAS-style fallback metrics instead."
-    )
+    notes.append(note)
     return pd.DataFrame(records), notes
 
 
@@ -1097,10 +1480,13 @@ def _evaluate_with_local_models(
         "llm": evaluator.llm,
         "embeddings": evaluator.embeddings,
     }
-    optional_kwargs = {
+    optional_kwargs: dict[str, Any] = {
         "raise_exceptions": False,
         "show_progress": False,
     }
+    batch_size = _env_optional_int("RAGAS_EVAL_BATCH_SIZE")
+    if batch_size is not None:
+        optional_kwargs["batch_size"] = batch_size
     if evaluator.run_config is not None:
         optional_kwargs["run_config"] = evaluator.run_config
 
@@ -1111,7 +1497,12 @@ def _evaluate_with_local_models(
             message = str(exc)
             unsupported = [
                 key
-                for key in ("raise_exceptions", "show_progress", "run_config")
+                for key in (
+                    "raise_exceptions",
+                    "show_progress",
+                    "batch_size",
+                    "run_config",
+                )
                 if key in message and key in optional_kwargs
             ]
             if not unsupported:
@@ -1120,11 +1511,10 @@ def _evaluate_with_local_models(
                 optional_kwargs.pop(key, None)
 
 
-
 def _run_ragas(
     rows: list[dict[str, Any]], settings: dict[str, Any]
 ) -> tuple[pd.DataFrame, list[str]]:
-    """Execute RAGAS with EvaluationDataset first, then HF Dataset fallback."""
+    """Execute bounded local RAGAS metric batches without retrying a failed run."""
 
     valid_rows = [row for row in rows if row.get("status") == "ok"]
     if not valid_rows:
@@ -1133,6 +1523,7 @@ def _run_ragas(
     run_config = _ragas_run_config()
     evaluator = _local_ragas_evaluator_models(settings, run_config)
     metrics = _ragas_metrics()
+    notes = list(evaluator.notes)
 
     try:
         from ragas import EvaluationDataset  # type: ignore
@@ -1148,8 +1539,7 @@ def _run_ragas(
                 for row in valid_rows
             ]
         )
-        result = _evaluate_with_local_models(evaluation_dataset, metrics, evaluator)
-    except Exception:
+    except (ImportError, AttributeError, TypeError, ValueError):
         from datasets import Dataset  # type: ignore
 
         evaluation_dataset = Dataset.from_dict(
@@ -1160,26 +1550,55 @@ def _run_ragas(
                 "ground_truth": [row["reference"] for row in valid_rows],
             }
         )
-        result = _evaluate_with_local_models(evaluation_dataset, metrics, evaluator)
 
-    if hasattr(result, "to_pandas"):
-        ragas_df = result.to_pandas()
-    else:
-        ragas_df = pd.DataFrame(result)
+    metrics_per_batch = _env_optional_int("RAGAS_EVAL_METRICS_PER_BATCH") or len(
+        metrics
+    )
+    recycle_batches = _env_bool(
+        "RAGAS_EVAL_OLLAMA_RECYCLE_METRIC_BATCHES", False
+    )
+    llm_resource, embedding_resource = _resolve_evaluation_models(settings)
+    ragas_df = pd.DataFrame(index=range(len(valid_rows)))
+    try:
+        for start in range(0, len(metrics), metrics_per_batch):
+            metric_batch = metrics[start : start + metrics_per_batch]
+            _check_memory_guard(
+                f"RAGAS metric batch {start // metrics_per_batch + 1}"
+            )
+            result = _evaluate_with_local_models(
+                evaluation_dataset, metric_batch, evaluator
+            )
+            batch_df = (
+                result.to_pandas()
+                if hasattr(result, "to_pandas")
+                else pd.DataFrame(result)
+            ).reset_index(drop=True)
+            for column in batch_df.columns:
+                if column not in ragas_df.columns:
+                    ragas_df[column] = batch_df[column]
+            if recycle_batches:
+                _unload_ollama_resource(llm_resource, notes, "RAGAS answer")
+                _unload_ollama_resource(
+                    embedding_resource, notes, "RAGAS embedding"
+                )
+                gc.collect()
 
-    for column in ("id", "source_file"):
-        if column not in ragas_df.columns:
-            ragas_df.insert(0, column, [row[column] for row in valid_rows])
+        for column in ("id", "source_file"):
+            if column not in ragas_df.columns:
+                ragas_df.insert(0, column, [row[column] for row in valid_rows])
 
-    notes = evaluator.notes
-    if _looks_all_nan(ragas_df):
-        ragas_df, fallback_notes = _local_defined_scores(
-            valid_rows, evaluator.raw_embeddings
-        )
-        notes.extend(fallback_notes)
-    return ragas_df, notes
-
-
+        if _looks_all_nan(ragas_df):
+            ragas_df, fallback_notes = _local_defined_scores(
+                valid_rows, evaluator.raw_embeddings
+            )
+            notes.extend(fallback_notes)
+        return ragas_df, notes
+    finally:
+        if _env_bool("RAG_EVAL_OLLAMA_UNLOAD_AT_END", True):
+            _unload_ollama_resource(llm_resource, notes, "RAGAS answer")
+            _unload_ollama_resource(
+                embedding_resource, notes, "RAGAS embedding"
+            )
 
 
 def _effective_runtime_config(
@@ -1190,12 +1609,28 @@ def _effective_runtime_config(
         "retrieval_mode": settings.get("index.options.1.retrieval_mode"),
         "retrieval_count": settings.get("index.options.1.num_retrieval"),
         "reranking_enabled": settings.get("index.options.1.use_reranking"),
-        "llm_reranking_enabled": settings.get(
-            "index.options.1.use_llm_reranking"
-        ),
+        "llm_reranking_enabled": settings.get("index.options.1.use_llm_reranking"),
         "table_priority": settings.get("index.options.1.prioritize_table"),
         "context_limit": settings.get("reasoning.max_context_length"),
         "reader_mode": settings.get("index.options.1.reader_mode"),
+        "phased_execution": _env_bool("RAG_EVAL_PHASED_EXECUTION", True),
+        "max_output_tokens": _env_nonnegative_int(
+            "RAG_EVAL_MAX_OUTPUT_TOKENS", 0
+        ),
+        "list_max_output_tokens": _env_nonnegative_int(
+            "RAG_EVAL_LIST_MAX_OUTPUT_TOKENS", 0
+        ),
+        "ollama_recycle_questions": _env_nonnegative_int(
+            "RAG_EVAL_OLLAMA_RECYCLE_QUESTIONS", 0
+        ),
+        "ollama_embed_keep_alive": str(
+            env_config("RAG_EVAL_OLLAMA_EMBED_KEEP_ALIVE", default="-1")
+        ),
+        "ragas_metrics_per_batch": _env_optional_int(
+            "RAGAS_EVAL_METRICS_PER_BATCH"
+        )
+        or "all",
+        "min_available_gb": _env_float("RAG_EVAL_MIN_AVAILABLE_GB", 0.0),
     }
     try:
         from ktem.embeddings.manager import embedding_models_manager
@@ -1208,23 +1643,33 @@ def _effective_runtime_config(
     return config
 
 
-def _build_failure_report(
-    samples_df: pd.DataFrame, retrieval_df: pd.DataFrame
-) -> str:
+def _build_failure_report(samples_df: pd.DataFrame, retrieval_df: pd.DataFrame) -> str:
     lines = ["# RAG retrieval failures", ""]
     if retrieval_df.empty:
         return "\n".join(lines + ["No retrieval diagnostics were produced.", ""])
 
-    sample_by_id = {
-        str(row["id"]): row for _, row in samples_df.iterrows()
-    }
+    sample_by_id = {str(row["id"]): row for _, row in samples_df.iterrows()}
     failure_count = 0
     for _, metric in retrieval_df.iterrows():
-        if bool(metric.get("answer_chunk_included", False)):
+        phrase_annotated = int(metric.get("required_phrase_count", 0) or 0) > 0
+        exact_included = bool(metric.get("exact_evidence_included", False))
+        evidence_succeeded = (
+            exact_included
+            if phrase_annotated
+            else bool(metric.get("answer_chunk_included", False))
+        )
+        if evidence_succeeded:
             continue
         failure_count += 1
         sample = sample_by_id.get(str(metric["id"]), {})
-        if not bool(metric.get("answer_chunk_candidate_found", False)):
+        if phrase_annotated and not exact_included:
+            failure_type = "EXACT EVIDENCE GAP"
+            detail = (
+                "Not all annotated evidence phrases reached the final context "
+                f"({metric.get('required_phrases_included', 0)}/"
+                f"{metric.get('required_phrase_count', 0)})."
+            )
+        elif not bool(metric.get("answer_chunk_candidate_found", False)):
             failure_type = "RETRIEVAL FAILURE"
             detail = "No answer-bearing chunk was detected in initial candidates."
         elif not bool(metric.get("answer_chunk_retrieved", False)):
@@ -1267,12 +1712,27 @@ def _summarize(
 ) -> dict[str, Any]:
     summary: dict[str, Any] = {
         "samples_total": int(len(samples_df)),
-        "samples_ok": int((samples_df["status"] == "ok").sum()) if len(samples_df) else 0,
-        "samples_failed": int((samples_df["status"] != "ok").sum()) if len(samples_df) else 0,
-        "avg_latency_sec": round(float(samples_df["latency_sec"].mean()), 2)
-        if "latency_sec" in samples_df and len(samples_df)
-        else 0,
+        "samples_ok": (
+            int((samples_df["status"] == "ok").sum()) if len(samples_df) else 0
+        ),
+        "samples_failed": (
+            int((samples_df["status"] != "ok").sum()) if len(samples_df) else 0
+        ),
+        "avg_latency_sec": (
+            round(float(samples_df["latency_sec"].mean()), 2)
+            if "latency_sec" in samples_df and len(samples_df)
+            else 0
+        ),
     }
+    for column in (
+        "retrieval_latency_sec",
+        "answer_queue_wait_sec",
+        "generation_latency_sec",
+    ):
+        if column in samples_df and len(samples_df):
+            summary[f"avg_{column}"] = round(
+                float(pd.to_numeric(samples_df[column], errors="coerce").mean()), 2
+            )
 
     for column in ragas_df.columns:
         if column in {"id", "source_file"}:
@@ -1296,6 +1756,10 @@ def _summarize(
         "answer_chunk_dropped",
         "duplicate_ratio",
         "context_trimmed",
+        "required_phrase_recall_retrieved",
+        "required_phrase_recall_included",
+        "exact_evidence_retrieved",
+        "exact_evidence_included",
     )
     for column in retrieval_summary_columns:
         if column not in retrieval_df or retrieval_df.empty:
@@ -1308,6 +1772,56 @@ def _summarize(
 
     return summary
 
+
+def _evaluation_error_row(sample: dict[str, Any], exc: Exception) -> dict[str, Any]:
+    return {
+        "id": sample["id"],
+        "question": sample["question"],
+        "reference": sample["reference"],
+        "source_file": sample.get("source_file", ""),
+        "indexed_source": "",
+        "answer": "",
+        "contexts": [],
+        "context_count": 0,
+        "top_context_preview": "",
+        "top_source": "",
+        "top_score": None,
+        "latency_sec": 0,
+        "retrieval_latency_sec": 0,
+        "answer_queue_wait_sec": 0,
+        "generation_latency_sec": 0,
+        "answer_output_token_limit": 0,
+        "status": "error",
+        "error": f"{exc}\n{traceback.format_exc(limit=2)}",
+    }
+
+
+def _retrieval_error_row(
+    sample: dict[str, Any], retrieval_scope: str, exc: Exception
+) -> dict[str, Any]:
+    return {
+        "id": sample["id"],
+        "source_file": sample.get("source_file", ""),
+        "retrieval_scope": retrieval_scope,
+        "relevance_method": (
+            "manual"
+            if sample.get("has_manual_relevance_annotations")
+            else "inferred_keyword"
+        ),
+        "retrieved_count": 0,
+        "answer_chunk_candidate_found": False,
+        "answer_chunk_retrieved": False,
+        "answer_chunk_included": False,
+        "answer_chunk_dropped": False,
+        "required_phrase_count": len(sample.get("required_phrases", [])),
+        "required_phrases_retrieved": 0,
+        "required_phrases_included": 0,
+        "required_phrase_recall_retrieved": 0.0,
+        "required_phrase_recall_included": 0.0,
+        "exact_evidence_retrieved": False,
+        "exact_evidence_included": False,
+        "error": str(exc),
+    }
 
 
 def run_evaluation(
@@ -1330,61 +1844,144 @@ def run_evaluation(
     samples = samples[:limit]
 
     eval_settings = _ensure_simple_reasoning_settings(settings)
-    rows: list[dict[str, Any]] = []
+    rows_by_index: list[dict[str, Any] | None] = [None] * limit
     candidate_rows: list[dict[str, Any]] = []
     retrieval_rows: list[dict[str, Any]] = []
     warnings: list[str] = []
 
-    for idx, sample in enumerate(samples, start=1):
-        if progress:
-            progress(idx - 1, limit, f"Question {idx}/{limit}: {sample['id']}")
-        try:
-            row, candidates, retrieval_metrics = _answer_with_pipeline(
-                app,
-                eval_settings,
-                user_id,
-                sample,
-                retrieval_scope=retrieval_scope,
-            )
-            rows.append(row)
-            candidate_rows.extend(candidates)
-            retrieval_rows.append(retrieval_metrics)
-        except Exception as exc:  # keep the run useful even when one sample fails
-            warnings.append(f"{sample['id']}: {exc}")
-            rows.append(
-                {
-                    "id": sample["id"],
-                    "question": sample["question"],
-                    "reference": sample["reference"],
-                    "source_file": sample.get("source_file", ""),
-                    "indexed_source": "",
-                    "answer": "",
-                    "contexts": [],
-                    "context_count": 0,
-                    "top_context_preview": "",
-                    "top_source": "",
-                    "top_score": None,
-                    "latency_sec": 0,
-                    "status": "error",
-                    "error": f"{exc}\n{traceback.format_exc(limit=2)}",
-                }
-            )
-            retrieval_rows.append(
-                {
-                    "id": sample["id"],
-                    "source_file": sample.get("source_file", ""),
-                    "retrieval_scope": retrieval_scope,
-                    "relevance_method": "manual"
-                    if sample.get("has_manual_relevance_annotations")
-                    else "inferred_keyword",
-                    "retrieved_count": 0,
-                    "answer_chunk_candidate_found": False,
-                    "answer_chunk_retrieved": False,
-                    "answer_chunk_included": False,
-                    "answer_chunk_dropped": False,
-                    "error": str(exc),
-                }
-            )
+    llm, embedding = _resolve_evaluation_models(eval_settings)
+    phased = _env_bool("RAG_EVAL_PHASED_EXECUTION", True)
+    recycle_every = _env_nonnegative_int(
+        "RAG_EVAL_OLLAMA_RECYCLE_QUESTIONS", 0
+    )
+    unload_at_end = _env_bool("RAG_EVAL_OLLAMA_UNLOAD_AT_END", True)
+    embedding_keep_alive = str(
+        env_config("RAG_EVAL_OLLAMA_EMBED_KEEP_ALIVE", default="-1")
+    )
+    max_output_tokens = _env_nonnegative_int("RAG_EVAL_MAX_OUTPUT_TOKENS", 0)
+
+    if phased:
+        prepared_samples: list[tuple[int, PreparedEvalSample]] = []
+        with _temporary_model_attribute(
+            embedding, "ollama_keep_alive", embedding_keep_alive
+        ):
+            for idx, sample in enumerate(samples, start=1):
+                if progress:
+                    progress(
+                        idx - 1,
+                        limit * 2,
+                        f"Retrieval {idx}/{limit}: {sample['id']}",
+                    )
+                try:
+                    _check_memory_guard(f"retrieval question {idx}")
+                    prepared = _retrieve_with_pipeline(
+                        app,
+                        eval_settings,
+                        user_id,
+                        sample,
+                        retrieval_scope=retrieval_scope,
+                    )
+                    prepared_samples.append((idx - 1, prepared))
+                    candidate_rows.extend(prepared.candidates)
+                    retrieval_rows.append(prepared.retrieval_metrics)
+                except Exception as exc:
+                    warnings.append(f"{sample['id']}: {exc}")
+                    rows_by_index[idx - 1] = _evaluation_error_row(sample, exc)
+                    retrieval_rows.append(
+                        _retrieval_error_row(sample, retrieval_scope, exc)
+                    )
+                finally:
+                    if idx % _env_int("RAG_EVAL_GC_EVERY", 10) == 0:
+                        gc.collect()
+
+        _unload_ollama_resource(embedding, warnings, "embedding")
+
+        for answer_idx, (row_index, prepared) in enumerate(
+            prepared_samples, start=1
+        ):
+            if progress:
+                progress(
+                    limit + answer_idx - 1,
+                    limit * 2,
+                    f"Answer {answer_idx}/{len(prepared_samples)}: "
+                    f"{prepared.sample['id']}",
+                )
+            try:
+                _check_memory_guard(f"answer question {answer_idx}")
+                output_limit = _answer_output_limit(
+                    prepared.sample,
+                    max_output_tokens or getattr(llm, "max_tokens", 256),
+                )
+                prepared.row["answer_output_token_limit"] = output_limit
+                with _temporary_model_attribute(llm, "max_tokens", output_limit):
+                    rows_by_index[row_index] = _answer_prepared_sample(
+                        eval_settings, prepared
+                    )
+            except Exception as exc:
+                warnings.append(f"{prepared.sample['id']}: {exc}")
+                prepared.row.update(
+                    {
+                        "status": "error",
+                        "error": f"{exc}\n{traceback.format_exc(limit=2)}",
+                        "latency_sec": prepared.row.get(
+                            "retrieval_latency_sec", 0
+                        ),
+                    }
+                )
+                rows_by_index[row_index] = prepared.row
+            finally:
+                prepared.evidence = ""
+                prepared.images = []
+                if recycle_every and answer_idx % recycle_every == 0:
+                    _unload_ollama_resource(llm, warnings, "answer")
+                if answer_idx % _env_int("RAG_EVAL_GC_EVERY", 10) == 0:
+                    gc.collect()
+    else:
+        with _temporary_model_attribute(
+            embedding, "ollama_keep_alive", embedding_keep_alive
+        ):
+            for idx, sample in enumerate(samples, start=1):
+                if progress:
+                    progress(
+                        idx - 1, limit, f"Question {idx}/{limit}: {sample['id']}"
+                    )
+                try:
+                    _check_memory_guard(f"question {idx}")
+                    output_limit = _answer_output_limit(
+                        sample,
+                        max_output_tokens or getattr(llm, "max_tokens", 256),
+                    )
+                    with _temporary_model_attribute(
+                        llm, "max_tokens", output_limit
+                    ):
+                        row, candidates, retrieval_metrics = _answer_with_pipeline(
+                            app,
+                            eval_settings,
+                            user_id,
+                            sample,
+                            retrieval_scope=retrieval_scope,
+                        )
+                    row["answer_output_token_limit"] = output_limit
+                    rows_by_index[idx - 1] = row
+                    candidate_rows.extend(candidates)
+                    retrieval_rows.append(retrieval_metrics)
+                except Exception as exc:
+                    warnings.append(f"{sample['id']}: {exc}")
+                    rows_by_index[idx - 1] = _evaluation_error_row(sample, exc)
+                    retrieval_rows.append(
+                        _retrieval_error_row(sample, retrieval_scope, exc)
+                    )
+                finally:
+                    if recycle_every and idx % recycle_every == 0:
+                        _unload_ollama_resource(llm, warnings, "answer")
+                    if idx % _env_int("RAG_EVAL_GC_EVERY", 10) == 0:
+                        gc.collect()
+
+    if unload_at_end:
+        _unload_ollama_resource(embedding, warnings, "embedding")
+        _unload_ollama_resource(llm, warnings, "answer")
+
+    rows = [row for row in rows_by_index if row is not None]
 
     if progress:
         progress(limit, limit, "RAG answers collected")
@@ -1401,6 +1998,31 @@ def run_evaluation(
             )
         except Exception as exc:
             warnings.append(f"RAGAS scoring failed: {exc}")
+    elif _env_bool("RAG_EVAL_LIGHTWEIGHT_METRICS", True):
+        valid_rows = [row for row in rows if row.get("status") == "ok"]
+        if valid_rows:
+            try:
+                _check_memory_guard("lightweight answer-quality metrics")
+                scoring_embeddings, _ = _to_langchain_embeddings(eval_settings)
+                with _temporary_model_attribute(
+                    embedding, "ollama_keep_alive", embedding_keep_alive
+                ):
+                    ragas_df, local_notes = _local_defined_scores(
+                        valid_rows,
+                        scoring_embeddings,
+                        note=(
+                            "Showing lightweight local answer-quality metrics. "
+                            "Enable RAGAS in the UI for LLM-judge metrics."
+                        ),
+                    )
+                warnings.extend(local_notes)
+            except Exception as exc:
+                warnings.append(f"Lightweight quality scoring failed: {exc}")
+            finally:
+                if unload_at_end:
+                    _unload_ollama_resource(
+                        embedding, warnings, "quality-metric embedding"
+                    )
 
     samples_df = pd.DataFrame(rows)
     retrieval_df = pd.DataFrame(retrieval_rows)

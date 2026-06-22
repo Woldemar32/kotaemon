@@ -53,6 +53,18 @@ class VectorIndexing(BaseIndexing):
             **kwargs,
         )
 
+    def prepare_chunk_export(self, file_name: str) -> None:
+        """Reset cached chunk files for one newly indexed source."""
+
+        if not self.cache_dir:
+            return
+        stem = Path(file_name).stem
+        cache_dir = Path(self.cache_dir)
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        for path in cache_dir.glob(f"{stem}_*.md"):
+            path.unlink()
+        self.count_ = 0
+
     def write_chunk_to_file(self, docs: list[Document]):
         # save the chunks content into markdown format
         if self.cache_dir:
@@ -80,8 +92,11 @@ class VectorIndexing(BaseIndexing):
                 if docs[i].text:
                     markdown_content += f"\ntext:\n{docs[i].text}"
 
+                export_index = docs[i].metadata.get(
+                    "ingestion_index", self.count_ + i
+                )
                 with open(
-                    Path(self.cache_dir) / f"{file_name.stem}_{self.count_+i}.md",
+                    Path(self.cache_dir) / f"{file_name.stem}_{export_index}.md",
                     "w",
                     encoding="utf-8",
                 ) as f:
@@ -159,6 +174,25 @@ class VectorRetrieval(BaseRetrieval):
     top_k: int = 5
     first_round_top_k_mult: int = 10
     retrieval_mode: str = "hybrid"  # vector, text, hybrid
+
+    @staticmethod
+    def _diversify_parent_chunks(
+        documents: list[RetrievedDocument], top_k: int
+    ) -> list[RetrievedDocument]:
+        """Avoid letting facts from one table consume the complete result set."""
+
+        selected: list[RetrievedDocument] = []
+        deferred: list[RetrievedDocument] = []
+        per_parent: dict[str, int] = {}
+        for document in documents:
+            parent = str((document.metadata or {}).get("table_parent_id") or "")
+            if parent and per_parent.get(parent, 0) >= 2:
+                deferred.append(document)
+                continue
+            selected.append(document)
+            if parent:
+                per_parent[parent] = per_parent.get(parent, 0) + 1
+        return (selected + deferred)[:top_k]
 
     @staticmethod
     def _diagnostic_snapshot(
@@ -412,26 +446,7 @@ class VectorRetrieval(BaseRetrieval):
                     result = self._filter_docs(result, top_k=top_k)
                 rerank_start = time.time()
                 _vector_log(f"Running reranker {reranker}")
-                retrieved_before_reranking = result
-                try:
-                    result = reranker.run(documents=result, query=text)
-                except Exception as exc:
-                    # A remote/local reranker is an optional relevance refinement.
-                    # Its outage or an incompatible endpoint must not discard valid
-                    # first-round retrieval results.
-                    result = retrieved_before_reranking
-                    error = {
-                        "reranker": type(reranker).__name__,
-                        "error": str(exc),
-                    }
-                    self._last_retrieval_trace.setdefault(
-                        "reranker_errors", []
-                    ).append(error)
-                    _vector_log(
-                        f"Reranker {type(reranker).__name__} failed; using "
-                        f"original retrieval order: {exc}",
-                        logging.WARNING,
-                    )
+                result = reranker.run(documents=result, query=text)
                 _vector_log(
                     f"Reranker returned {len(result)} docs "
                     f"in {time.time() - rerank_start:.2f}s"
@@ -444,7 +459,7 @@ class VectorRetrieval(BaseRetrieval):
                     }
                 )
 
-        result = self._filter_docs(result, top_k=top_k)
+        result = self._diversify_parent_chunks(result, top_k=top_k)
         _vector_log(f"Got raw {len(result)} retrieved documents")
 
         # add page thumbnails to the result if exists

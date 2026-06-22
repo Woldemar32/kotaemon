@@ -338,8 +338,8 @@
       3
     ],
     "required_phrases": [
-      "Verzeichnis der verwendeten Hilfsmittel",
-      "gekennzeichnet"
+      "Verzeichnis der benutzten Hilfsmittel",
+      "als solche kenntlich zu machen"
     ]
   },
   {
@@ -351,9 +351,9 @@
       3
     ],
     "required_phrases": [
-      "Prüferin",
-      "Prüfer",
-      "Hilfsmittel"
+      "Die oder der Prüfende entscheidet",
+      "welche Hilfsmittel",
+      "rechtzeitig"
     ]
   },
   {

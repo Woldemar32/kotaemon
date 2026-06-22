@@ -5,10 +5,15 @@ import pandas as pd
 
 from kotaemon.indices.vectorindex import VectorRetrieval
 from ktem.evaluation.ragas_eval import (
+    PreparedEvalSample,
+    _answer_output_limit,
     _build_failure_report,
     _candidate_relevance,
     _retrieval_metric_row,
+    _record_answer_timing,
+    _token_set,
     load_eval_dataset,
+    run_evaluation,
 )
 
 
@@ -80,6 +85,74 @@ def test_manual_relevance_accepts_expected_page_or_phrase():
     assert phrases == ["Bachelor of Science"]
 
 
+def test_required_phrase_prevents_unrelated_same_page_false_positive():
+    sample = {
+        "source_file": "amendment.pdf",
+        "reference": "Examiner decides",
+        "expected_pages": ["3"],
+        "required_phrases": ["examiner decides"],
+        "has_manual_relevance_annotations": True,
+    }
+
+    relevant, method, score, phrases = _candidate_relevance(
+        sample, "amendment.pdf", 3, "Unrelated withdrawal rules"
+    )
+
+    assert relevant is False
+    assert method == "manual"
+    assert score == 0.0
+    assert phrases == []
+
+
+def test_list_questions_receive_configurable_output_headroom(monkeypatch):
+    monkeypatch.setenv("RAG_EVAL_LIST_MAX_OUTPUT_TOKENS", "512")
+    assert (
+        _answer_output_limit(
+            {
+                "question": "Welche Module sind aufgeführt?",
+                "reference": "A; B; C",
+            },
+            256,
+        )
+        == 512
+    )
+    assert (
+        _answer_output_limit(
+            {"question": "Wie viele ECTS?", "reference": "10 ECTS"}, 256
+        )
+        == 256
+    )
+
+
+def test_active_latency_excludes_phased_queue_wait():
+    prepared = PreparedEvalSample(
+        sample={"id": "q"},
+        evidence="",
+        evidence_mode=0,
+        images=[],
+        row={"retrieval_latency_sec": 2.5},
+        candidates=[],
+        retrieval_metrics={},
+        started_at=10.0,
+        retrieval_finished_at=12.5,
+    )
+
+    _record_answer_timing(prepared, answer_started=100.0, finished=103.0)
+
+    assert prepared.row["retrieval_latency_sec"] == 2.5
+    assert prepared.row["generation_latency_sec"] == 3.0
+    assert prepared.row["answer_queue_wait_sec"] == 87.5
+    assert prepared.row["latency_sec"] == 5.5
+
+
+def test_lightweight_metric_tokens_normalize_equivalent_fact_forms():
+    assert _token_set("höchstens 25 % Fehlzeit") & _token_set(
+        "maximal 25 Prozent versäumen"
+    ) == {"höchstens", "25", "percent"}
+    assert "bachelor_science" in _token_set("Bachelor of Science (B.Sc.)")
+    assert "6" in _token_set("im sechsten Semester")
+
+
 def test_metrics_distinguish_retrieval_from_context_packing_failure():
     sample = {
         "id": "degree",
@@ -122,6 +195,54 @@ def test_metrics_distinguish_retrieval_from_context_packing_failure():
     assert metrics["answer_chunk_retrieved"] is True
     assert metrics["answer_chunk_included"] is False
     assert metrics["answer_chunk_dropped"] is True
+
+
+def test_metrics_report_exact_phrase_coverage_not_only_expected_page():
+    sample = {
+        "id": "aids",
+        "source_file": "amendment.pdf",
+        "reference": "Examiner decides which aids are permitted",
+        "expected_pages": ["3"],
+        "required_phrases": ["examiner decides", "permitted aids"],
+        "has_manual_relevance_annotations": True,
+    }
+    partial = SimpleNamespace(
+        doc_id="partial",
+        text="The examiner decides and informs students.",
+        metadata={"file_name": "amendment.pdf", "page_label": 3},
+    )
+    unrelated = SimpleNamespace(
+        doc_id="same-page",
+        text="Rules for examination withdrawal.",
+        metadata={"file_name": "amendment.pdf", "page_label": 3},
+    )
+
+    metrics = _retrieval_metric_row(
+        sample,
+        [partial, unrelated],
+        [
+            {
+                "stage": "initial",
+                "rank": 1,
+                "doc_id": "partial",
+                "relevant": True,
+            },
+            {
+                "stage": "initial",
+                "rank": 2,
+                "doc_id": "same-page",
+                "relevant": False,
+            },
+        ],
+        {"partial": {"included_chars": 40}},
+        {"max_context_tokens": 1000, "trimmed": False},
+        "expected-source",
+    )
+
+    assert metrics["required_phrases_retrieved"] == 1
+    assert metrics["required_phrases_included"] == 1
+    assert metrics["required_phrase_recall_included"] == 0.5
+    assert metrics["exact_evidence_included"] is False
 
 
 def test_failure_report_names_packing_failures():
@@ -209,3 +330,90 @@ def test_vector_query_skips_an_empty_document_scope():
 
     assert result == ([], [], [])
     assert store.requests == []
+
+
+def test_evaluation_runs_retrieval_phase_before_answer_phase(monkeypatch):
+    from ktem.evaluation import ragas_eval
+
+    samples = [
+        {
+            "id": f"q{index}",
+            "question": f"Question {index}",
+            "reference": f"Answer {index}",
+            "source_file": "program.pdf",
+        }
+        for index in (1, 2)
+    ]
+    events = []
+    llm = SimpleNamespace(model="answer-model", max_tokens=512)
+    embedding = SimpleNamespace(model="embedding-model", ollama_keep_alive="5m")
+
+    def retrieve(_app, _settings, _user_id, sample, retrieval_scope):
+        events.append(f"retrieve:{sample['id']}")
+        return PreparedEvalSample(
+            sample=sample,
+            evidence=f"Evidence {sample['id']}",
+            evidence_mode=0,
+            images=[],
+            row={
+                **sample,
+                "indexed_source": "program.pdf",
+                "answer": "",
+                "contexts": [f"Evidence {sample['id']}"],
+                "context_count": 1,
+                "top_context_preview": "Evidence",
+                "top_source": "program.pdf",
+                "top_score": 0.9,
+                "latency_sec": 0,
+                "status": "retrieved",
+                "error": "",
+            },
+            candidates=[],
+            retrieval_metrics={
+                "id": sample["id"],
+                "source_file": sample["source_file"],
+                "answer_chunk_included": True,
+            },
+            started_at=0,
+        )
+
+    def answer(_settings, prepared):
+        events.append(f"answer:{prepared.sample['id']}")
+        prepared.row["answer"] = prepared.sample["reference"]
+        prepared.row["status"] = "ok"
+        return prepared.row
+
+    monkeypatch.setattr(ragas_eval, "load_eval_dataset", lambda _path: samples)
+    monkeypatch.setattr(
+        ragas_eval, "_resolve_evaluation_models", lambda _settings: (llm, embedding)
+    )
+    monkeypatch.setattr(ragas_eval, "_retrieve_with_pipeline", retrieve)
+    monkeypatch.setattr(ragas_eval, "_answer_prepared_sample", answer)
+    monkeypatch.setattr(ragas_eval, "_check_memory_guard", lambda _stage: None)
+    monkeypatch.setattr(
+        ragas_eval,
+        "_unload_ollama_resource",
+        lambda resource, _warnings, purpose: events.append(
+            f"unload:{purpose}:{resource.model}"
+        ),
+    )
+    monkeypatch.setattr(ragas_eval, "_effective_runtime_config", lambda *_args: {})
+    monkeypatch.setenv("RAG_EVAL_PHASED_EXECUTION", "true")
+    monkeypatch.setenv("RAG_EVAL_OLLAMA_RECYCLE_QUESTIONS", "2")
+    monkeypatch.setenv("RAG_EVAL_OLLAMA_UNLOAD_AT_END", "true")
+    monkeypatch.setenv("RAG_EVAL_MIN_AVAILABLE_GB", "0")
+
+    result = run_evaluation(
+        app=SimpleNamespace(),
+        settings={"reasoning.max_context_length": 3000},
+        user_id="default",
+        dataset_path="unused.json",
+        question_limit=2,
+        run_ragas_metrics=False,
+    )
+
+    assert events[:2] == ["retrieve:q1", "retrieve:q2"]
+    assert events.index("answer:q1") > events.index("retrieve:q2")
+    assert list(result.samples["answer"]) == ["Answer 1", "Answer 2"]
+    assert embedding.ollama_keep_alive == "5m"
+    assert llm.max_tokens == 512

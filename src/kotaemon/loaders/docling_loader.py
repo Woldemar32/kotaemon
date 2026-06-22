@@ -1,4 +1,6 @@
 import base64
+import json
+import re
 from collections import defaultdict
 from io import BytesIO
 from pathlib import Path
@@ -9,6 +11,119 @@ from kotaemon.base import Document, Param
 from .azureai_document_intelligence_loader import crop_image
 from .base import BaseReader
 from .utils.adobe import generate_single_figure_caption, make_markdown_table
+
+
+_BROKEN_WORD = re.compile(
+    r"([A-Za-zÄÖÜäöüß]+)-\s+([A-Za-zÄÖÜäöüß]+)"
+)
+
+
+def _repair_broken_word(match: re.Match[str]) -> str:
+    left, right = match.groups()
+    if right.lower() in {"und", "oder", "and", "or", "bzw"}:
+        return f"{left}- {right}"
+    return f"{left}{right}"
+
+
+def _clean_table_text(value: object) -> str:
+    """Repair common PDF line-wrap artefacts without changing table semantics."""
+
+    text = str(value or "").replace("\u00ad", "")
+    text = _BROKEN_WORD.sub(_repair_broken_word, text)
+    text = re.sub(r"(?<=\s)-\s+(?=[A-Za-zÄÖÜäöüß])", "-", text)
+    return " ".join(text.split())
+
+
+def _table_structure(table_obj: dict) -> str:
+    """Keep Docling's cell topology in vector-store-safe JSON metadata.
+
+    Metadata backends used by Kotaemon only accept scalar values, therefore the
+    structure is serialized instead of storing nested lists directly.
+    """
+
+    rows = []
+    for row_index, row in enumerate(table_obj.get("data", {}).get("grid", [])):
+        cells = []
+        for column_index, cell in enumerate(row):
+            compact = {
+                "text": _clean_table_text(cell.get("text", "")),
+                "row": row_index,
+                "column": column_index,
+            }
+            # Docling versions use slightly different names for cell spans and
+            # header roles. Preserve whichever fields are available.
+            for key in (
+                "start_row_offset_idx",
+                "end_row_offset_idx",
+                "start_col_offset_idx",
+                "end_col_offset_idx",
+                "row_span",
+                "col_span",
+                "column_header",
+                "row_header",
+            ):
+                value = cell.get(key)
+                if isinstance(value, (str, int, float, bool)) or value is None:
+                    compact[key] = value
+            cells.append(compact)
+        rows.append(cells)
+    return json.dumps(
+        {"version": 1, "rows": rows},
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+
+
+def _page_element_payload(text_obj: dict, index: int) -> dict:
+    """Return scalar-safe layout evidence consumed by ingestion v2."""
+
+    provenance = (text_obj.get("prov") or [{}])[0]
+    bbox = provenance.get("bbox") or {}
+    compact_bbox = {
+        key: value
+        for key, value in bbox.items()
+        if key in {"l", "t", "r", "b", "coord_origin"}
+        and isinstance(value, (str, int, float, bool))
+    }
+    return {
+        "id": f"text-{index}",
+        "label": str(text_obj.get("label") or "text"),
+        "text": str(text_obj.get("text") or ""),
+        "bbox": compact_bbox,
+    }
+
+
+def _nearest_section_heading(table_obj: dict, text_objs: list[dict]) -> str:
+    """Return the closest section header above a Docling table.
+
+    Docling exports tables separately from page text.  Retaining this layout link
+    prevents two tables on the same page from both inheriting the page's final
+    heading later in the indexing pipeline.
+    """
+
+    table_prov = (table_obj.get("prov") or [{}])[0]
+    table_page = table_prov.get("page_no")
+    table_bbox = table_prov.get("bbox") or {}
+    if not table_bbox:
+        return ""
+    table_origin = table_bbox.get("coord_origin", "BOTTOMLEFT")
+    candidates: list[tuple[float, str]] = []
+    for text_obj in text_objs:
+        if text_obj.get("label") != "section_header":
+            continue
+        text_prov = (text_obj.get("prov") or [{}])[0]
+        if text_prov.get("page_no") != table_page:
+            continue
+        text_bbox = text_prov.get("bbox") or {}
+        if text_bbox.get("coord_origin", table_origin) != table_origin:
+            continue
+        if table_origin == "TOPLEFT":
+            distance = float(table_bbox.get("t", 0)) - float(text_bbox.get("b", 0))
+        else:
+            distance = float(text_bbox.get("b", 0)) - float(table_bbox.get("t", 0))
+        if distance >= -1.0:
+            candidates.append((max(0.0, distance), str(text_obj.get("text") or "")))
+    return min(candidates, default=(0.0, ""), key=lambda item: item[0])[1].strip()
 
 
 class DoclingReader(BaseReader):
@@ -149,7 +264,7 @@ class DoclingReader(BaseReader):
 
         # extract the tables
         tables = []
-        for table_obj in result_dict.get("tables", []):
+        for table_index, table_obj in enumerate(result_dict.get("tables", [])):
             # convert the tables into markdown format
             markdown_table = self._parse_table(table_obj)
             caption_refs = [caption["$ref"] for caption in table_obj["captions"]]
@@ -168,11 +283,18 @@ class DoclingReader(BaseReader):
             markdown_table = f"{caption}\n{markdown_table}"
 
             page_number = table_obj["prov"][0].get("page_no", 1)
+            section_heading = _nearest_section_heading(
+                table_obj, result_dict.get("texts", [])
+            )
 
             table_metadata = {
                 "type": "table",
                 "page_label": page_number,
                 "table_origin": markdown_table,
+                "docling_table_index": table_index,
+                "docling_table_structure": _table_structure(table_obj),
+                "section_heading": section_heading,
+                "table_heading": section_heading,
                 "file_name": file_name,
                 "file_path": file_path,
             }
@@ -188,10 +310,14 @@ class DoclingReader(BaseReader):
         # join plain text elements
         texts = []
         page_number_to_text = defaultdict(list)
+        page_number_to_elements = defaultdict(list)
 
-        for text_obj in result_dict["texts"]:
+        for text_index, text_obj in enumerate(result_dict["texts"]):
             page_number = text_obj["prov"][0].get("page_no", 1)
             page_number_to_text[page_number].append(text_obj["text"])
+            page_number_to_elements[page_number].append(
+                _page_element_payload(text_obj, text_index)
+            )
 
         for page_number, txts in page_number_to_text.items():
             texts.append(
@@ -201,6 +327,11 @@ class DoclingReader(BaseReader):
                         "page_label": page_number,
                         "file_name": file_name,
                         "file_path": file_path,
+                        "docling_page_elements": json.dumps(
+                            page_number_to_elements[page_number],
+                            ensure_ascii=False,
+                            separators=(",", ":"),
+                        ),
                         **metadata,
                     },
                 )
@@ -227,6 +358,6 @@ class DoclingReader(BaseReader):
         for row in grid:
             table_as_list.append([])
             for cell in row:
-                table_as_list[-1].append(cell["text"])
+                table_as_list[-1].append(_clean_table_text(cell["text"]))
 
         return make_markdown_table(table_as_list)

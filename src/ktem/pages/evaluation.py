@@ -243,8 +243,11 @@ class EvaluationPage(BasePage):
             )
             self.enable_ragas = gr.Checkbox(
                 label="Compute RAGAS metrics",
-                value=True,
-                info="Uses local LLM/embeddings from Kotaemon settings, without an OpenAI API key.",
+                value=False,
+                info=(
+                    "Optional LLM-judge phase using local Kotaemon models. "
+                    "Leave off for the lowest-memory retrieval and answer evaluation."
+                ),
             )
 
         self.dataset_preview = gr.DataFrame(
