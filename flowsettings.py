@@ -156,6 +156,12 @@ KH_RERANKINGS = {
     },
 }
 
+# The v2 ingestion path uses this single limit; all other upload behaviour stays
+# identical to the original application.
+INGESTION_V2_MAX_CHUNK_CHARS = config(
+    "INGESTION_V2_MAX_CHUNK_CHARS", default=4200, cast=int
+)
+
 KH_REASONINGS = [
     "ktem.reasoning.simple.FullQAPipeline",
     "ktem.reasoning.simple.FullDecomposeQAPipeline",
@@ -172,7 +178,7 @@ SETTINGS_APP: dict[str, dict] = {}
 SETTINGS_REASONING = {
     "use": {
         "name": "Reasoning options",
-        "value": None,
+        "value": "simple",
         "choices": [],
         "component": "radio",
     },
@@ -184,7 +190,7 @@ SETTINGS_REASONING = {
     },
     "max_context_length": {
         "name": "Max context length (LLM)",
-        "value": 32000,
+        "value": 5000,
         "component": "number",
     },
 }

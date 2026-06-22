@@ -1,214 +1,214 @@
 [
   {
     "id": "apo_orig_01",
-    "question": "Wie oft kann eine nicht bestandene Prüfung an der KU Eichstätt-Ingolstadt wiederholt werden (ohne Bachelor- oder Masterarbeit)?",
-    "ground_truth": "zweimal; nicht Bachelor-/Masterarbeit",
+    "question": "How many times can a student repeat a failed exam at KU Eichstätt-Ingolstadt (excluding the bachelor's thesis)?",
+    "ground_truth": "twice; not bachelor's/master's thesis",
     "source_file": "a_APO_ab_WS_14_15.pdf",
     "expected_pages": [
       17
     ],
     "required_phrases": [
-      "zweimal",
-      "nicht bestandene Prüfung",
-      "Bachelor- oder Masterarbeit"
+      "twice",
+      "failed exam",
+      "bachelor's or master's thesis"
     ]
   },
   {
     "id": "apo_orig_02",
-    "question": "Welche Dauer ist für eine mündliche Prüfung an der KU Eichstätt-Ingolstadt vorgesehen?",
-    "ground_truth": "15 bis 60 Minuten",
+    "question": "What duration range is specified for an oral exam at KU Eichstätt-Ingolstadt?",
+    "ground_truth": "15 to 60 minutes",
     "source_file": "a_APO_ab_WS_14_15.pdf",
     "expected_pages": [
       14
     ],
     "required_phrases": [
-      "15 Minuten",
-      "60 Minuten",
-      "mündliche Prüfung"
+      "15 minutes",
+      "60 minutes",
+      "oral exam"
     ]
   },
   {
     "id": "apo_orig_03",
-    "question": "Wie viele ECTS-Punkte umfasst die Bachelorarbeit an der KU Eichstätt-Ingolstadt?",
-    "ground_truth": "10 ECTS-Punkte",
+    "question": "How many ECTS points is the bachelor's thesis worth at KU Eichstätt-Ingolstadt?",
+    "ground_truth": "10 ECTS points",
     "source_file": "a_APO_ab_WS_14_15.pdf",
     "expected_pages": [
       10
     ],
     "required_phrases": [
       "10 ECTS",
-      "Bachelorarbeit"
+      "bachelor's thesis"
     ]
   },
   {
     "id": "apo_orig_04",
-    "question": "Welcher Gesamtnotendurchschnitt ist erforderlich, um in der Bachelor- oder Masterprüfung die Auszeichnung „mit Auszeichnung“ zu erhalten?",
-    "ground_truth": "Gesamtnote 1,20 oder besser",
+    "question": "What overall grade average is required to receive the distinction 'mit Auszeichnung' (with distinction) in the bachelor's or master's exam at KU?",
+    "ground_truth": "final grade 1.20 or better",
     "source_file": "a_APO_ab_WS_14_15.pdf",
     "expected_pages": [
       11
     ],
     "required_phrases": [
-      "1,20",
+      "1.20",
       "mit Auszeichnung"
     ]
   },
   {
     "id": "apo_orig_05",
-    "question": "Wann kann das Thema der Bachelorarbeit frühestens ausgegeben werden?",
-    "ground_truth": "nach 60 % der erforderlichen ECTS-Punkte",
+    "question": "When is the earliest a student can receive the topic for their bachelor's thesis?",
+    "ground_truth": "after 60% of required ECTS completed",
     "source_file": "a_APO_ab_WS_14_15.pdf",
     "expected_pages": [
       10
     ],
     "required_phrases": [
-      "60 Prozent",
-      "ECTS-Punkte",
-      "Bachelorarbeit"
+      "60 percent",
+      "total ECTS",
+      "bachelor's thesis"
     ]
   },
   {
     "id": "apo_orig_06",
-    "question": "Innerhalb welcher Frist muss ein Antrag auf Akteneinsicht nach Bekanntgabe der Note gestellt werden?",
-    "ground_truth": "innerhalb eines Monats nach Notenbekanntgabe",
+    "question": "Within what time period must a student submit a request for file inspection (Akteneinsicht) after a grade is announced?",
+    "ground_truth": "within one month after grade announcement",
     "source_file": "a_APO_ab_WS_14_15.pdf",
     "expected_pages": [
       6
     ],
     "required_phrases": [
-      "ein Monat",
-      "Note",
+      "one month",
+      "grade",
       "Akteneinsicht"
     ]
   },
   {
     "id": "apo_orig_07",
-    "question": "Was passiert, wenn die Frist für den Abschluss der Bachelor- oder Masterprüfung aus selbst zu vertretenden Gründen um mehr als zwei Semester überschritten wird?",
-    "ground_truth": "endgültig nicht bestanden",
+    "question": "What happens if the deadline for completing the bachelor's or master's exam is exceeded by more than two semesters for reasons the student is responsible for?",
+    "ground_truth": "definitively failed",
     "source_file": "a_APO_ab_WS_14_15.pdf",
     "expected_pages": [
       9
     ],
     "required_phrases": [
-      "endgültig nicht bestanden",
-      "mehr als zwei Semester"
+      "definitively failed",
+      "more than two semesters"
     ]
   },
   {
     "id": "apo_orig_08",
-    "question": "Wie viel Prozent einer Lehrveranstaltung darf eine studierende Person versäumen und trotzdem die Anwesenheitspflicht erfüllen?",
-    "ground_truth": "höchstens 25 % Fehlzeit",
+    "question": "What percentage of a course may a student miss and still fulfill the attendance requirement at KU Eichstätt-Ingolstadt?",
+    "ground_truth": "maximum 25% absence",
     "source_file": "a_APO_ab_WS_14_15.pdf",
     "expected_pages": [
       17
     ],
     "required_phrases": [
-      "25 Prozent",
-      "Anwesenheitspflicht"
+      "25 percent",
+      "attendance requirement"
     ]
   },
   {
     "id": "apo_2022_01",
-    "question": "Wie wird es nach der APO-Änderung 2022 behandelt, wenn eine Prüfungsleistung ganz oder teilweise von einer anderen Person im Namen der Autorin oder des Autors verfasst wird, auch unter Nutzung künstlicher Intelligenz?",
-    "ground_truth": "Täuschung/Ghostwriting, auch bei KI-Nutzung",
+    "question": "According to the 2022 amended APO, how is it treated if an exam is written wholly or partly by someone else on behalf of the author, including through the use of artificial intelligence (AI)?",
+    "ground_truth": "deception/ghostwriting, including AI use",
     "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf",
     "expected_pages": [
       21
     ],
     "required_phrases": [
-      "Täuschung",
-      "Ghostwriting",
-      "künstliche Intelligenz"
+      "deception",
+      "ghostwriting",
+      "artificial intelligence"
     ]
   },
   {
     "id": "apo_2022_02",
-    "question": "Was ist Studium.Pro an der KU und in wie viele Bereiche ist es gegliedert?",
-    "ground_truth": "interdisziplinäres Studium.Pro; fünf Bereiche",
+    "question": "What is the Studium.Pro program at KU and how many areas does it have?",
+    "ground_truth": "interdisciplinary Studium.Pro; five areas",
     "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf",
     "expected_pages": [
       26
     ],
     "required_phrases": [
       "Studium.Pro",
-      "fünf Bereiche",
+      "five areas",
       "Pro Diskurs"
     ]
   },
   {
     "id": "apo_2022_03",
-    "question": "Muss bei einer elektronischen Fernprüfung auch eine Präsenzalternative angeboten werden?",
-    "ground_truth": "ja; dieselbe Prüfung muss in Präsenz angeboten werden",
+    "question": "When an electronic remote exam (elektronische Fernprüfung) is offered, must an in-person alternative also be provided?",
+    "ground_truth": "yes; same exam must be offered in person",
     "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf",
     "expected_pages": [
       16
     ],
     "required_phrases": [
-      "elektronische Fernprüfung",
-      "Präsenzform",
-      "derselbe Prüfungszeitraum"
+      "electronic remote exam",
+      "in person",
+      "same examination period"
     ]
   },
   {
     "id": "apo_2022_04",
-    "question": "Was ist eine Take-Home-Prüfung und wie wird sie nach der APO 2022 durchgeführt?",
-    "ground_truth": "elektronische Prüfung zu Hause ohne Aufsicht",
+    "question": "What is a Take-Home-Prüfung and how is it conducted according to the 2022 APO?",
+    "ground_truth": "electronic home exam without supervision",
     "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf",
     "expected_pages": [
       14
     ],
     "required_phrases": [
       "Take-Home-Prüfung",
-      "zu Hause",
-      "ohne Aufsicht"
+      "home",
+      "without supervision"
     ]
   },
   {
     "id": "apo_2022_05",
-    "question": "Wie lang soll der Textteil einer Portfolio-Prüfung nach der geänderten APO 2022 ungefähr sein?",
-    "ground_truth": "etwa 18.000 bis 30.000 Zeichen ohne Leerzeichen",
+    "question": "How long is the text portion of a Portfolio exam supposed to be according to the 2022 amended APO?",
+    "ground_truth": "about 18,000 to 30,000 characters without spaces",
     "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf",
     "expected_pages": [
       14
     ],
     "required_phrases": [
-      "18.000",
-      "30.000",
+      "18,000",
+      "30,000",
       "Portfolio"
     ]
   },
   {
     "id": "apo_2022_06",
-    "question": "Was passiert nach der APO 2022 mit dem Prüfungsversuch, wenn bei einer elektronischen Fernprüfung eine technische Störung auftritt?",
-    "ground_truth": "Versuch wird nicht gewertet, außer bei eigener Verantwortung",
+    "question": "According to the 2022 APO, what happens to the exam attempt if a technical failure occurs during an electronic remote exam?",
+    "ground_truth": "attempt not counted unless student is responsible",
     "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf",
     "expected_pages": [
       16
     ],
     "required_phrases": [
-      "technische Störung",
-      "nicht gewertet",
-      "Verantwortungsbereich"
+      "technical failure",
+      "not counted",
+      "student's own responsibility"
     ]
   },
   {
     "id": "apo_2022_07",
-    "question": "Wie wird nach der geänderten APO 2022 das Mitführen mobiler Endgeräte und digitaler Speichermedien während einer Prüfung behandelt?",
-    "ground_truth": "als Täuschungsversuch behandelt",
+    "question": "According to the 2022 amended APO, how is carrying mobile devices and digital storage media during an exam treated?",
+    "ground_truth": "treated as attempted cheating",
     "source_file": "APO_3.Aenderung_Senatsbeschluss_27.7.22.pdf",
     "expected_pages": [
       21
     ],
     "required_phrases": [
-      "mobile Endgeräte",
-      "digitale Speichermedien",
-      "Täuschungsversuch"
+      "mobile devices",
+      "digital storage media",
+      "attempt to cheat"
     ]
   },
   {
     "id": "d3b_01",
-    "question": "Wie viele ECTS-Punkte müssen im Bachelorstudiengang Digital & Data-Driven Business an der KU insgesamt erworben werden?",
-    "ground_truth": "180 ECTS-Punkte",
+    "question": "How many total ECTS points must a student earn to complete the Digital & Data-Driven Business bachelor's program at KU?",
+    "ground_truth": "180 ECTS points",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf",
     "expected_pages": [
       2
@@ -220,7 +220,7 @@
   },
   {
     "id": "d3b_02",
-    "question": "Welcher akademische Grad wird nach Abschluss des Studiengangs Digital & Data-Driven Business an der KU Eichstätt-Ingolstadt verliehen?",
+    "question": "What academic degree is awarded upon completing the Digital & Data-Driven Business program at KU Eichstätt-Ingolstadt?",
     "ground_truth": "Bachelor of Science (B.Sc.)",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf",
     "expected_pages": [
@@ -233,8 +233,8 @@
   },
   {
     "id": "d3b_03",
-    "question": "Wie viele ECTS-Punkte umfasst das Digital Project im D3B-Studiengang und innerhalb welchen maximalen Zeitrahmens muss es abgeschlossen werden?",
-    "ground_truth": "10 ECTS; 2 Arbeitsmonate innerhalb von maximal 9 Monaten",
+    "question": "How many ECTS points is the Digital Project worth in the D3B program, and what is the maximum time horizon to complete it?",
+    "ground_truth": "10 ECTS; 2 working months within max. 9 months",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf",
     "expected_pages": [
       11
@@ -242,12 +242,12 @@
     "required_phrases": [
       "Digital Project",
       "10 ECTS",
-      "9 Monate"
+      "9 months"
     ]
   },
   {
     "id": "d3b_04",
-    "question": "Welche vier Studienprofile werden im Studiengang Digital & Data-Driven Business grundsätzlich angeboten?",
+    "question": "Which four study profiles (Studienprofile) are generally offered in the Digital & Data-Driven Business program?",
     "ground_truth": "Accounting, Taxation & Controlling; Finance & Economics; Marketing, Organization, Innovation; Supply Chain Management & Logistics",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf",
     "expected_pages": [
@@ -262,21 +262,21 @@
   },
   {
     "id": "d3b_05",
-    "question": "Wie viele ECTS-Punkte müssen in einem bestimmten Studienprofil absolviert werden, damit es im Zeugnis ausgewiesen wird?",
-    "ground_truth": "mindestens 30 ECTS in einem Studienprofil",
+    "question": "How many ECTS points must a student complete within a specific study profile for it to appear on their final certificate (Zeugnis)?",
+    "ground_truth": "at least 30 ECTS in one study profile",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf",
     "expected_pages": [
       11
     ],
     "required_phrases": [
       "30 ECTS",
-      "Studienprofil",
-      "Zeugnis"
+      "study profile",
+      "certificate"
     ]
   },
   {
     "id": "d3b_06",
-    "question": "Welche Fakultät ist für den Studiengang Digital & Data-Driven Business hauptverantwortlich und welche Fakultät ist zusätzlich beteiligt?",
+    "question": "Which faculty is primarily responsible for the Digital & Data-Driven Business program, and which faculty also participates?",
     "ground_truth": "Wirtschaftswissenschaftliche Fakultät; Mathematisch-Geographische Fakultät",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf",
     "expected_pages": [
@@ -289,36 +289,36 @@
   },
   {
     "id": "d3b_07",
-    "question": "Welches Fachsemester eignet sich im D3B-Studiengang besonders für ein Auslandsstudium und warum?",
-    "ground_truth": "fünftes Semester; geeignet für Auslandsstudium",
+    "question": "Which study semester is especially suitable for studying abroad in the D3B program, and why?",
+    "ground_truth": "fifth semester; suitable for study abroad",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf",
     "expected_pages": [
       13
     ],
     "required_phrases": [
-      "fünftes Fachsemester",
-      "Auslandsstudium"
+      "fifth study semester",
+      "study abroad"
     ]
   },
   {
     "id": "d3b_08",
-    "question": "Welche vier grundlegenden Studienbereiche verbindet der Studiengang Digital & Data-Driven Business?",
-    "ground_truth": "Informationsverarbeitung; Wirtschaftswissenschaften; quantitative Methoden; Soft Skills/Ethik",
+    "question": "What are the four core subject areas that the Digital & Data-Driven Business program combines?",
+    "ground_truth": "information systems; business/economics; quantitative methods; soft skills/ethics",
     "source_file": "Studiengangsbeschreibung_BA_D3B.pdf",
     "expected_pages": [
       3
     ],
     "required_phrases": [
-      "Informationsverarbeitende Systeme",
-      "Wirtschaftswissenschaften",
-      "Quantitative Methoden",
+      "Information processing",
+      "Business and economics",
+      "Quantitative methods",
       "Soft Skills"
     ]
   },
   {
     "id": "apo_2024_01",
-    "question": "Was ist nach der APO-Änderung 2024 für das Ablegen von Hochschulprüfungen an der KU erforderlich?",
-    "ground_truth": "Immatrikulation erforderlich, außer bei Kooperationsvereinbarung",
+    "question": "According to the 2024 APO amendment, what is required for taking university examinations at KU?",
+    "ground_truth": "matriculation/enrollment required unless cooperation agreement applies",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       3
@@ -331,49 +331,49 @@
   },
   {
     "id": "apo_2024_02",
-    "question": "Was muss nach der APO-Änderung 2024 schriftlichen Prüfungsarbeiten beigefügt werden, die ohne Aufsicht angefertigt wurden?",
-    "ground_truth": "Verzeichnis der verwendeten Hilfsmittel; fremde Inhalte kennzeichnen",
+    "question": "According to the 2024 APO amendment, what must be included with written examination work completed without supervision?",
+    "ground_truth": "list of aids used; external content must be marked",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       3
     ],
     "required_phrases": [
-      "Verzeichnis der benutzten Hilfsmittel",
-      "als solche kenntlich zu machen"
+      "Verzeichnis der verwendeten Hilfsmittel",
+      "gekennzeichnet"
     ]
   },
   {
     "id": "apo_2024_03",
-    "question": "Wer entscheidet nach der APO-Änderung 2024, welche Hilfsmittel in einer Prüfung verwendet werden dürfen?",
-    "ground_truth": "Prüferin oder Prüfer entscheidet und informiert rechtzeitig",
+    "question": "According to the 2024 APO amendment, who decides which aids may be used in an examination?",
+    "ground_truth": "the examiner decides and informs students in good time",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       3
     ],
     "required_phrases": [
-      "Die oder der Prüfende entscheidet",
-      "welche Hilfsmittel",
-      "rechtzeitig"
+      "Prüferin",
+      "Prüfer",
+      "Hilfsmittel"
     ]
   },
   {
     "id": "apo_2024_04",
-    "question": "Unter welcher Bedingung gilt die Nutzung künstlicher Intelligenz nach der APO-Änderung 2024 nicht als Täuschung?",
-    "ground_truth": "KI-Nutzung ist erlaubt, wenn sie als Hilfsmittel zugelassen ist",
+    "question": "According to the 2024 APO amendment, under what condition is the use of artificial intelligence not treated as deception?",
+    "ground_truth": "AI use is allowed if permitted as an aid",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       5
     ],
     "required_phrases": [
-      "künstliche Intelligenz",
+      "künstlicher Intelligenz",
       "zugelassen",
       "Hilfsmittel"
     ]
   },
   {
     "id": "apo_2024_05",
-    "question": "Welcher besondere Abschnitt wurde durch die APO-Änderung 2024 neu eingefügt?",
-    "ground_truth": "neuer Abschnitt zu Fachhochschulstudiengängen",
+    "question": "What special section was added to the APO by the 2024 amendment?",
+    "ground_truth": "new section for university of applied sciences degree programs",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       1
@@ -385,8 +385,8 @@
   },
   {
     "id": "apo_2024_06",
-    "question": "Was ist nach der APO-Änderung 2024 ein praktisches Studiensemester?",
-    "ground_truth": "integriertes, betreutes praktisches Studiensemester außerhalb der Hochschule",
+    "question": "According to the 2024 APO amendment, what is a practical study semester?",
+    "ground_truth": "integrated supervised practical study semester outside university",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       6
@@ -399,21 +399,21 @@
   },
   {
     "id": "apo_2024_07",
-    "question": "Wie lange dauert ein praktisches Studiensemester nach der APO-Änderung 2024 in der Regel, wenn die Studien- und Prüfungsordnung nichts anderes bestimmt?",
-    "ground_truth": "in der Regel 22 zusammenhängende Wochen einschließlich Lehrveranstaltungen",
+    "question": "According to the 2024 APO amendment, how long does a practical study semester usually last if the program regulations do not specify otherwise?",
+    "ground_truth": "usually 22 continuous weeks including courses",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       6
     ],
     "required_phrases": [
       "22 Wochen",
-      "begleitende Lehrveranstaltungen"
+      "begleitenden Lehrveranstaltungen"
     ]
   },
   {
     "id": "apo_2024_08",
-    "question": "Was passiert nach der APO-Änderung 2024, wenn ein zweiter Prüfungstermin im folgenden Semester liegt und dadurch die Höchststudiendauer überschritten würde?",
-    "ground_truth": "Höchststudiendauer verlängert sich automatisch um ein Semester",
+    "question": "According to the 2024 APO amendment, what happens if a second examination date lies in the following semester and using it would exceed the maximum study duration?",
+    "ground_truth": "maximum study duration automatically extends by one semester",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       4
@@ -425,8 +425,8 @@
   },
   {
     "id": "apo_2024_09",
-    "question": "Ab wann ist nach der APO-Änderung 2024 ein Rücktritt von einer semesterbegleitenden Prüfung nicht mehr möglich?",
-    "ground_truth": "ab Beginn der Erbringung der Prüfungsleistung",
+    "question": "According to the 2024 APO amendment, when is withdrawal from a semester-accompanying examination no longer allowed?",
+    "ground_truth": "withdrawal no longer allowed once performance starts",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       7
@@ -434,13 +434,13 @@
     "required_phrases": [
       "Rücktritt",
       "Beginn der Erbringung",
-      "semesterbegleitende Prüfung"
+      "semesterbegleitenden Prüfung"
     ]
   },
   {
     "id": "apo_2024_10",
-    "question": "Wie wird nach der APO-Änderung 2024 die Note bestimmt, wenn zwei Prüfende eine Prüfung unterschiedlich bewerten und sich nicht einigen können?",
-    "ground_truth": "arithmetisches Mittel, auf eine Dezimalstelle abgerundet",
+    "question": "According to the 2024 APO amendment, how is the grade determined if two examiners evaluate an examination differently and cannot agree?",
+    "ground_truth": "arithmetic mean, rounded down to one decimal place",
     "source_file": "APO_4.Aenderungssatzung_Senat_19.7.23_12.6.24.pdf",
     "expected_pages": [
       7
@@ -453,7 +453,7 @@
   },
   {
     "id": "study_plan_01",
-    "question": "Welche vier exemplarischen Studienprofile werden im D3B-Studienverlaufsplan dargestellt?",
+    "question": "Which four exemplary study profiles are shown in the D3B study plan document?",
     "ground_truth": "Accounting, Taxation and Controlling; Finance and Economics; Marketing, Organization, Innovation; Supply Chain Management and Logistics",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
@@ -471,8 +471,8 @@
   },
   {
     "id": "study_plan_02",
-    "question": "Wie viele ECTS sind in den exemplarischen D3B-Studienverlaufsplänen pro Semester vorgesehen?",
-    "ground_truth": "30 ECTS pro Semester",
+    "question": "How many ECTS are planned for each semester in the exemplary D3B study plans?",
+    "ground_truth": "30 ECTS per semester",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
       1,
@@ -487,7 +487,7 @@
   },
   {
     "id": "study_plan_03",
-    "question": "Wie viele ECTS umfasst die Bachelorarbeit im Studienprofil Accounting, Taxation and Controlling?",
+    "question": "In the Accounting, Taxation and Controlling study profile, how many ECTS is the Bachelor thesis worth?",
     "ground_truth": "10 ECTS",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
@@ -500,8 +500,8 @@
   },
   {
     "id": "study_plan_04",
-    "question": "In welchem Semester ist die Bachelorarbeit im Studienprofil Finance and Economics vorgesehen?",
-    "ground_truth": "sechstes Semester",
+    "question": "In the Finance and Economics study profile, in which semester is the Bachelor thesis shown?",
+    "ground_truth": "sixth semester",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
       2
@@ -513,7 +513,7 @@
   },
   {
     "id": "study_plan_05",
-    "question": "Welches Studienprofil enthält das Modul Digital & Data Project in Marketing, Organization, Innovation?",
+    "question": "Which study profile includes the module Digital & Data Project in Marketing, Organization, Innovation?",
     "ground_truth": "Marketing, Organization, Innovation",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
@@ -527,7 +527,7 @@
   },
   {
     "id": "study_plan_06",
-    "question": "Welches Studienprofil enthält das Modul Digital Project in SCM, Logistics and Operations Research?",
+    "question": "Which study profile includes Digital Project in SCM, Logistics and Operations Research?",
     "ground_truth": "Supply Chain Management and Logistics",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
@@ -541,8 +541,8 @@
   },
   {
     "id": "study_plan_07",
-    "question": "Welche gemeinsamen Module erscheinen in den ersten zwei Semestern der D3B-Studienverlaufspläne?",
-    "ground_truth": "gemeinsame Module der ersten zwei Semester: Informationssysteme, Mathematik, Rechnungswesen, Business Models, VWL, Englisch, Analytics, quantitative Methoden, Statistik, Strategien, Mikroökonomie",
+    "question": "Which common modules appear in the first two semesters of the D3B study plans?",
+    "ground_truth": "common first-two-semester modules: information systems, math, accounting, business models, economics, English, analytics, quantitative methods, statistics, strategies, microeconomics",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
       1,
@@ -558,8 +558,8 @@
   },
   {
     "id": "study_plan_08",
-    "question": "Was bedeuten fett gedruckte und kursiv gedruckte Modulnamen im D3B-Studienverlaufsplan?",
-    "ground_truth": "fett = Wahlpflichtmodule; kursiv = Wahlmodule/Studienprofilmodule",
+    "question": "What do bold and italic module names indicate in the D3B study plan document?",
+    "ground_truth": "bold = elective modules; italic = elective/study-profile modules",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
       1,
@@ -576,7 +576,7 @@
   },
   {
     "id": "study_plan_09",
-    "question": "Welches Modul ist im Studienprofil Finance and Economics als Projekt mit 10 ECTS ausgewiesen?",
+    "question": "Which module is shown as a 10 ECTS project in the Finance and Economics study profile?",
     "ground_truth": "Digital & Data Project in Finance & Economics; 10 ECTS",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
@@ -589,8 +589,8 @@
   },
   {
     "id": "study_plan_10",
-    "question": "Welche Studienprofile enthalten das Modul Digital Seminar in Data Science & Quantitative Applications?",
-    "ground_truth": "Marketing, Organization, Innovation und Supply Chain Management & Logistics",
+    "question": "Which study profile includes the module Digital Seminar in Data Science & Quantitative Applications?",
+    "ground_truth": "Marketing, Organization, Innovation and Supply Chain Management & Logistics",
     "source_file": "Studienverlaufsplan_BA_D3B.pdf",
     "expected_pages": [
       3,
@@ -604,7 +604,7 @@
   },
   {
     "id": "elective_2026_01",
-    "question": "Welche Wahlpflichtbereiche sind im D3B-Wahlpflichtkatalog SoSe 2026 aufgeführt?",
+    "question": "Which elective areas are listed in the SoSe 2026 D3B elective module catalogue?",
     "ground_truth": "Digitalization & Analytics; Data Competence; Application Competence; Business Language and Management Skills; Wirtschafts- und Unternehmensethik",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
@@ -620,7 +620,7 @@
   },
   {
     "id": "elective_2026_02",
-    "question": "Wie viele ECTS umfasst das Modul Digital Seminar in Data Science & Quantitative Applications im Wahlpflichtkatalog SoSe 2026?",
+    "question": "How many ECTS is the module Digital Seminar in Data Science & Quantitative Applications worth in the SoSe 2026 elective module catalogue?",
     "ground_truth": "10 ECTS",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
@@ -633,7 +633,7 @@
   },
   {
     "id": "elective_2026_03",
-    "question": "Welche Module sind im Wahlpflichtbereich Data Competence im Katalog SoSe 2026 aufgeführt?",
+    "question": "Which modules are listed in the Data Competence elective area in the SoSe 2026 catalogue?",
     "ground_truth": "Algorithmen und Datenstrukturen; Rechnergestützte Statistik mit R; Hands-on Machine Learning and Data Science",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
@@ -647,8 +647,8 @@
   },
   {
     "id": "elective_2026_04",
-    "question": "Welche Prüfungsform ist für Business English I im Wahlpflichtkatalog SoSe 2026 angegeben?",
-    "ground_truth": "Klausur und mündliche Prüfung",
+    "question": "What examination form is listed for Business English I in the SoSe 2026 elective catalogue?",
+    "ground_truth": "Klausur plus mündliche Prüfung",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
       3
@@ -661,7 +661,7 @@
   },
   {
     "id": "elective_2026_05",
-    "question": "Welche Zulassungsvoraussetzung ist für Business English II im Wahlpflichtkatalog SoSe 2026 angegeben?",
+    "question": "What prerequisite is listed for Business English II in the SoSe 2026 elective catalogue?",
     "ground_truth": "Business English I",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
@@ -674,8 +674,8 @@
   },
   {
     "id": "elective_2026_06",
-    "question": "Wie viele ECTS müssen aus einem Studienprofilkatalog absolviert werden, damit das Studienprofil im Zeugnis ausgewiesen wird?",
-    "ground_truth": "mindestens 30 ECTS aus einem Studienprofilkatalog",
+    "question": "How many ECTS must students complete from a study profile catalogue for the profile to be shown on the certificate?",
+    "ground_truth": "at least 30 ECTS from a study profile catalogue",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
       4
@@ -688,7 +688,7 @@
   },
   {
     "id": "elective_2026_07",
-    "question": "Welche Module sind im Studienprofil Supply Chain Management and Logistics im Wahlpflichtkatalog SoSe 2026 aufgeführt?",
+    "question": "Which modules are listed in the Supply Chain Management and Logistics study profile in the SoSe 2026 catalogue?",
     "ground_truth": "Digital Seminar; Retail Management; Systementwicklung; Operations Analytics; Supply Chain Analytics; SCM Projektstudium; Internationale Transportlogistik",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
@@ -702,7 +702,7 @@
   },
   {
     "id": "elective_2026_08",
-    "question": "Welches Modul im Studienprofil Supply Chain Management and Logistics umfasst 10 ECTS?",
+    "question": "Which module in the Supply Chain Management and Logistics profile is worth 10 ECTS?",
     "ground_truth": "Digital Seminar in Data Science & Quantitative Applications; 10 ECTS",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
@@ -715,7 +715,7 @@
   },
   {
     "id": "elective_2026_09",
-    "question": "Welche Module sind im Studienprofil Sustainability in Business and Economics aufgeführt?",
+    "question": "Which modules are listed in the Sustainability in Business and Economics study profile?",
     "ground_truth": "Ringvorlesung Nachhaltige Wirtschaft; Innovating for Sustainability; Sustainable Entrepreneurship; Umweltökonomie; Öffentliche Finanzen; Sustainable Development; Company Taxation in the EU",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [
@@ -729,7 +729,7 @@
   },
   {
     "id": "elective_2026_10",
-    "question": "Welche Module sind im Wahlpflichtbereich Application Competence im Katalog SoSe 2026 aufgeführt?",
+    "question": "Which modules are listed in the Application Competence elective area in the SoSe 2026 catalogue?",
     "ground_truth": "Steuerbilanzen und Rechtsformwahl; Marketing and Management; Operations Analytics; Kapitalmarkttheorie",
     "source_file": "Wahlpflichtkatalalog_BA_D3B_SoSe_2026.pdf",
     "expected_pages": [

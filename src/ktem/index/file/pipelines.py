@@ -48,6 +48,7 @@ from kotaemon.indices.rankings import BaseReranking, LLMReranking, LLMTrulensSco
 from kotaemon.indices.splitters import BaseSplitter, TokenSplitter
 
 from .base import BaseFileIndexIndexing, BaseFileIndexRetriever
+from .ingestion_v2 import build_ingestion_v2
 
 logger = logging.getLogger(__name__)
 
@@ -191,6 +192,9 @@ class DocumentRetrievalPipeline(BaseFileIndexRetriever):
         docs = self.vector_retrieval.run(
             text=text, top_k=self.top_k, **retrieval_kwargs
         )
+        self._last_retrieval_trace = deepcopy(
+            getattr(self.vector_retrieval, "_last_retrieval_trace", {})
+        )
         _index_log(f"Retrieval step took {time.time() - s_time:.2f}s")
 
         if not self.get_extra_table:
@@ -243,7 +247,7 @@ class DocumentRetrievalPipeline(BaseFileIndexRetriever):
         return {
             "num_retrieval": {
                 "name": "Number of document chunks to retrieve",
-                "value": 10,
+                "value": 5,
                 "component": "number",
             },
             "retrieval_mode": {
@@ -345,11 +349,15 @@ class IndexPipeline(BaseComponent):
     private: bool = False
     run_embedding_in_thread: bool = False
     embedding: BaseEmbeddings
+    ingestion_v2_max_chunk_chars: int = 4200
 
     @Node.auto(depends_on=["Source", "Index", "embedding"])
     def vector_indexing(self) -> VectorIndexing:
         return VectorIndexing(
-            vector_store=self.VS, doc_store=self.DS, embedding=self.embedding
+            vector_store=self.VS,
+            doc_store=self.DS,
+            embedding=self.embedding,
+            use_enriched_text_for_embedding=True,
         )
 
     def handle_docs(self, docs, file_id, file_name) -> Generator[Document, None, int]:
@@ -379,7 +387,31 @@ class IndexPipeline(BaseComponent):
             doc.metadata["page_label"]: doc.doc_id for doc in thumbnail_docs
         }
 
-        if self.splitter:
+        using_v2 = any(
+            (doc.metadata or {}).get("docling_page_elements") for doc in text_docs
+        )
+        if using_v2:
+            result = build_ingestion_v2(
+                text_docs,
+                non_text_docs,
+                str(file_name),
+                max_chunk_chars=self.ingestion_v2_max_chunk_chars,
+            )
+            all_chunks = [
+                chunk
+                for chunk in result.records
+                if (chunk.metadata or {}).get("type") == "text"
+            ]
+            non_text_docs = [
+                chunk
+                for chunk in result.records
+                if (chunk.metadata or {}).get("type") != "text"
+            ]
+            yield Document(
+                f" => [{file_name}] Created {len(result.records)} structured chunks",
+                channel="debug",
+            )
+        elif self.splitter:
             splitter_start = time.time()
             _index_log(f"[{file_name}] Chunking started with splitter={self.splitter}")
             yield Document(
@@ -420,6 +452,8 @@ class IndexPipeline(BaseComponent):
             f"non_text={len(non_text_docs)}, thumbnails={len(thumbnail_docs)}, "
             f"total={len(to_index_chunks)}"
         )
+        if using_v2:
+            self.vector_indexing.prepare_chunk_export(str(file_name))
 
         # add to doc store
         chunks = []
@@ -741,7 +775,7 @@ class IndexDocumentPipeline(BaseFileIndexIndexing):
         return {
             "reader_mode": {
                 "name": "File loader",
-                "value": "default",
+                "value": "docling",
                 "choices": [
                     ("Default (open-source)", "default"),
                     ("Adobe API (figure+table extraction)", "adobe"),
@@ -820,6 +854,9 @@ class IndexDocumentPipeline(BaseFileIndexIndexing):
             user_id=self.user_id,
             private=self.private,
             embedding=self.embedding,
+            ingestion_v2_max_chunk_chars=getattr(
+                settings, "INGESTION_V2_MAX_CHUNK_CHARS", 4200
+            ),
         )
 
         return pipeline

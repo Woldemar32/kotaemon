@@ -41,6 +41,7 @@ class VectorIndexing(BaseIndexing):
     vector_store: BaseVectorStore
     doc_store: Optional[BaseDocumentStore] = None
     embedding: BaseEmbeddings
+    use_enriched_text_for_embedding: bool = False
     count_: int = 0
 
     def to_retrieval_pipeline(self, *args, **kwargs):
@@ -51,6 +52,18 @@ class VectorIndexing(BaseIndexing):
             embedding=self.embedding,
             **kwargs,
         )
+
+    def prepare_chunk_export(self, file_name: str) -> None:
+        """Reset cached chunk files for one newly indexed source."""
+
+        if not self.cache_dir:
+            return
+        stem = Path(file_name).stem
+        cache_dir = Path(self.cache_dir)
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        for path in cache_dir.glob(f"{stem}_*.md"):
+            path.unlink()
+        self.count_ = 0
 
     def write_chunk_to_file(self, docs: list[Document]):
         # save the chunks content into markdown format
@@ -79,8 +92,11 @@ class VectorIndexing(BaseIndexing):
                 if docs[i].text:
                     markdown_content += f"\ntext:\n{docs[i].text}"
 
+                export_index = docs[i].metadata.get(
+                    "ingestion_index", self.count_ + i
+                )
                 with open(
-                    Path(self.cache_dir) / f"{file_name.stem}_{self.count_+i}.md",
+                    Path(self.cache_dir) / f"{file_name.stem}_{export_index}.md",
                     "w",
                     encoding="utf-8",
                 ) as f:
@@ -105,7 +121,16 @@ class VectorIndexing(BaseIndexing):
             # result caching and can block on stale/inter-process cache locks for
             # large transient document batches. run() preserves the embedding
             # algorithm/configuration and avoids caching upload-time payloads.
-            embeddings = self.embedding.run(docs)
+            embedding_docs = docs
+            if self.use_enriched_text_for_embedding:
+                embedding_docs = []
+                for doc in docs:
+                    enriched_text = (doc.metadata or {}).get("enriched_text")
+                    if enriched_text:
+                        embedding_docs.append(Document(doc, text=str(enriched_text)))
+                    else:
+                        embedding_docs.append(doc)
+            embeddings = self.embedding.run(embedding_docs)
 
             _vector_log(
                 f"Created {len(embeddings)} embeddings "
@@ -150,12 +175,120 @@ class VectorRetrieval(BaseRetrieval):
     first_round_top_k_mult: int = 10
     retrieval_mode: str = "hybrid"  # vector, text, hybrid
 
+    @staticmethod
+    def _diversify_parent_chunks(
+        documents: list[RetrievedDocument], top_k: int
+    ) -> list[RetrievedDocument]:
+        """Avoid letting facts from one table consume the complete result set."""
+
+        selected: list[RetrievedDocument] = []
+        deferred: list[RetrievedDocument] = []
+        per_parent: dict[str, int] = {}
+        for document in documents:
+            parent = str((document.metadata or {}).get("table_parent_id") or "")
+            if parent and per_parent.get(parent, 0) >= 2:
+                deferred.append(document)
+                continue
+            selected.append(document)
+            if parent:
+                per_parent[parent] = per_parent.get(parent, 0) + 1
+        return (selected + deferred)[:top_k]
+
+    @staticmethod
+    def _diagnostic_snapshot(
+        documents: list[RetrievedDocument], stage: str
+    ) -> list[dict]:
+        """Return a serializable snapshot without changing retrieval results."""
+
+        snapshot = []
+        for rank, doc in enumerate(documents, start=1):
+            metadata = doc.metadata or {}
+            snapshot.append(
+                {
+                    "stage": stage,
+                    "rank": rank,
+                    "doc_id": doc.doc_id,
+                    "source": metadata.get(
+                        "file_name", metadata.get("filename", "")
+                    ),
+                    "page": metadata.get("page_label"),
+                    "document_type": metadata.get("type", "text"),
+                    "score": doc.score,
+                    "reranking_score": metadata.get("reranking_score"),
+                    "llm_relevance_score": metadata.get(
+                        "llm_trulens_score",
+                        metadata.get("llm_reranking_score"),
+                    ),
+                    "text": doc.text or "",
+                }
+            )
+        return snapshot
+
     def _filter_docs(
         self, documents: list[RetrievedDocument], top_k: int | None = None
     ):
         if top_k:
             documents = documents[:top_k]
         return documents
+
+    def _query_vectorstore_with_backoff(
+        self,
+        embedding: list[float],
+        requested_top_k: int,
+        doc_ids: list[str] | None,
+        **kwargs,
+    ) -> tuple[list[list[float]], list[float], list[str]]:
+        """Query Chroma-compatible stores without over-requesting filtered HNSW hits.
+
+        Chroma's HNSW backend can raise ``Cannot return the results in a contiguous
+        2D array`` when ``n_results`` is close to, or greater than, the number of
+        vectors allowed by an ID/metadata filter. Cap the request to the known scope
+        and retry with progressively smaller candidate counts for that specific
+        backend error. Other runtime errors still propagate unchanged.
+        """
+
+        if doc_ids is not None and not doc_ids:
+            return [], [], []
+
+        query_top_k = requested_top_k
+        if doc_ids is not None:
+            query_top_k = min(query_top_k, len(doc_ids))
+        query_top_k = max(1, query_top_k)
+        attempts: list[int] = []
+
+        while True:
+            attempts.append(query_top_k)
+            try:
+                result = self.vector_store.query(
+                    embedding=embedding,
+                    top_k=query_top_k,
+                    doc_ids=doc_ids,
+                    **kwargs,
+                )
+                if hasattr(self, "_last_retrieval_trace"):
+                    self._last_retrieval_trace["vector_query_attempts"] = attempts
+                    self._last_retrieval_trace["first_round_top_k_used"] = query_top_k
+                return result
+            except RuntimeError as exc:
+                message = str(exc).lower()
+                # Chroma 0.5.x misspells "contiguous" as "contigious" in
+                # some releases. Match the stable parts of its HNSW message.
+                is_hnsw_capacity_error = (
+                    "return the results" in message
+                    and "2d array" in message
+                    and "too small" in message
+                    and ("ef" in message or " m " in f" {message} ")
+                )
+                if not is_hnsw_capacity_error or query_top_k <= 1:
+                    raise
+
+                next_top_k = max(1, query_top_k // 2)
+                _vector_log(
+                    "Vector store could not satisfy filtered top_k="
+                    f"{query_top_k}; retrying with top_k={next_top_k}",
+                    logging.WARNING,
+                )
+                query_top_k = next_top_k
 
     def run(
         self, text: str | Document, top_k: Optional[int] = None, **kwargs
@@ -172,6 +305,15 @@ class VectorRetrieval(BaseRetrieval):
         if top_k is None:
             top_k = self.top_k
 
+        # Evaluation tooling reads this after a call. It is deliberately passive:
+        # no retrieval inputs or outputs are changed by collecting the trace.
+        self._last_retrieval_trace = {
+            "mode": self.retrieval_mode,
+            "requested_top_k": top_k,
+            "first_round_top_k_requested": None,
+            "stages": [],
+        }
+
         do_extend = kwargs.pop("do_extend", False)
         thumbnail_count = kwargs.pop("thumbnail_count", 3)
 
@@ -179,6 +321,11 @@ class VectorRetrieval(BaseRetrieval):
             top_k_first_round = top_k * self.first_round_top_k_mult
         else:
             top_k_first_round = top_k
+
+        scope = kwargs.pop("scope", None)
+        if scope is not None:
+            top_k_first_round = min(top_k_first_round, len(scope))
+        self._last_retrieval_trace["first_round_top_k_requested"] = top_k_first_round
 
         if self.doc_store is None:
             raise ValueError(
@@ -188,7 +335,6 @@ class VectorRetrieval(BaseRetrieval):
 
         result: list[RetrievedDocument] = []
         # TODO: should declare scope directly in the run params
-        scope = kwargs.pop("scope", None)
         emb: list[float]
 
         _vector_log(
@@ -201,8 +347,11 @@ class VectorRetrieval(BaseRetrieval):
             _vector_log("Getting query embedding")
             emb = self.embedding.run(text)[0].embedding
             _vector_log(f"Query embedding ready in {time.time() - start_time:.2f}s")
-            _, scores, ids = self.vector_store.query(
-                embedding=emb, top_k=top_k_first_round, doc_ids=scope, **kwargs
+            _, scores, ids = self._query_vectorstore_with_backoff(
+                embedding=emb,
+                requested_top_k=top_k_first_round,
+                doc_ids=scope,
+                **kwargs,
             )
             docs = self.doc_store.get(ids)
             result = [
@@ -233,8 +382,11 @@ class VectorRetrieval(BaseRetrieval):
                 nonlocal vs_ids
 
                 assert self.doc_store is not None
-                _, vs_scores, vs_ids = self.vector_store.query(
-                    embedding=emb, top_k=top_k_first_round, doc_ids=scope, **kwargs
+                _, vs_scores, vs_ids = self._query_vectorstore_with_backoff(
+                    embedding=emb,
+                    requested_top_k=top_k_first_round,
+                    doc_ids=scope,
+                    **kwargs,
                 )
                 if vs_ids:
                     vs_docs = self.doc_store.get(vs_ids)
@@ -279,9 +431,16 @@ class VectorRetrieval(BaseRetrieval):
             _vector_log(f"Got {len(vs_docs)} from vectorstore")
             _vector_log(f"Got {len(ds_docs)} from docstore")
 
+        self._last_retrieval_trace["stages"].append(
+            {
+                "name": "initial",
+                "documents": self._diagnostic_snapshot(result, "initial"),
+            }
+        )
+
         # use additional reranker to re-order the document list
         if self.rerankers and text:
-            for reranker in self.rerankers:
+            for reranker_idx, reranker in enumerate(self.rerankers, start=1):
                 # if reranker is LLMReranking, limit the document with top_k items only
                 if isinstance(reranker, LLMReranking):
                     result = self._filter_docs(result, top_k=top_k)
@@ -292,8 +451,15 @@ class VectorRetrieval(BaseRetrieval):
                     f"Reranker returned {len(result)} docs "
                     f"in {time.time() - rerank_start:.2f}s"
                 )
+                stage_name = f"reranker_{reranker_idx}_{type(reranker).__name__}"
+                self._last_retrieval_trace["stages"].append(
+                    {
+                        "name": stage_name,
+                        "documents": self._diagnostic_snapshot(result, stage_name),
+                    }
+                )
 
-        result = self._filter_docs(result, top_k=top_k)
+        result = self._diversify_parent_chunks(result, top_k=top_k)
         _vector_log(f"Got raw {len(result)} retrieved documents")
 
         # add page thumbnails to the result if exists
@@ -345,6 +511,13 @@ class VectorRetrieval(BaseRetrieval):
         if not result:
             # return output from raw retrieved thumbnails
             result = self._filter_docs(raw_thumbnail_docs, top_k=thumbnail_count)
+
+        self._last_retrieval_trace["stages"].append(
+            {
+                "name": "final",
+                "documents": self._diagnostic_snapshot(result, "final"),
+            }
+        )
 
         return result
 

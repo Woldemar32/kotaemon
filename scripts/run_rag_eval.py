@@ -47,6 +47,14 @@ def parse_args() -> argparse.Namespace:
         help="Only collect answers/contexts, skip RAGAS scoring.",
     )
     parser.add_argument(
+        "--scope",
+        choices=["expected-source", "all"],
+        default="expected-source",
+        help=(
+            "Retrieve from each sample's source_file or from all visible documents."
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         default="eval_results",
         help="Directory for CSV/JSON artifacts.",
@@ -72,13 +80,31 @@ def main() -> int:
         dataset_path=args.dataset,
         question_limit=args.limit,
         run_ragas_metrics=not args.no_ragas,
+        retrieval_scope=args.scope,
         progress=progress,
     )
 
     result.samples.to_csv(output_dir / "rag_eval_samples.csv", index=False)
     result.ragas_scores.to_csv(output_dir / "ragas_scores.csv", index=False)
+    result.retrieval_metrics.to_csv(
+        output_dir / "retrieval_metrics.csv", index=False
+    )
+    result.retrieval_candidates.to_json(
+        output_dir / "retrieval_candidates.jsonl",
+        orient="records",
+        lines=True,
+        force_ascii=False,
+    )
     (output_dir / "summary.json").write_text(
         json.dumps(result.summary, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (output_dir / "runtime_config.json").write_text(
+        json.dumps(result.runtime_config, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (output_dir / "failures.md").write_text(
+        result.failure_report,
         encoding="utf-8",
     )
     if result.warnings:
